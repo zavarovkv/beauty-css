@@ -66,7 +66,10 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 24
-          cache: npm
           registry-url: https://registry.npmjs.org
+          package-manager-cache: false
       - run: npm ci --ignore-scripts
-      - run: npm publish --access public --provenance
+      - name: Publish through the package's trusted GitHub relationship
+        env:
+          NPM_DIST_TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
+        run: npm publish --access public --provenance --tag "$NPM_DIST_TAG"

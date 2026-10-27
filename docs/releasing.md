@@ -31,8 +31,16 @@ Configure the npm package's trusted publisher for:
 - Repository: `beauty-css`
 - Workflow: `release.yml`
 
-Use the npm UI to configure the exact GitHub workflow, then set the GitHub repository variable
-`NPM_PUBLISHING_ENABLED` to `true`. Until that is configured, a GitHub release uploads its verified
+With npm 11.15 or newer, create the relationship once and complete npm's interactive 2FA challenge:
+
+```sh
+npm trust github beauty-css --repository zavarovkv/beauty-css --file release.yml --allow-publish --registry https://registry.npmjs.org
+gh variable set NPM_PUBLISHING_ENABLED --body true --repo zavarovkv/beauty-css
+```
+
+The npm UI can configure the same relationship. It must allow direct `npm publish` for automatic
+releases. `NPM_PUBLISHING_ENABLED` is a non-secret repository switch, not a credential; set it to
+`false` to disable the publishing job. Until it is enabled, a GitHub release uploads its verified
 CSS and package archive and skips the npm job. This requires no long-lived npm token in GitHub.
 The npm job receives only the OIDC permission needed for trusted publishing. See
 [npm's trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/).
@@ -43,7 +51,9 @@ For each release:
 2. Build and test. Commit the source and the exact generated `dist/` together.
 3. Tag that commit as `v<package version>` and publish its GitHub release with meaningful notes.
 4. `release.yml` checks the tag/version, runs checks, rejects a distribution diff and publishes the
-   package with provenance. It runs only on a published GitHub release.
+   package with provenance. It runs only on a published GitHub release, after verification succeeds.
+   Stable releases use npm's `latest` tag; GitHub prereleases use `next`. The publisher installs from
+   the lockfile without dependency caching and receives no npm token.
 
 Never reuse an npm version. Tag/manifest/package versions must agree. Avoid removing or changing a
 public token's meaning without a documented version change. A preview release below 1.0 can change
