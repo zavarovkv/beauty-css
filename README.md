@@ -12,7 +12,7 @@ It works independently of Hugo and every JavaScript framework.
 ## Status
 
 Version 0.1.0 is the first release. Public selectors and tokens may change before 1.0.
-The first npm publication is pending; ready-to-use CSS and a package archive are available in
+Ready-to-use CSS and a package archive are available in
 [GitHub Releases](https://github.com/zavarovkv/beauty-css/releases/tag/v0.1.0).
 
 ## Start with one file
@@ -66,12 +66,10 @@ It uses the same source as the classless entry. Choose one entry per page.
 Add `.not-beauty` to an embedded component to exclude it and its descendants from selector styling.
 Normal CSS inheritance still applies; set that component's own font and colors if needed.
 
-## Install from GitHub
-
-Until the first npm release:
+## Install with npm
 
 ```sh
-npm install github:zavarovkv/beauty-css#v0.1.0
+npm install beauty-css
 ```
 
 ```css
@@ -83,6 +81,9 @@ npm install github:zavarovkv/beauty-css#v0.1.0
 CSS imports work in bundlers that support package exports. A plain browser needs the downloaded
 CSS file or an actual URL. Pin a release or commit in production. Do not install a build tool just
 to use this library.
+
+You can also install the pinned GitHub release with
+`npm install github:zavarovkv/beauty-css#v0.1.0`.
 
 ## Make it yours
 

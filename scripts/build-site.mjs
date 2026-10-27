@@ -94,7 +94,7 @@ const copy = {
       "Add .not-beauty to an embedded component. Beauty selectors stop at that element and its descendants. Normal CSS inheritance still applies: set the component’s own font or colors if it needs them.",
     installTitle: "Install and contribute",
     installText:
-      "The first npm publication is being prepared. Until then, download the CSS above or install the repository directly. Distribution files are included; your website needs no build tools.",
+      "Install the package with npm, or download the CSS above. Distribution files are included; your website needs no build tools.",
     tokenTitle: "Public variables",
     token: "Variable",
     purpose: "Purpose",
@@ -188,7 +188,7 @@ const copy = {
       "Добавьте класс .not-beauty встроенному компоненту. Селекторы Beauty перестанут применяться к нему и его содержимому. Обычное наследование CSS сохраняется: при необходимости задайте компоненту собственные шрифт и цвета.",
     installTitle: "Установка и участие",
     installText:
-      "Первая публикация в npm готовится. Пока можно скачать CSS выше или установить пакет прямо из репозитория. Готовые файлы включены: вашему сайту инструменты сборки не нужны.",
+      "Установите пакет через npm или скачайте CSS выше. Готовые файлы включены: вашему сайту инструменты сборки не нужны.",
     tokenTitle: "Публичные переменные",
     token: "Переменная",
     purpose: "Назначение",
@@ -354,7 +354,7 @@ function home(lang) {
     <h3 id="variables">${t.tokenTitle}</h3>
     <div class="beauty-scroll" tabindex="0" role="region" aria-labelledby="variables"><table><thead><tr><th scope="col">${t.token}</th><th scope="col">${t.purpose}</th></tr></thead><tbody>${tokens.map(([name, purpose]) => `<tr><td><code>--beauty-${name}</code></td><td>${purpose}</td></tr>`).join("")}</tbody></table></div>
     <h3>${t.installTitle}</h3><p>${t.installText}</p>
-    ${code("npm install github:zavarovkv/beauty-css#v0.1.0")}
+    ${code("npm install beauty-css")}
     ${code('import "beauty-css";\n// Or only a content container:\nimport "beauty-css/prose";')}
   </section>
 </main>
