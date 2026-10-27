@@ -81,6 +81,18 @@ Use ordinary HTML. No component classes are required:
 This entry owns the document typography and a centered page layout. Direct `body > header` and
 `body > footer` elements receive page spacing; a quotation's footer remains a quotation footer.
 
+## Load from a CDN
+
+Published npm versions are also available through jsDelivr. For example, the stable 0.2.0 release
+can be loaded directly without npm or a build step:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/beauty-css@0.2.0/dist/beauty.min.css" />
+```
+
+For a prose container, use `dist/beauty.prose.min.css` instead. Pin an exact version; change the
+version only after reviewing an update. An unreleased local development build is not on the CDN.
+
 ## Add typography to an existing site
 
 Use **only** [`beauty.prose.min.css`](https://github.com/zavarovkv/beauty-css/releases/latest/download/beauty.prose.min.css) and wrap your content in `.beauty`:
@@ -145,10 +157,61 @@ Fonts are always your choice. If you use a web font, host and load it in your we
 | `--beauty-surface`        | `#f5f6f7`               | Code and read-only controls  |
 | `--beauty-mark`           | `#fff0b3`               | Highlight background         |
 
+Advanced typography settings let a host theme configure Beauty without duplicating its selectors.
+Font shorthand tokens accept standard CSS `font` values; the separate size tokens control responsive
+sizing. H3–H6 retain the browser's native hierarchy.
+
+| Variable                       | Default                                                    | Purpose                             |
+| ------------------------------ | ---------------------------------------------------------- | ----------------------------------- |
+| `--beauty-heading-font`        | `var(--beauty-font)`                                       | Heading family                      |
+| `--beauty-heading-weight`      | `600`                                                      | H3–H6 and emphasis weight           |
+| `--beauty-h1-size`             | `2.75em`                                                   | Desktop title size                  |
+| `--beauty-h1-size-small`       | `2em`                                                      | Title size below 48rem              |
+| `--beauty-h1-font`             | `600 var(--beauty-h1-size)/1.2 var(--beauty-heading-font)` | Title font shorthand                |
+| `--beauty-h1-margin`           | `0 0.55em`                                                 | Title block margins                 |
+| `--beauty-h1-tracking`         | `-0.035em`                                                 | Title letter spacing                |
+| `--beauty-h1-transform`        | `none`                                                     | Optional title optical adjustment   |
+| `--beauty-h2-size`             | `1.65em`                                                   | Section heading size                |
+| `--beauty-h2-size-small`       | `1.4em`                                                    | Section size below 48rem            |
+| `--beauty-h2-font`             | `600 var(--beauty-h2-size)/1.2 var(--beauty-heading-font)` | Section font shorthand              |
+| `--beauty-h2-margin`           | `1.8em 0.55em`                                             | Section block margins               |
+| `--beauty-h2-tracking`         | `-0.02em`                                                  | Section letter spacing              |
+| `--beauty-h2-transform`        | `none`                                                     | Optional section optical adjustment |
+| `--beauty-content-line-height` | `var(--beauty-line-height)`                                | Main content leading                |
+| `--beauty-block-start`         | `0`                                                        | Paragraph and block top margin      |
+| `--beauty-list-indent`         | `1.5em`                                                    | List indentation                    |
+| `--beauty-list-gap`            | `0.35em`                                                   | List item spacing                   |
+| `--beauty-link-weight`         | `var(--beauty-font-weight)`                                | Link weight                         |
+| `--beauty-link-decoration`     | `underline`                                                | Link decoration line                |
+| `--beauty-link-border`         | `0 solid transparent`                                      | Optional link bottom rule           |
+| `--beauty-link-border-hover`   | `var(--beauty-hover)`                                      | Hovered link rule color             |
+| `--beauty-focus-offset`        | `3px`                                                      | Keyboard focus offset               |
+| `--beauty-quote-border`        | `2px solid var(--beauty-border)`                           | Quotation leading rule              |
+| `--beauty-quote-inset`         | `0`                                                        | Quotation inline margins            |
+| `--beauty-quote-padding`       | `var(--beauty-space)`                                      | Quotation start padding             |
+| `--beauty-quote-style`         | `normal`                                                   | Quotation font style                |
+| `--beauty-quote-text`          | `var(--beauty-heading)`                                    | Quotation text color                |
+| `--beauty-code-size`           | `0.875em`                                                  | Inline code size                    |
+| `--beauty-code-padding`        | `0.12em 0.3em`                                             | Inline code padding                 |
+| `--beauty-code-radius`         | `var(--beauty-radius)`                                     | Inline code radius                  |
+| `--beauty-pre-padding`         | `1.1em 1.25em`                                             | Code block padding                  |
+| `--beauty-pre-radius`          | `var(--beauty-radius)`                                     | Code block radius                   |
+| `--beauty-rule-margin`         | `2.5em`                                                    | Horizontal rule block margins       |
+| `--beauty-rule-border`         | `1px solid var(--beauty-border)`                           | Horizontal rule border              |
+| `--beauty-callout-background`  | `var(--beauty-surface)`                                    | Callout surface                     |
+| `--beauty-callout-border`      | `1px solid var(--beauty-heading)`                          | Callout leading rule                |
+| `--beauty-lead-weight`         | `var(--beauty-font-weight)`                                | Lead paragraph weight               |
+| `--beauty-caption-align`       | `start`                                                    | Standalone caption alignment        |
+| `--beauty-caption-style`       | `normal`                                                   | Standalone caption font style       |
+| `--beauty-caption-margin`      | `0.6em 0 var(--beauty-space)`                              | Standalone caption margins          |
+
 The supplied palettes are checked for normal-text contrast of at least 4.5:1, and control-boundary
 contrast of at least 3:1. Recheck contrast after changing colors. Custom properties inherit; the
 defaults themselves are declared on each prose container, so customize `.beauty`, rather than its
 ancestor, in prose mode.
+
+`--beauty-button-font` accepts a font shorthand for optional `.beauty-button` links
+(default: `600 1em/1.4 var(--beauty-font)`). Native buttons inherit the surrounding text family.
 
 ## Color schemes
 
@@ -184,6 +247,17 @@ Beauty preserves native table semantics, visible keyboard focus, inline `<q>` qu
 form validation and disclosure controls. Form labels, useful link text, image alternatives and
 keyboard-accessible markup remain the author's responsibility. Prefer native HTML over ARIA.
 The core adds no animations. Print rules restore a light page and allow code to wrap.
+
+## Optional editorial treatments
+
+Ordinary paragraphs, headings and block quotations need no classes. For exceptional treatments,
+use `.beauty-lead` for a larger opening paragraph, `.beauty-fine-print` for attribution,
+`.beauty-caption` for a standalone caption, or `.beauty-emphasis` for a wavy underline.
+A `<blockquote class="beauty-callout">` adds a quiet surface to a block quotation. Native `<q>`
+remains an inline quotation. These classes also work within a prose container.
+`--beauty-emphasis-color` controls the wavy decoration (default: `currentColor`).
+Use `.beauty-button` on a link only when the destination needs the visual prominence of a button;
+keep its native link semantics and a real `href`.
 
 ## Browser support
 

@@ -9,7 +9,7 @@ The canonical CSS is split by responsibility, not by the website that first used
 
 1. `tokens.css` defines the public typography and color variables, with system/explicit themes.
 2. `content.css` styles semantic text, lists, quotations, media, tables, code and disclosures.
-3. `forms.css` styles native controls without changing their behavior.
+3. `forms.css` styles native controls and optional prominent links without changing their behavior.
 4. `page.css` owns the document width, padding and direct page header/footer spacing.
 
 The classless entry includes all four. The prose entry omits `page.css`, replaces document roots
@@ -20,6 +20,11 @@ rewritten with regular expressions. Styles inside media and print rules follow t
 The build emits one cascade layer and no remote imports. Customization through ordinary CSS remains
 predictable. All public variables have a `--beauty-` prefix. Component-specific selectors, behavior,
 fonts and content from Hugo Mini do not belong here.
+
+Heading font shorthands, responsive sizes, rhythm, link decoration, quotations and code are public
+tokens. A consuming theme configures them rather than maintaining a second set of native-element
+rules. Optional editorial helpers share the same sources in both entries. Legacy class aliases,
+font loading, syntax highlighting and application-specific component styles remain consumer-owned.
 
 ## Distribution
 

@@ -1,4 +1,4 @@
-/*! Beauty.css v0.1.1 | MIT | github.com/zavarovkv/beauty-css */
+/*! Beauty.css v0.2.0 | MIT | github.com/zavarovkv/beauty-css */
 @layer beauty {
   :where(:root):where(:not(.not-beauty, .not-beauty *)) {
     --beauty-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -20,6 +20,49 @@
     --beauty-danger: #b42318;
     --beauty-surface: #f5f6f7;
     --beauty-mark: #fff0b3;
+    --beauty-heading-font: var(--beauty-font);
+    --beauty-heading-weight: 600;
+    --beauty-h1-size: 2.75em;
+    --beauty-h1-size-small: 2em;
+    --beauty-h1-font: 600 var(--beauty-h1-size)/1.2 var(--beauty-heading-font);
+    --beauty-h1-margin: 0 .55em;
+    --beauty-h1-tracking: -.035em;
+    --beauty-h1-transform: none;
+    --beauty-h2-size: 1.65em;
+    --beauty-h2-size-small: 1.4em;
+    --beauty-h2-font: 600 var(--beauty-h2-size)/1.2 var(--beauty-heading-font);
+    --beauty-h2-margin: 1.8em .55em;
+    --beauty-h2-tracking: -.02em;
+    --beauty-h2-transform: none;
+    --beauty-content-line-height: var(--beauty-line-height);
+    --beauty-block-start: 0;
+    --beauty-list-indent: 1.5em;
+    --beauty-list-gap: .35em;
+    --beauty-link-weight: var(--beauty-font-weight);
+    --beauty-link-decoration: underline;
+    --beauty-link-border: 0 solid transparent;
+    --beauty-link-border-hover: var(--beauty-hover);
+    --beauty-focus-offset: 3px;
+    --beauty-quote-border: 2px solid var(--beauty-border);
+    --beauty-quote-inset: 0;
+    --beauty-quote-padding: var(--beauty-space);
+    --beauty-quote-style: normal;
+    --beauty-quote-text: var(--beauty-heading);
+    --beauty-code-size: .875em;
+    --beauty-code-padding: .12em .3em;
+    --beauty-code-radius: var(--beauty-radius);
+    --beauty-pre-padding: 1.1em 1.25em;
+    --beauty-pre-radius: var(--beauty-radius);
+    --beauty-rule-margin: 2.5em;
+    --beauty-rule-border: 1px solid var(--beauty-border);
+    --beauty-callout-background: var(--beauty-surface);
+    --beauty-callout-border: 1px solid var(--beauty-heading);
+    --beauty-lead-weight: var(--beauty-font-weight);
+    --beauty-caption-align: start;
+    --beauty-caption-style: normal;
+    --beauty-caption-margin: .6em 0 var(--beauty-space);
+    --beauty-button-font: 600 1em/1.4 var(--beauty-font);
+    --beauty-emphasis-color: currentColor;
     color-scheme: light;
   }
 
@@ -68,35 +111,42 @@
     color: var(--beauty-text);
     background: var(--beauty-background);
     overflow-wrap: break-word;
+    font-synthesis: weight style;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
+  :where(main):where(:not(.not-beauty, .not-beauty *)) {
+    line-height: var(--beauty-content-line-height);
+  }
+
   :where(h1, h2, h3, h4, h5, h6):where(:not(.not-beauty, .not-beauty *)) {
+    font-family: var(--beauty-heading-font);
     color: var(--beauty-heading);
-    margin-block: 1.8em .55em;
-    scroll-margin-block-start: 1.25rem;
-    font-weight: 600;
-    line-height: 1.2;
+    font-weight: var(--beauty-heading-weight);
+    line-height: inherit;
+    scroll-margin-block-start: .75rem;
   }
 
   :where(h1):where(:not(.not-beauty, .not-beauty *)) {
-    letter-spacing: -.035em;
-    margin-block-start: 0;
-    font-size: 2.75em;
+    font: var(--beauty-h1-font);
+    font-size: var(--beauty-h1-size);
+    margin-block: var(--beauty-h1-margin);
+    letter-spacing: var(--beauty-h1-tracking);
+    transform: var(--beauty-h1-transform);
   }
 
   :where(h2):where(:not(.not-beauty, .not-beauty *)) {
-    letter-spacing: -.02em;
-    font-size: 1.65em;
+    font: var(--beauty-h2-font);
+    font-size: var(--beauty-h2-size);
+    margin-block: var(--beauty-h2-margin);
+    letter-spacing: var(--beauty-h2-tracking);
+    transform: var(--beauty-h2-transform);
   }
 
-  :where(h3):where(:not(.not-beauty, .not-beauty *)) {
-    font-size: 1.25em;
-  }
-
-  :where(h4, h5, h6):where(:not(.not-beauty, .not-beauty *)) {
-    font-size: 1em;
+  :where(h3, h4, h5, h6):where(:not(.not-beauty, .not-beauty *)) {
+    font-size: revert;
+    margin-block: revert;
   }
 
   :where(hgroup):where(:not(.not-beauty, .not-beauty *)) {
@@ -115,30 +165,37 @@
   }
 
   :where(p, ul, ol, dl, pre, blockquote, figure, table, details):where(:not(.not-beauty, .not-beauty *)) {
-    margin-block: 0 var(--beauty-space);
+    margin-block: var(--beauty-block-start) var(--beauty-space);
   }
 
   :where(a):where(:not(.not-beauty, .not-beauty *)) {
     color: var(--beauty-link);
+    font-weight: var(--beauty-link-weight);
+    border-block-end: var(--beauty-link-border);
+    text-decoration-line: var(--beauty-link-decoration);
     text-underline-offset: .18em;
     text-decoration-skip-ink: auto;
-    text-decoration-line: underline;
     text-decoration-color: currentColor;
     text-decoration-thickness: .06em;
   }
 
   :where(a:hover):where(:not(.not-beauty, .not-beauty *)) {
     color: var(--beauty-hover);
+    border-block-end-color: var(--beauty-link-border-hover);
   }
 
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible:where(:not(.not-beauty, .not-beauty *)) {
     outline: 2px solid var(--beauty-link);
-    outline-offset: 3px;
+    outline-offset: var(--beauty-focus-offset);
   }
 
   :where(strong, b, dt):where(:not(.not-beauty, .not-beauty *)) {
     color: var(--beauty-heading);
     font-weight: 600;
+  }
+
+  :where(a strong, a b):where(:not(.not-beauty, .not-beauty *)) {
+    color: inherit;
   }
 
   :where(small, figcaption):where(:not(.not-beauty, .not-beauty *)) {
@@ -158,11 +215,15 @@
   }
 
   :where(ul, ol):where(:not(.not-beauty, .not-beauty *)) {
-    padding-inline-start: 1.5em;
+    padding-inline-start: var(--beauty-list-indent);
   }
 
   :where(li):where(:not(.not-beauty, .not-beauty *)) {
-    margin-block-end: .35em;
+    margin-block-end: var(--beauty-list-gap);
+  }
+
+  :where(ol > li):where(:not(.not-beauty, .not-beauty *))::marker {
+    font-weight: 600;
   }
 
   :where(li > ul, li > ol):where(:not(.not-beauty, .not-beauty *)) {
@@ -175,10 +236,11 @@
   }
 
   :where(blockquote):where(:not(.not-beauty, .not-beauty *)) {
-    border-inline-start: 2px solid var(--beauty-border);
-    color: var(--beauty-heading);
-    margin-inline: 0;
-    padding-inline-start: var(--beauty-space);
+    margin-inline: var(--beauty-quote-inset);
+    border-inline-start: var(--beauty-quote-border);
+    color: var(--beauty-quote-text);
+    font-style: var(--beauty-quote-style);
+    padding-inline-start: var(--beauty-quote-padding);
   }
 
   :where(blockquote > :last-child):where(:not(.not-beauty, .not-beauty *)) {
@@ -199,21 +261,21 @@
   }
 
   :where(hr):where(:not(.not-beauty, .not-beauty *)) {
+    margin-block: var(--beauty-rule-margin);
     border: 0;
-    border-block-start: 1px solid var(--beauty-border);
-    margin-block: 2.5em;
+    border-block-start: var(--beauty-rule-border);
   }
 
   :where(code, kbd, samp, pre):where(:not(.not-beauty, .not-beauty *)) {
     font-family: var(--beauty-font-mono);
+    font-size: var(--beauty-code-size);
     font-variant-ligatures: none;
-    font-size: .875em;
   }
 
   :where(code, kbd, samp):where(:not(.not-beauty, .not-beauty *)) {
-    border-radius: var(--beauty-radius);
+    padding: var(--beauty-code-padding);
+    border-radius: var(--beauty-code-radius);
     background: var(--beauty-surface);
-    padding: .12em .3em;
   }
 
   :where(kbd):where(:not(.not-beauty, .not-beauty *)) {
@@ -221,11 +283,12 @@
   }
 
   :where(pre):where(:not(.not-beauty, .not-beauty *)) {
-    border-radius: var(--beauty-radius);
+    max-inline-size: 100%;
+    padding: var(--beauty-pre-padding);
+    border-radius: var(--beauty-pre-radius);
     background: var(--beauty-surface);
     tab-size: 2;
-    max-inline-size: 100%;
-    padding: 1.1em 1.25em;
+    font-size: .875em;
     line-height: 1.6;
     overflow-x: auto;
   }
@@ -316,14 +379,13 @@
     display: none !important;
   }
 
-  @media (width <= 40rem) {
+  @media (width <= 48rem) {
     :where(h1):where(:not(.not-beauty, .not-beauty *)) {
-      letter-spacing: -.025em;
-      font-size: 2em;
+      --beauty-h1-size: var(--beauty-h1-size-small);
     }
 
     :where(h2):where(:not(.not-beauty, .not-beauty *)) {
-      font-size: 1.4em;
+      --beauty-h2-size: var(--beauty-h2-size-small);
     }
   }
 
@@ -363,6 +425,47 @@
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
+  }
+
+  :where(.beauty-lead):where(:not(.not-beauty, .not-beauty *)) {
+    font-size: 1.25em;
+    font-weight: var(--beauty-lead-weight);
+    line-height: 1.5;
+  }
+
+  :where(.beauty-fine-print):where(:not(.not-beauty, .not-beauty *)) {
+    font-size: .75rem;
+  }
+
+  :where(.beauty-caption):where(:not(.not-beauty, .not-beauty *)) {
+    margin: var(--beauty-caption-margin);
+    font-size: .875em;
+    font-style: var(--beauty-caption-style);
+    text-align: var(--beauty-caption-align);
+  }
+
+  :where(.beauty-emphasis):where(:not(.not-beauty, .not-beauty *)) {
+    text-decoration: underline wavy;
+    text-decoration-color: var(--beauty-emphasis-color);
+    text-underline-offset: .25em;
+    text-decoration-skip-ink: none;
+    font-style: italic;
+    text-decoration-thickness: .06em;
+  }
+
+  :where(blockquote.beauty-callout):where(:not(.not-beauty, .not-beauty *)) {
+    border-inline-start: var(--beauty-callout-border);
+    background: var(--beauty-callout-background);
+    color: var(--beauty-text);
+    quotes: none;
+    margin: 1.2em 0;
+    padding: .5rem 1.2rem;
+    font-style: normal;
+    display: block;
+  }
+
+  :where(.beauty-callout > :first-child):where(:not(.not-beauty, .not-beauty *)) {
+    margin-block-start: 0;
   }
 
   :where(button, input, select, textarea):where(:not(.not-beauty, .not-beauty *)) {
@@ -414,7 +517,7 @@
     accent-color: var(--beauty-link);
   }
 
-  :where(button, input[type="button"], input[type="submit"], input[type="reset"]):where(:not(.not-beauty, .not-beauty *)) {
+  :where(button, input[type="button"], input[type="submit"], input[type="reset"], .beauty-button):where(:not(.not-beauty, .not-beauty *)) {
     border: 1px solid var(--beauty-link);
     border-radius: var(--beauty-radius);
     background: var(--beauty-link);
@@ -429,7 +532,12 @@
     display: inline-block;
   }
 
-  :where(button:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover):where(:not(.not-beauty, .not-beauty *)) {
+  :where(.beauty-button):where(:not(.not-beauty, .not-beauty *)) {
+    font: var(--beauty-button-font);
+    text-decoration: none;
+  }
+
+  :where(button:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover, .beauty-button:hover):where(:not(.not-beauty, .not-beauty *)) {
     border-color: var(--beauty-hover);
     background: var(--beauty-hover);
   }

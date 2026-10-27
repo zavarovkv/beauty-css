@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+## 0.2.0 — 2026-10-27
+
+- Complete the shared typography API for headings, rhythm, links, quotations and code.
+- Add optional editorial treatments for leads, captions, emphasis, fine print and callouts.
+- Keep the native H3–H6 hierarchy and use a consistent 48rem heading breakpoint.
+- Restore a saved demo theme after CSS loads and resolve root styles before parsing native selects,
+  avoiding stale ancestor styles in WebKit.
+
 ## 0.1.1 — 2026-10-27
 
 - Improved the npm/GitHub overview with installation first, entry comparison, feature summary and status badges.

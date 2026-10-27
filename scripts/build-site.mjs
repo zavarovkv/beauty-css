@@ -33,7 +33,7 @@ const copy = {
       "A small CSS library for people who write. Add one stylesheet to your HTML and give your words a comfortable place to live.",
     download: "Download CSS",
     source: "View on GitHub",
-    preview: "First release",
+    preview: "CSS typography",
     features: "No required JavaScript. No bundled fonts. No build step for your website.",
     examplesIntro:
       "The article below uses ordinary HTML. Its headings, links, quotes, lists, table and form are styled by the same file you can download.",
@@ -127,7 +127,7 @@ const copy = {
       "Небольшая CSS-библиотека для тех, кто пишет. Подключите один файл к HTML-странице — и у вашего текста появится удобное место для жизни.",
     download: "Скачать CSS",
     source: "Код на GitHub",
-    preview: "Первый релиз",
+    preview: "Типографика на CSS",
     features: "Без обязательного JavaScript, встроенных шрифтов и сборки на вашем сайте.",
     examplesIntro:
       "Эта статья написана на обычном HTML. Заголовки, ссылки, цитаты, списки, таблица и форма оформлены тем же файлом, который можно скачать.",
@@ -250,9 +250,9 @@ function document(
   <meta property="og:url" content="${escape(canonical)}">
   <meta name="twitter:card" content="summary">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>
-  <script src="${prefix}assets/theme.js"></script>
   <link rel="stylesheet" href="${prefix}dist/beauty${prose ? ".prose" : ""}.min.css">
   ${noindex ? "" : `<link rel="stylesheet" href="${prefix}assets/site.css">`}
+  <script src="${prefix}assets/theme.js"></script>
 </head>
 <body>
 ${content}

@@ -8,6 +8,9 @@ try {
   /* Storage can be blocked; the system preference still works. */
 }
 document.documentElement.dataset.theme = selected;
+// Resolve the saved palette before the parser inserts native selects. Without this,
+// WebKit may cache their ancestors' pre-theme styles: bugs.webkit.org/show_bug.cgi?id=326092.
+getComputedStyle(document.documentElement).colorScheme;
 
 document.addEventListener("DOMContentLoaded", () => {
   const control = document.querySelector("#theme");

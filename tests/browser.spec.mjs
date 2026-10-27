@@ -42,6 +42,53 @@ test("prose tokens and standard CSS are easy to override", async ({ page }) => {
   await expect(page.locator("#fixture-title")).toHaveCSS("font-size", "30px");
 });
 
+test("typography tokens configure responsive headings and quotations without selector overrides", async ({
+  page,
+}) => {
+  await page.goto("/examples/prose.html");
+  await page.addStyleTag({
+    content: `.beauty {
+      --beauty-h1-font: 500 4rem/1.1 serif;
+      --beauty-h1-size: 4rem;
+      --beauty-h1-size-small: 1.5rem;
+      --beauty-quote-border: 3px solid currentColor;
+      --beauty-quote-style: italic;
+      --beauty-link-weight: 500;
+    }`,
+  });
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(page.locator("#fixture-title")).toHaveCSS("font-size", "64px");
+  await expect(page.locator("#fixture-title")).toHaveCSS("font-weight", "500");
+  await page.setViewportSize({ width: 375, height: 812 });
+  await expect(page.locator("#fixture-title")).toHaveCSS("font-size", "24px");
+  await expect(page.locator("blockquote")).toHaveCSS("border-inline-start-width", "3px");
+  await expect(page.locator("blockquote")).toHaveCSS("font-style", "italic");
+  await expect(page.locator("#content-link")).toHaveCSS("font-weight", "500");
+});
+
+test("editorial helpers preserve inline quotation semantics and remain scoped", async ({
+  page,
+}) => {
+  await page.goto("/examples/prose.html");
+  await page.locator("#prose").evaluate((container) => {
+    container.insertAdjacentHTML(
+      "beforeend",
+      `<p class="beauty-lead" id="lead">An opening paragraph.</p>
+      <blockquote class="beauty-callout" id="callout"><p>A block quotation.</p></blockquote>
+      <small class="beauty-fine-print" id="attribution">An attribution.</small>
+      <p><span class="beauty-emphasis" id="emphasis">An emphasized phrase.</span></p>
+      <a class="beauty-button" id="action" href="#fixture-title">A prominent link.</a>`,
+    );
+  });
+  await expect(page.locator("#inline-quote")).toHaveCSS("display", "inline");
+  await expect(page.locator("#lead")).toHaveCSS("font-size", "20px");
+  await expect(page.locator("#callout")).toHaveCSS("display", "block");
+  await expect(page.locator("#attribution")).toHaveCSS("font-size", "12px");
+  await expect(page.locator("#emphasis")).toHaveCSS("text-decoration-style", "wavy");
+  await expect(page.locator("#action")).toHaveCSS("font-weight", "600");
+  await expect(page.locator("#action")).toHaveCSS("text-decoration-line", "none");
+});
+
 for (const path of ["/", "/ru/", "/examples/classless.html", "/examples/prose.html"]) {
   test(`${path} stays inside narrow and wide viewports`, async ({ page }) => {
     for (const width of [320, 375, 768, 1440]) {
@@ -90,12 +137,16 @@ test("each prose container can choose its own scheme", async ({ page }) => {
 
 test("native controls, inline quotations, focus and hidden content keep their meaning", async ({
   page,
+  browserName,
 }) => {
   await page.goto("/examples/classless.html");
   await expect(page.locator("#inline-quote")).toHaveCSS("display", "inline");
   await expect(page.locator("#hidden-control")).toBeHidden();
   await expect(page.locator("#wide-table")).toHaveCSS("display", "table");
-  await page.keyboard.press("Tab");
+  // Safari on macOS includes links with Option-Tab unless full keyboard access is enabled.
+  await page.keyboard.press(
+    browserName === "webkit" && process.platform === "darwin" ? "Alt+Tab" : "Tab",
+  );
   await expect(page.locator("#content-link")).toBeFocused();
   await expect(page.locator("#content-link")).toHaveCSS("outline-style", "solid");
   await page.locator("#checkbox").check();
@@ -127,6 +178,10 @@ for (const scheme of ["light", "dark"]) {
     for (const path of ["/", "/ru/"]) {
       await page.goto(path);
       await page.locator("#theme").selectOption(scheme);
+      await expect(page.locator("body")).toHaveCSS(
+        "background-color",
+        scheme === "dark" ? "rgb(26, 26, 26)" : "rgb(255, 255, 255)",
+      );
       const result = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
         .analyze();

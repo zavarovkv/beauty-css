@@ -25,7 +25,7 @@ test("each advertised file has a valid checksum, a license and a useful size bud
       expected.integrity,
     );
     assert.ok(expected.gzip < 4096, `${file} must stay below 4 KiB gzip`);
-    assert.match(css, /^\/\*! Beauty\.css v[\d.]+ \| MIT/);
+    assert.ok(css.startsWith(`/*! Beauty.css v${pkg.version} | MIT`));
     assert.doesNotMatch(
       css,
       /@import|url\(|@font-face|<script|\{\{/i,

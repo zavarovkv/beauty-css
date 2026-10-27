@@ -53,7 +53,7 @@
   accent-color: var(--beauty-link);
 }
 
-:where(button, input[type="button"], input[type="submit"], input[type="reset"]) {
+:where(button, input[type="button"], input[type="submit"], input[type="reset"], .beauty-button) {
   display: inline-block;
   min-block-size: 2.75em;
   max-inline-size: 100%;
@@ -68,11 +68,17 @@
   cursor: pointer;
 }
 
+:where(.beauty-button) {
+  font: var(--beauty-button-font);
+  text-decoration: none;
+}
+
 :where(
   button:hover,
   input[type="button"]:hover,
   input[type="submit"]:hover,
-  input[type="reset"]:hover
+  input[type="reset"]:hover,
+  .beauty-button:hover
 ) {
   border-color: var(--beauty-hover);
   background: var(--beauty-hover);
