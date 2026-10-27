@@ -141,9 +141,13 @@
 }
 
 :where(blockquote) {
+  margin-block: var(--beauty-quote-margin-block);
   margin-inline: var(--beauty-quote-inset);
+  padding-block: var(--beauty-quote-padding-block);
   padding-inline-start: var(--beauty-quote-padding);
+  padding-inline-end: var(--beauty-quote-padding-end);
   border-inline-start: var(--beauty-quote-border);
+  background: var(--beauty-quote-background);
   color: var(--beauty-quote-text);
   font-style: var(--beauty-quote-style);
 }
@@ -370,6 +374,6 @@
   quotes: none;
 }
 
-:where(.beauty-callout > :first-child) {
+:where(blockquote > :first-child) {
   margin-block-start: 0;
 }

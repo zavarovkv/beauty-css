@@ -45,6 +45,10 @@
   --beauty-quote-border: 2px solid var(--beauty-border);
   --beauty-quote-inset: 0;
   --beauty-quote-padding: var(--beauty-space);
+  --beauty-quote-padding-block: 0;
+  --beauty-quote-padding-end: 0;
+  --beauty-quote-margin-block: var(--beauty-block-start) var(--beauty-space);
+  --beauty-quote-background: transparent;
   --beauty-quote-style: normal;
   --beauty-quote-text: var(--beauty-heading);
   --beauty-code-size: 0.875em;

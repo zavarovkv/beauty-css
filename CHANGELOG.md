@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.2.1 — 2026-10-28
+
+- Expose quotation surface, block spacing and remaining padding through tokens so a host can match
+  native block quotations to callouts without duplicating CSS selectors.
+- Trim the first paragraph's top margin in every block quotation, matching the existing callout rhythm.
+
 ## 0.2.0 — 2026-10-28
 
 - Complete the shared typography API for headings, rhythm, links, quotations and code.

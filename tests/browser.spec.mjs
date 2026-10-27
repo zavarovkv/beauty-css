@@ -89,6 +89,59 @@ test("editorial helpers preserve inline quotation semantics and remain scoped", 
   await expect(page.locator("#action")).toHaveCSS("text-decoration-line", "none");
 });
 
+test("a host can give native quotations and callouts the same frame through tokens", async ({
+  page,
+}) => {
+  await page.goto("/examples/prose.html");
+  await page.addStyleTag({
+    content: `.beauty {
+    --beauty-quote-background: #fffaf1;
+    --beauty-quote-border: 1px solid #222;
+    --beauty-quote-inset: 0;
+    --beauty-quote-padding: 1.2rem;
+    --beauty-quote-padding-end: 1.2rem;
+    --beauty-quote-padding-block: 0.5rem;
+    --beauty-quote-margin-block: 1.2em;
+    --beauty-quote-text: var(--beauty-text);
+    --beauty-callout-background: #fffaf1;
+    --beauty-callout-border: 1px solid #222;
+  }`,
+  });
+  await page
+    .locator("#prose")
+    .evaluate((container) =>
+      container.insertAdjacentHTML(
+        "beforeend",
+        '<blockquote id="native-frame"><p>The first paragraph.</p><p>The second paragraph.</p></blockquote>' +
+          '<blockquote class="beauty-callout" id="callout-frame"><p>The first paragraph.</p><p>The second paragraph.</p></blockquote>',
+      ),
+    );
+  for (const width of [375, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    const styles = await page.locator("#native-frame,#callout-frame").evaluateAll((elements) =>
+      elements.map((element) => {
+        const style = getComputedStyle(element);
+        return Object.fromEntries(
+          [
+            "fontFamily",
+            "fontSize",
+            "fontWeight",
+            "fontStyle",
+            "color",
+            "backgroundColor",
+            "borderInlineStart",
+            "padding",
+            "margin",
+            "width",
+            "height",
+          ].map((name) => [name, style[name]]),
+        );
+      }),
+    );
+    expect(styles[0]).toEqual(styles[1]);
+  }
+});
+
 for (const path of ["/", "/ru/", "/examples/classless.html", "/examples/prose.html"]) {
   test(`${path} stays inside narrow and wide viewports`, async ({ page }) => {
     for (const width of [320, 375, 768, 1440]) {

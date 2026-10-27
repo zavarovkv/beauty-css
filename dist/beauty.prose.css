@@ -1,4 +1,4 @@
-/*! Beauty.css v0.2.0 | MIT | github.com/zavarovkv/beauty-css */
+/*! Beauty.css v0.2.1 | MIT | github.com/zavarovkv/beauty-css */
 @layer beauty {
   :where(.beauty):where(:not(.not-beauty, .not-beauty *)) {
     --beauty-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -46,6 +46,10 @@
     --beauty-quote-border: 2px solid var(--beauty-border);
     --beauty-quote-inset: 0;
     --beauty-quote-padding: var(--beauty-space);
+    --beauty-quote-padding-block: 0;
+    --beauty-quote-padding-end: 0;
+    --beauty-quote-margin-block: var(--beauty-block-start) var(--beauty-space);
+    --beauty-quote-background: transparent;
     --beauty-quote-style: normal;
     --beauty-quote-text: var(--beauty-heading);
     --beauty-code-size: .875em;
@@ -236,11 +240,15 @@
   }
 
   :where(.beauty) :where(blockquote):where(:not(.not-beauty, .not-beauty *)) {
+    margin-block: var(--beauty-quote-margin-block);
     margin-inline: var(--beauty-quote-inset);
+    padding-block: var(--beauty-quote-padding-block);
     border-inline-start: var(--beauty-quote-border);
+    background: var(--beauty-quote-background);
     color: var(--beauty-quote-text);
     font-style: var(--beauty-quote-style);
     padding-inline-start: var(--beauty-quote-padding);
+    padding-inline-end: var(--beauty-quote-padding-end);
   }
 
   :where(.beauty) :where(blockquote > :last-child):where(:not(.not-beauty, .not-beauty *)) {
@@ -461,7 +469,7 @@
     display: block;
   }
 
-  :where(.beauty) :where(.beauty-callout > :first-child):where(:not(.not-beauty, .not-beauty *)) {
+  :where(.beauty) :where(blockquote > :first-child):where(:not(.not-beauty, .not-beauty *)) {
     margin-block-start: 0;
   }
 

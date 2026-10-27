@@ -83,11 +83,11 @@ This entry owns the document typography and a centered page layout. Direct `body
 
 ## Load from a CDN
 
-Published npm versions are also available through jsDelivr. For example, the stable 0.2.0 release
+Published npm versions are also available through jsDelivr. For example, the stable 0.2.1 release
 can be loaded directly without npm or a build step:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/beauty-css@0.2.0/dist/beauty.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/beauty-css@0.2.1/dist/beauty.min.css" />
 ```
 
 For a prose container, use `dist/beauty.prose.min.css` instead. Pin an exact version; change the
@@ -212,6 +212,14 @@ ancestor, in prose mode.
 
 `--beauty-button-font` accepts a font shorthand for optional `.beauty-button` links
 (default: `600 1em/1.4 var(--beauty-font)`). Native buttons inherit the surrounding text family.
+
+### Quotation frames
+
+Block quotation surfaces and spacing can be configured without overriding element selectors:
+`--beauty-quote-background` defaults to `transparent`, `--beauty-quote-padding-block` and
+`--beauty-quote-padding-end` to `0`, and `--beauty-quote-margin-block` to
+`var(--beauty-block-start) var(--beauty-space)`. The existing `--beauty-quote-padding` token controls
+start padding. A host can use these tokens to give ordinary quotations and callouts the same frame.
 
 ## Color schemes
 
