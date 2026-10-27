@@ -1,6 +1,6 @@
 {
   "name": "beauty-css",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A lightweight CSS library for beautiful, readable websites.",
   "type": "module",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "name": "Konstantin Zavarov",
     "url": "https://zavarov.com"
   },
-  "homepage": "https://zavarov.com/beauty/",
+  "homepage": "https://github.com/zavarovkv/beauty-css#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zavarovkv/beauty-css.git"

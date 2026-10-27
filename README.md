@@ -1,23 +1,58 @@
 # Beauty.css
 
+[![npm version](https://img.shields.io/npm/v/beauty-css)](https://www.npmjs.com/package/beauty-css)
+[![MIT license](https://img.shields.io/npm/l/beauty-css)](https://github.com/zavarovkv/beauty-css/blob/main/LICENSE)
+[![Build](https://github.com/zavarovkv/beauty-css/actions/workflows/ci.yml/badge.svg)](https://github.com/zavarovkv/beauty-css/actions/workflows/ci.yml)
+
 **Simple styles. Beautiful websites.**
 
 A lightweight CSS library for beautiful, readable websites. Ordinary HTML gets calm typography,
 comfortable spacing, visible links, tables, code, and native form controls. No runtime dependencies,
 JavaScript, external requests, or bundled fonts.
 
+Created by **[Konstantin Zavarov](https://zavarov.com/)**.
+
+## Why Beauty
+
+- **Made for reading.** A comfortable type scale, useful spacing and clear content hierarchy.
+- **Two ways to use it.** Style a whole page or a single `.beauty` content container.
+- **Small by design.** About 2.3 KiB gzip per minified entry, with no runtime dependencies.
+- **Your HTML, your fonts.** Semantic elements, native controls and the font family you choose.
+- **Easy to customize.** Named CSS variables and a low-priority cascade layer.
+- **Light, dark and print.** System-aware colors, an explicit theme choice and practical print styles.
+
 Beauty started as the typography in [Hugo Mini](https://github.com/zavarovkv/hugo-mini).
 It works independently of Hugo and every JavaScript framework.
 
-## Status
+## Install
 
-Version 0.1.0 is the first release. Public selectors and tokens may change before 1.0.
-Ready-to-use CSS and a package archive are available in
-[GitHub Releases](https://github.com/zavarovkv/beauty-css/releases/tag/v0.1.0).
+```sh
+npm install beauty-css
+```
+
+With a CSS-aware bundler:
+
+```css
+@import "beauty-css";
+/* Or, instead, style only a content container: */
+@import "beauty-css/prose";
+```
+
+Choose one entry per page. Package imports need a bundler that supports CSS exports; plain browsers
+use a downloaded CSS file or an actual URL. No build tools are needed for a plain HTML website.
+
+| Entry              | Use it for                                      | Applies to            |
+| ------------------ | ----------------------------------------------- | --------------------- |
+| `beauty-css`       | A new blog, personal site or documentation page | The whole document    |
+| `beauty-css/prose` | An article inside an existing site              | A `.beauty` container |
+
+Ready-to-use CSS and package archives are also available in
+[GitHub Releases](https://github.com/zavarovkv/beauty-css/releases/latest).
+The API is pre-1.0; public selectors and tokens may change between minor releases.
 
 ## Start with one file
 
-Download [`dist/beauty.min.css`](dist/beauty.min.css), keep it with your website, and add:
+Download [`beauty.min.css`](https://github.com/zavarovkv/beauty-css/releases/latest/download/beauty.min.css), keep it with your website, and add:
 
 ```html
 <link rel="stylesheet" href="beauty.min.css" />
@@ -48,7 +83,7 @@ This entry owns the document typography and a centered page layout. Direct `body
 
 ## Add typography to an existing site
 
-Use **only** [`beauty.prose.min.css`](dist/beauty.prose.min.css) and wrap your content in `.beauty`:
+Use **only** [`beauty.prose.min.css`](https://github.com/zavarovkv/beauty-css/releases/latest/download/beauty.prose.min.css) and wrap your content in `.beauty`:
 
 ```html
 <link rel="stylesheet" href="beauty.prose.min.css" />
@@ -65,25 +100,6 @@ It uses the same source as the classless entry. Choose one entry per page.
 
 Add `.not-beauty` to an embedded component to exclude it and its descendants from selector styling.
 Normal CSS inheritance still applies; set that component's own font and colors if needed.
-
-## Install with npm
-
-```sh
-npm install beauty-css
-```
-
-```css
-@import "beauty-css";
-/* Or, instead: */
-@import "beauty-css/prose";
-```
-
-CSS imports work in bundlers that support package exports. A plain browser needs the downloaded
-CSS file or an actual URL. Pin a release or commit in production. Do not install a build tool just
-to use this library.
-
-You can also install the pinned GitHub release with
-`npm install github:zavarovkv/beauty-css#v0.1.0`.
 
 ## Make it yours
 
@@ -218,9 +234,15 @@ Serve `_site/` at that URL. All local assets and navigation links are relative, 
 works without rewriting files. Canonicals, alternate languages and the demo sitemap use
 `SITE_BASE_URL`. Keep this independent demo outside your blog theme's templates and styles.
 
-See [architecture](docs/architecture.md), [contributing](CONTRIBUTING.md) and
-[release instructions](docs/releasing.md).
+See [architecture](https://github.com/zavarovkv/beauty-css/blob/main/docs/architecture.md),
+[contributing](https://github.com/zavarovkv/beauty-css/blob/main/CONTRIBUTING.md) and
+[release instructions](https://github.com/zavarovkv/beauty-css/blob/main/docs/releasing.md).
 
-## License
+## Author and license
 
-[MIT](LICENSE) © Konstantin Zavarov.
+Created and maintained by **[Konstantin Zavarov](https://zavarov.com/)**.
+Source code, issue reports and contributions live on
+[GitHub](https://github.com/zavarovkv/beauty-css).
+
+Released under the [MIT license](https://github.com/zavarovkv/beauty-css/blob/main/LICENSE).
+Free to use, modify and distribute in personal and commercial projects under that license.
