@@ -1,0 +1,115 @@
+:where(button, input, select, textarea) {
+  font: inherit;
+  accent-color: var(--beauty-link);
+}
+
+:where(label) {
+  display: block;
+  margin-block-end: 0.4em;
+  color: var(--beauty-heading);
+}
+
+:where(input, select, textarea) {
+  max-inline-size: 100%;
+  padding: 0.65em 0.8em;
+  border: 1px solid var(--beauty-control-border);
+  border-radius: var(--beauty-radius);
+  background: var(--beauty-background);
+  color: var(--beauty-text);
+}
+
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not(
+      [type="hidden"]
+    ):not([type="button"]):not([type="submit"]):not([type="reset"]),
+  select,
+  textarea
+) {
+  display: block;
+  inline-size: 100%;
+  margin-block-end: 1em;
+}
+
+:where(textarea) {
+  min-block-size: 7em;
+  resize: vertical;
+}
+
+:where(input[type="checkbox"], input[type="radio"]) {
+  inline-size: 1.05em;
+  block-size: 1.05em;
+  margin-inline: 0 0.45em;
+  vertical-align: -0.1em;
+}
+
+:where(input[type="color"]) {
+  inline-size: 3em;
+  min-block-size: 2.75em;
+  padding: 0.25em;
+}
+
+:where(input[type="range"], progress, meter) {
+  inline-size: 100%;
+  accent-color: var(--beauty-link);
+}
+
+:where(button, input[type="button"], input[type="submit"], input[type="reset"]) {
+  display: inline-block;
+  min-block-size: 2.75em;
+  max-inline-size: 100%;
+  padding: 0.6em 1em;
+  border: 1px solid var(--beauty-link);
+  border-radius: var(--beauty-radius);
+  background: var(--beauty-link);
+  color: var(--beauty-background);
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  cursor: pointer;
+}
+
+:where(
+  button:hover,
+  input[type="button"]:hover,
+  input[type="submit"]:hover,
+  input[type="reset"]:hover
+) {
+  border-color: var(--beauty-hover);
+  background: var(--beauty-hover);
+}
+
+:where(button:disabled, input:disabled, select:disabled, textarea:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+:where(input[readonly], textarea[readonly]) {
+  background: var(--beauty-surface);
+}
+
+:where(input::placeholder, textarea::placeholder) {
+  color: var(--beauty-muted);
+  opacity: 1;
+}
+
+:where([aria-invalid="true"]) {
+  border-color: var(--beauty-danger);
+}
+
+:where(fieldset) {
+  min-inline-size: 0;
+  margin: 0 0 var(--beauty-space);
+  padding: 1em 1.25em;
+  border: 1px solid var(--beauty-border);
+  border-radius: var(--beauty-radius);
+}
+
+:where(legend) {
+  padding-inline: 0.35em;
+  color: var(--beauty-heading);
+  font-weight: 600;
+}
+
+:where(fieldset > :last-child) {
+  margin-block-end: 0;
+}

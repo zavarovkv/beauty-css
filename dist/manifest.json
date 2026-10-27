@@ -1,0 +1,30 @@
+{
+  "name": "beauty-css",
+  "version": "0.1.0",
+  "files": {
+    "beauty.css": {
+      "bytes": 14089,
+      "gzip": 2608,
+      "sha256": "d5e82121e20dee7a2f87bab1c989c651ed67ad0b78d7b269857304c5c3a7290a",
+      "integrity": "sha384-OUUYdEK+YlBjL4CABcmcgUUnjchh9KXEXjT4feC/A4q/HY9gyno2YinLTwEUU3jr"
+    },
+    "beauty.min.css": {
+      "bytes": 11493,
+      "gzip": 2405,
+      "sha256": "88646fd979428b978fa14d3905e1ec2d0da3bc79f6e9a9260a3e4213cf7da943",
+      "integrity": "sha384-cHI7m7aiMBPAv1Vi5C9dfZxjMsH2rRmN9+bwl7mDaJ2oQnJTuqk4E8WIi1gEWniT"
+    },
+    "beauty.prose.css": {
+      "bytes": 14412,
+      "gzip": 2503,
+      "sha256": "5f17fda7986736f193fefaf710d440014a838c38ae0509660d0634f5fb55700e",
+      "integrity": "sha384-ycfbWg39haIGGjQewPbN/zQIrbyGzUxefjLHnCIkIF1l0IhcSO+O+sUnPOBbiT8K"
+    },
+    "beauty.prose.min.css": {
+      "bytes": 11991,
+      "gzip": 2327,
+      "sha256": "36206c69ca6173a89a460f219dc94faff9b7f2f82c3d6f2e60f758e0884e6100",
+      "integrity": "sha384-9TlH1hxYUtKdUqKSjcONaInq43q1T04wkgddsE+r7xTI1A1xAzgePk5RumO4XAG8"
+    }
+  }
+}

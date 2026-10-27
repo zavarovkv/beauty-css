@@ -1,0 +1,142 @@
+/* Demo layout only. All content typography, tables and controls come from Beauty.css. */
+body {
+  --beauty-width: 52rem;
+  padding-block-start: 2rem;
+}
+
+.site-nav {
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.wordmark {
+  color: var(--beauty-heading);
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: -0.04em;
+}
+
+.site-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.site-tools label {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.site-tools select {
+  display: inline-block;
+  inline-size: auto;
+  margin: 0;
+  padding: 0.3em 0.5em;
+  font-size: 0.875rem;
+}
+
+.hero {
+  margin-block: 4rem;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 10vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.065em;
+}
+
+.hero hgroup > p {
+  font-size: clamp(1.25rem, 4vw, 1.65rem);
+  color: var(--beauty-text);
+}
+
+.hero-description {
+  max-inline-size: 40rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.eyebrow,
+.version {
+  color: var(--beauty-muted);
+  font-size: 0.875em;
+}
+
+.specimen,
+.guide {
+  margin-block: 4rem;
+}
+
+.specimen > h2,
+.guide > h2 {
+  margin-block-end: 1rem;
+}
+
+.sample-article {
+  padding-block-start: 1.75rem;
+  border-block-start: 1px solid var(--beauty-border);
+}
+
+.sample-article h2:first-child {
+  margin-block-start: 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.form-row input {
+  margin: 0;
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.skip-link {
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 10;
+  padding: 0.5rem 1rem;
+  background: var(--beauty-background);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+@media (max-width: 30rem) {
+  .hero {
+    margin-block: 3rem;
+  }
+
+  .form-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media print {
+  .site-tools,
+  .actions,
+  .skip-link {
+    display: none;
+  }
+}

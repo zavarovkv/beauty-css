@@ -1,0 +1,32 @@
+/* Only the classless entry owns document layout. Prose leaves its host alone. */
+:where(body) {
+  max-inline-size: var(--beauty-width);
+  margin-inline: auto;
+  padding: 1.25rem;
+}
+
+:where(body > header) {
+  margin-block-end: 3rem;
+}
+
+:where(body > footer) {
+  margin-block-start: 3.5rem;
+  padding-block: 1.5rem;
+  border-block-start: 1px solid var(--beauty-border);
+  color: var(--beauty-muted);
+  font-size: 0.875em;
+}
+
+:where(body > header nav) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.65em 1.25em;
+}
+
+@media print {
+  :where(body) {
+    max-inline-size: none;
+    padding: 0;
+  }
+}
