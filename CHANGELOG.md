@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 — Unreleased
+## 0.1.0 — 2026-10-27
 
 - Extracted a framework-independent reading foundation from Hugo Mini.
 - Added classless page and scoped prose entries from one canonical CSS source.

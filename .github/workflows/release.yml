@@ -29,7 +29,30 @@ jobs:
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run test:browser
 
+  assets:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm pack --ignore-scripts
+      - name: Upload verified CSS and package archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" dist/beauty.css dist/beauty.min.css dist/beauty.prose.css dist/beauty.prose.min.css dist/manifest.json beauty-css-*.tgz --clobber
+
   publish:
+    if: vars.NPM_PUBLISHING_ENABLED == 'true'
     needs: verify
     runs-on: ubuntu-latest
     permissions:

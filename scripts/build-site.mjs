@@ -33,7 +33,7 @@ const copy = {
       "A small CSS library for people who write. Add one stylesheet to your HTML and give your words a comfortable place to live.",
     download: "Download CSS",
     source: "View on GitHub",
-    preview: "Preview release",
+    preview: "First release",
     features: "No required JavaScript. No bundled fonts. No build step for your website.",
     examplesIntro:
       "The article below uses ordinary HTML. Its headings, links, quotes, lists, table and form are styled by the same file you can download.",
@@ -127,7 +127,7 @@ const copy = {
       "Небольшая CSS-библиотека для тех, кто пишет. Подключите один файл к HTML-странице — и у вашего текста появится удобное место для жизни.",
     download: "Скачать CSS",
     source: "Код на GitHub",
-    preview: "Предварительная версия",
+    preview: "Первый релиз",
     features: "Без обязательного JavaScript, встроенных шрифтов и сборки на вашем сайте.",
     examplesIntro:
       "Эта статья написана на обычном HTML. Заголовки, ссылки, цитаты, списки, таблица и форма оформлены тем же файлом, который можно скачать.",
@@ -354,7 +354,7 @@ function home(lang) {
     <h3 id="variables">${t.tokenTitle}</h3>
     <div class="beauty-scroll" tabindex="0" role="region" aria-labelledby="variables"><table><thead><tr><th scope="col">${t.token}</th><th scope="col">${t.purpose}</th></tr></thead><tbody>${tokens.map(([name, purpose]) => `<tr><td><code>--beauty-${name}</code></td><td>${purpose}</td></tr>`).join("")}</tbody></table></div>
     <h3>${t.installTitle}</h3><p>${t.installText}</p>
-    ${code("npm install github:zavarovkv/beauty-css")}
+    ${code("npm install github:zavarovkv/beauty-css#v0.1.0")}
     ${code('import "beauty-css";\n// Or only a content container:\nimport "beauty-css/prose";')}
   </section>
 </main>

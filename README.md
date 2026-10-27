@@ -11,8 +11,9 @@ It works independently of Hugo and every JavaScript framework.
 
 ## Status
 
-Version 0.1.0 is a preview. The first npm publication is pending; the repository already contains
-ready-to-use distribution files. Public selectors and tokens may change before 1.0.
+Version 0.1.0 is the first release. Public selectors and tokens may change before 1.0.
+The first npm publication is pending; ready-to-use CSS and a package archive are available in
+[GitHub Releases](https://github.com/zavarovkv/beauty-css/releases/tag/v0.1.0).
 
 ## Start with one file
 
@@ -70,7 +71,7 @@ Normal CSS inheritance still applies; set that component's own font and colors i
 Until the first npm release:
 
 ```sh
-npm install github:zavarovkv/beauty-css
+npm install github:zavarovkv/beauty-css#v0.1.0
 ```
 
 ```css

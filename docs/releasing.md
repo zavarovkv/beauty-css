@@ -31,8 +31,10 @@ Configure the npm package's trusted publisher for:
 - Repository: `beauty-css`
 - Workflow: `release.yml`
 
-Use the npm UI to configure the exact GitHub workflow. This requires no long-lived npm token in
-GitHub. The release job receives only the OIDC permission needed for trusted publishing. See
+Use the npm UI to configure the exact GitHub workflow, then set the GitHub repository variable
+`NPM_PUBLISHING_ENABLED` to `true`. Until that is configured, a GitHub release uploads its verified
+CSS and package archive and skips the npm job. This requires no long-lived npm token in GitHub.
+The npm job receives only the OIDC permission needed for trusted publishing. See
 [npm's trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/).
 
 For each release:
