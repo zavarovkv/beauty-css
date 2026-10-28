@@ -113,6 +113,31 @@ It uses the same source as the classless entry. Choose one entry per page.
 Add `.not-beauty` to an embedded component to exclude it and its descendants from selector styling.
 Normal CSS inheritance still applies; set that component's own font and colors if needed.
 
+## Color palette
+
+Beauty includes matching light and dark palettes. The preview shows the primary colors;
+the table lists every color token. Dark mode follows the system preference or your explicit theme choice.
+
+![Beauty.css light and dark palettes with background, text, heading, secondary, link and hover color samples.](docs/palette.svg)
+
+| Variable                  | Light     | Dark      | Purpose                      |
+| ------------------------- | --------- | --------- | ---------------------------- |
+| `--beauty-background`     | `#ffffff` | `#1a1a1a` | Page or container background |
+| `--beauty-text`           | `#444444` | `#c7ccd1` | Body text                    |
+| `--beauty-heading`        | `#222222` | `#e8e8e8` | Headings and emphasis        |
+| `--beauty-muted`          | `#556677` | `#a7b2bc` | Secondary text               |
+| `--beauty-link`           | `#0060a0` | `#6ab0e6` | Links, buttons and focus     |
+| `--beauty-hover`          | `#b73700` | `#ff986c` | Link and button hover        |
+| `--beauty-border`         | `#d5dadd` | `#454b51` | Quiet content rules          |
+| `--beauty-control-border` | `#7d8892` | `#737e88` | Visible control boundaries   |
+| `--beauty-danger`         | `#b42318` | `#ff8c85` | Invalid field boundary       |
+| `--beauty-surface`        | `#f5f6f7` | `#25292d` | Code and read-only controls  |
+| `--beauty-mark`           | `#fff0b3` | `#514513` | Highlight background         |
+
+These are the defaults from [`src/tokens.css`](src/tokens.css), shared by both CSS entries.
+The supplied palettes are checked for normal-text contrast of at least 4.5:1, and control-boundary
+contrast of at least 3:1. Recheck contrast after changing colors.
+
 ## Make it yours
 
 Beauty lives in a single `@layer beauty`. Normal unlayered styles in your website take priority,
@@ -135,27 +160,16 @@ Set variables on `:root` in classless mode, or on `.beauty` in prose mode:
 
 Fonts are always your choice. If you use a web font, host and load it in your website.
 
-| Variable                  | Default (light)         | Purpose                      |
-| ------------------------- | ----------------------- | ---------------------------- |
-| `--beauty-font`           | System sans-serif stack | Text family                  |
-| `--beauty-font-mono`      | System monospace stack  | Code family                  |
-| `--beauty-font-size`      | `1rem`                  | Base text size               |
-| `--beauty-font-weight`    | `400`                   | Text weight                  |
-| `--beauty-line-height`    | `1.65`                  | Text leading                 |
-| `--beauty-width`          | `45rem`                 | Classless page width         |
-| `--beauty-space`          | `1.25em`                | Paragraph and block spacing  |
-| `--beauty-radius`         | `0.35rem`               | Control and code radius      |
-| `--beauty-background`     | `#ffffff`               | Page or container background |
-| `--beauty-text`           | `#444444`               | Body text                    |
-| `--beauty-heading`        | `#222222`               | Headings and emphasis        |
-| `--beauty-muted`          | `#556677`               | Secondary text               |
-| `--beauty-link`           | `#0060a0`               | Links, buttons and focus     |
-| `--beauty-hover`          | `#b73700`               | Link and button hover        |
-| `--beauty-border`         | `#d5dadd`               | Quiet content rules          |
-| `--beauty-control-border` | `#7d8892`               | Visible control boundaries   |
-| `--beauty-danger`         | `#b42318`               | Invalid field boundary       |
-| `--beauty-surface`        | `#f5f6f7`               | Code and read-only controls  |
-| `--beauty-mark`           | `#fff0b3`               | Highlight background         |
+| Variable               | Default                 | Purpose                     |
+| ---------------------- | ----------------------- | --------------------------- |
+| `--beauty-font`        | System sans-serif stack | Text family                 |
+| `--beauty-font-mono`   | System monospace stack  | Code family                 |
+| `--beauty-font-size`   | `1rem`                  | Base text size              |
+| `--beauty-font-weight` | `400`                   | Text weight                 |
+| `--beauty-line-height` | `1.65`                  | Text leading                |
+| `--beauty-width`       | `45rem`                 | Classless page width        |
+| `--beauty-space`       | `1.25em`                | Paragraph and block spacing |
+| `--beauty-radius`      | `0.35rem`               | Control and code radius     |
 
 Advanced typography settings let a host theme configure Beauty without duplicating its selectors.
 Font shorthand tokens accept standard CSS `font` values; the separate size tokens control responsive
@@ -205,8 +219,7 @@ sizing. H3–H6 retain the browser's native hierarchy.
 | `--beauty-caption-style`       | `normal`                                                   | Standalone caption font style       |
 | `--beauty-caption-margin`      | `0.6em 0 var(--beauty-space)`                              | Standalone caption margins          |
 
-The supplied palettes are checked for normal-text contrast of at least 4.5:1, and control-boundary
-contrast of at least 3:1. Recheck contrast after changing colors. Custom properties inherit; the
+Custom properties inherit; the
 defaults themselves are declared on each prose container, so customize `.beauty`, rather than its
 ancestor, in prose mode.
 
