@@ -115,24 +115,22 @@ Normal CSS inheritance still applies; set that component's own font and colors i
 
 ## Color palette
 
-Beauty includes matching light and dark palettes. The preview shows the primary colors;
-the table lists every color token. Dark mode follows the system preference or your explicit theme choice.
+Beauty includes matching light and dark palettes. Each sample shows the exact color next to its HEX code.
+Dark mode follows the system preference or your explicit theme choice.
 
-![Beauty.css light and dark palettes with background, text, heading, secondary, link and hover color samples.](docs/palette.svg)
-
-| Variable                  | Light     | Dark      | Purpose                      |
-| ------------------------- | --------- | --------- | ---------------------------- |
-| `--beauty-background`     | `#ffffff` | `#1a1a1a` | Page or container background |
-| `--beauty-text`           | `#444444` | `#c7ccd1` | Body text                    |
-| `--beauty-heading`        | `#222222` | `#e8e8e8` | Headings and emphasis        |
-| `--beauty-muted`          | `#556677` | `#a7b2bc` | Secondary text               |
-| `--beauty-link`           | `#0060a0` | `#6ab0e6` | Links, buttons and focus     |
-| `--beauty-hover`          | `#b73700` | `#ff986c` | Link and button hover        |
-| `--beauty-border`         | `#d5dadd` | `#454b51` | Quiet content rules          |
-| `--beauty-control-border` | `#7d8892` | `#737e88` | Visible control boundaries   |
-| `--beauty-danger`         | `#b42318` | `#ff8c85` | Invalid field boundary       |
-| `--beauty-surface`        | `#f5f6f7` | `#25292d` | Code and read-only controls  |
-| `--beauty-mark`           | `#fff0b3` | `#514513` | Highlight background         |
+| Variable                  | Light                                                                      | Dark                                                                       | Purpose                      |
+| ------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------- |
+| `--beauty-background`     | <img src="docs/colors/ffffff.svg" width="16" height="16" alt=""> `#ffffff` | <img src="docs/colors/1a1a1a.svg" width="16" height="16" alt=""> `#1a1a1a` | Page or container background |
+| `--beauty-text`           | <img src="docs/colors/444444.svg" width="16" height="16" alt=""> `#444444` | <img src="docs/colors/c7ccd1.svg" width="16" height="16" alt=""> `#c7ccd1` | Body text                    |
+| `--beauty-heading`        | <img src="docs/colors/222222.svg" width="16" height="16" alt=""> `#222222` | <img src="docs/colors/e8e8e8.svg" width="16" height="16" alt=""> `#e8e8e8` | Headings and emphasis        |
+| `--beauty-muted`          | <img src="docs/colors/556677.svg" width="16" height="16" alt=""> `#556677` | <img src="docs/colors/a7b2bc.svg" width="16" height="16" alt=""> `#a7b2bc` | Secondary text               |
+| `--beauty-link`           | <img src="docs/colors/0060a0.svg" width="16" height="16" alt=""> `#0060a0` | <img src="docs/colors/6ab0e6.svg" width="16" height="16" alt=""> `#6ab0e6` | Links, buttons and focus     |
+| `--beauty-hover`          | <img src="docs/colors/b73700.svg" width="16" height="16" alt=""> `#b73700` | <img src="docs/colors/ff986c.svg" width="16" height="16" alt=""> `#ff986c` | Link and button hover        |
+| `--beauty-border`         | <img src="docs/colors/d5dadd.svg" width="16" height="16" alt=""> `#d5dadd` | <img src="docs/colors/454b51.svg" width="16" height="16" alt=""> `#454b51` | Quiet content rules          |
+| `--beauty-control-border` | <img src="docs/colors/7d8892.svg" width="16" height="16" alt=""> `#7d8892` | <img src="docs/colors/737e88.svg" width="16" height="16" alt=""> `#737e88` | Visible control boundaries   |
+| `--beauty-danger`         | <img src="docs/colors/b42318.svg" width="16" height="16" alt=""> `#b42318` | <img src="docs/colors/ff8c85.svg" width="16" height="16" alt=""> `#ff8c85` | Invalid field boundary       |
+| `--beauty-surface`        | <img src="docs/colors/f5f6f7.svg" width="16" height="16" alt=""> `#f5f6f7` | <img src="docs/colors/25292d.svg" width="16" height="16" alt=""> `#25292d` | Code and read-only controls  |
+| `--beauty-mark`           | <img src="docs/colors/fff0b3.svg" width="16" height="16" alt=""> `#fff0b3` | <img src="docs/colors/514513.svg" width="16" height="16" alt=""> `#514513` | Highlight background         |
 
 These are the defaults from [`src/tokens.css`](src/tokens.css), shared by both CSS entries.
 The supplied palettes are checked for normal-text contrast of at least 4.5:1, and control-boundary
