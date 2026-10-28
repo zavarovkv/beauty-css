@@ -16,7 +16,7 @@ Created by **[Konstantin Zavarov](https://zavarov.com/)**.
 
 - **Made for reading.** A comfortable type scale, useful spacing and clear content hierarchy.
 - **Two ways to use it.** Style a whole page or a single `.beauty` content container.
-- **Small by design.** About 2.3 KiB gzip per minified entry, with no runtime dependencies.
+- **Small by design.** About 3 KiB gzip per minified entry, with no runtime dependencies.
 - **Your HTML, your fonts.** Semantic elements, native controls and the font family you choose.
 - **Easy to customize.** Named CSS variables and a low-priority cascade layer.
 - **Light, dark and print.** System-aware colors, an explicit theme choice and practical print styles.

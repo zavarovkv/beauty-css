@@ -7,8 +7,6 @@ import postcss from "postcss";
 import selectorParser from "postcss-selector-parser";
 import { transform } from "lightningcss";
 
-export const root = fileURLToPath(new URL("../", import.meta.url));
-
 // Transform parsed selectors, never text substitutions: commas inside :where(),
 // attribute values and pseudo-elements must keep their original meaning.
 export function scopeSelector(selector, scoped) {

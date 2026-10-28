@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove unused build/demo metadata and update the documented size budget, with byte-identical CSS artifacts.
+
 ## 0.2.1 — 2026-10-28
 
 - Expose quotation surface, block spacing and remaining padding through tokens so a host can match
