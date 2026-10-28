@@ -5,6 +5,13 @@
   --beauty-font-size: 1rem;
   --beauty-font-weight: 400;
   --beauty-line-height: 1.65;
+  --beauty-reading-size: 1rem;
+  --beauty-reading-size-small: 1rem;
+  --beauty-reading-width: 42.5rem;
+  --beauty-reading-line-height: 1.6;
+  --beauty-heading-wrap: balance;
+  --beauty-text-wrap: pretty;
+  --beauty-h3-margin: 1em;
   --beauty-width: 45rem;
   --beauty-space: 1.25em;
   --beauty-radius: 0.35rem;
@@ -39,6 +46,11 @@
   --beauty-list-gap: 0.35em;
   --beauty-link-weight: var(--beauty-font-weight);
   --beauty-link-decoration: underline;
+  --beauty-link-thickness: 0.06em;
+  --beauty-link-offset: 0.18em;
+  --beauty-link-decoration-color: currentColor;
+  --beauty-link-decoration-hover: currentColor;
+  --beauty-link-icon-gap: 0.35em;
   --beauty-link-border: 0 solid transparent;
   --beauty-link-border-hover: var(--beauty-hover);
   --beauty-focus-offset: 3px;
@@ -64,6 +76,7 @@
   --beauty-caption-align: start;
   --beauty-caption-style: normal;
   --beauty-caption-margin: 0.6em 0 var(--beauty-space);
+  --beauty-caption-gap: 0.5em;
   --beauty-button-font: 600 1em/1.4 var(--beauty-font);
   --beauty-emphasis-color: currentColor;
   color-scheme: light;

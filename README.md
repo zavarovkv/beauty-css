@@ -83,11 +83,11 @@ This entry owns the document typography and a centered page layout. Direct `body
 
 ## Load from a CDN
 
-Published npm versions are also available through jsDelivr. For example, the stable 0.2.1 release
+Published npm versions are also available through jsDelivr. For example, the stable 0.3.0 release
 can be loaded directly without npm or a build step:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/beauty-css@0.2.1/dist/beauty.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/beauty-css@0.3.0/dist/beauty.min.css" />
 ```
 
 For a prose container, use `dist/beauty.prose.min.css` instead. Pin an exact version; change the
@@ -212,6 +212,37 @@ ancestor, in prose mode.
 
 `--beauty-button-font` accepts a font shorthand for optional `.beauty-button` links
 (default: `600 1em/1.4 var(--beauty-font)`). Native buttons inherit the surrounding text family.
+
+### Reading and editorial rhythm
+
+Use `class="beauty-reading"` on an article or other reading container inside the classless page
+or a prose root. It keeps the base text size by default and sets a comfortable reading measure
+without changing navigation, controls or a surrounding application's layout. Headings balance their lines, paragraphs use the browser's
+`pretty` wrapping when supported, and semantic `time` elements keep dates together. Older engines
+retain their normal wrapping. Use `beauty-nowrap` for short values such as a number with its unit. These are native CSS rules; no text rewriting or JavaScript is used.
+
+| Variable                       | Default   | Purpose                                     |
+| ------------------------------ | --------- | ------------------------------------------- |
+| `--beauty-reading-size`        | `1rem`    | Reading text size                           |
+| `--beauty-reading-size-small`  | `1rem`    | Reading size below 48rem                    |
+| `--beauty-reading-width`       | `42.5rem` | Maximum reading measure                     |
+| `--beauty-reading-line-height` | `1.6`     | Reading leading                             |
+| `--beauty-heading-wrap`        | `balance` | Heading line wrapping                       |
+| `--beauty-text-wrap`           | `pretty`  | Paragraph line wrapping                     |
+| `--beauty-h3-margin`           | `1em`     | Third-level heading block margins           |
+| `--beauty-caption-gap`         | `0.5em`   | Gap between an image and its caption helper |
+
+For a compound link, put its text in `<span class="beauty-link-label">` and its trailing arrow in
+`<span class="beauty-link-icon" aria-hidden="true">`. Only the label is underlined; the icon keeps
+the text color and the base text weight. Both use the same native decoration settings as ordinary links.
+
+| Variable                         | Default        | Purpose                              |
+| -------------------------------- | -------------- | ------------------------------------ |
+| `--beauty-link-thickness`        | `0.06em`       | Underline thickness                  |
+| `--beauty-link-offset`           | `0.18em`       | Underline distance from the baseline |
+| `--beauty-link-decoration-color` | `currentColor` | Underline color                      |
+| `--beauty-link-decoration-hover` | `currentColor` | Hovered underline color              |
+| `--beauty-link-icon-gap`         | `0.35em`       | Gap before a trailing link icon      |
 
 ### Quotation frames
 

@@ -25,12 +25,19 @@
   line-height: var(--beauty-content-line-height);
 }
 
+:where(.beauty-reading) {
+  max-inline-size: var(--beauty-reading-width);
+  font-size: var(--beauty-reading-size);
+  line-height: var(--beauty-reading-line-height);
+}
+
 :where(h1, h2, h3, h4, h5, h6) {
   font-family: var(--beauty-heading-font);
   color: var(--beauty-heading);
   font-weight: var(--beauty-heading-weight);
   line-height: inherit;
   scroll-margin-block-start: 0.75rem;
+  text-wrap: var(--beauty-heading-wrap);
 }
 
 :where(h1) {
@@ -54,6 +61,10 @@
   margin-block: revert;
 }
 
+:where(h3) {
+  margin-block: var(--beauty-h3-margin);
+}
+
 :where(hgroup) {
   margin-block-end: 2em;
 }
@@ -73,20 +84,47 @@
   margin-block: var(--beauty-block-start) var(--beauty-space);
 }
 
+:where(p) {
+  text-wrap: var(--beauty-text-wrap);
+}
+
+:where(time, .beauty-nowrap) {
+  white-space: nowrap;
+}
+
 :where(a) {
   color: var(--beauty-link);
   font-weight: var(--beauty-link-weight);
   border-block-end: var(--beauty-link-border);
+}
+
+:where(a, .beauty-link-label) {
   text-decoration-line: var(--beauty-link-decoration);
-  text-decoration-thickness: 0.06em;
-  text-decoration-color: currentColor;
-  text-underline-offset: 0.18em;
+  text-decoration-thickness: var(--beauty-link-thickness);
+  text-decoration-color: var(--beauty-link-decoration-color);
+  text-underline-offset: var(--beauty-link-offset);
   text-decoration-skip-ink: auto;
 }
 
 :where(a:hover) {
   color: var(--beauty-hover);
   border-block-end-color: var(--beauty-link-border-hover);
+}
+
+:where(a:hover, a:hover .beauty-link-label) {
+  text-decoration-color: var(--beauty-link-decoration-hover);
+}
+
+:where(a:has(.beauty-link-label)) {
+  text-decoration-line: none;
+  border-block-end: 0;
+}
+
+:where(.beauty-link-icon) {
+  display: inline-block;
+  margin-inline-start: var(--beauty-link-icon-gap);
+  color: inherit;
+  font-weight: var(--beauty-font-weight);
 }
 
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
@@ -289,6 +327,10 @@
 }
 
 @media (max-width: 48rem) {
+  :where(.beauty-reading) {
+    font-size: var(--beauty-reading-size-small);
+  }
+
   :where(h1) {
     --beauty-h1-size: var(--beauty-h1-size-small);
   }
@@ -352,6 +394,14 @@
   font-size: 0.875em;
   font-style: var(--beauty-caption-style);
   text-align: var(--beauty-caption-align);
+}
+
+:where(p:has(> img:only-child):has(+ .beauty-caption), pre:has(> svg):has(+ .beauty-caption)) {
+  margin-block-end: var(--beauty-caption-gap);
+}
+
+:where(img + .beauty-caption) {
+  margin-block-start: var(--beauty-caption-gap);
 }
 
 :where(.beauty-emphasis) {

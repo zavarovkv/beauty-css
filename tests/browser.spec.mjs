@@ -142,6 +142,74 @@ test("a host can give native quotations and callouts the same frame through toke
   }
 });
 
+test("reading text is responsive and compound links underline only their label", async ({
+  page,
+}) => {
+  await page.goto("/examples/prose.html");
+  await page.addStyleTag({
+    content: ".beauty { --beauty-font-weight: 300; --beauty-link-weight: 500; }",
+  });
+  await page
+    .locator("#prose")
+    .evaluate((container) =>
+      container.insertAdjacentHTML(
+        "beforeend",
+        '<article class="beauty-reading" id="reading"><p>A comfortable reading measure.</p>' +
+          '<a id="compound" href="#fixture-title"><span class="beauty-link-label" id="compound-label">All articles</span>' +
+          '<span class="beauty-link-icon" id="compound-icon" aria-hidden="true">→</span></a></article>',
+      ),
+    );
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(page.locator("#reading")).toHaveCSS("font-size", "16px");
+  await expect(page.locator("#reading")).toHaveCSS("max-inline-size", "680px");
+  await expect(page.locator("#compound")).toHaveCSS("text-decoration-line", "none");
+  await expect(page.locator("#compound-label")).toHaveCSS("text-decoration-line", "underline");
+  await expect(page.locator("#compound-label")).toHaveCSS("font-weight", "500");
+  await expect(page.locator("#compound-icon")).toHaveCSS("font-weight", "300");
+  await page.locator("#compound").hover();
+  expect(
+    await page.locator("#compound-icon").evaluate((node) => getComputedStyle(node).color),
+  ).toBe(await page.locator("#compound").evaluate((node) => getComputedStyle(node).color));
+  await page.setViewportSize({ width: 375, height: 812 });
+  await expect(page.locator("#reading")).toHaveCSS("font-size", "16px");
+  await expect(page.locator("#outside-paragraph")).toHaveCSS("font-size", "16px");
+  await page.addStyleTag({
+    content:
+      "#reading { --beauty-reading-size: 1.125rem; --beauty-reading-size-small: 1.0625rem; }",
+  });
+  await expect(page.locator("#reading")).toHaveCSS("font-size", "17px");
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(page.locator("#reading")).toHaveCSS("font-size", "18px");
+});
+
+test("captions stay close to their image and short semantic values do not split", async ({
+  page,
+}) => {
+  await page.goto("/examples/prose.html");
+  await page
+    .locator("#prose")
+    .evaluate((container) =>
+      container.insertAdjacentHTML(
+        "beforeend",
+        '<p id="caption-image"><img src="../assets/specimen.svg" width="160" height="60" alt="Sample"></p>' +
+          '<p class="beauty-caption" id="image-caption">A caption.</p>' +
+          '<p><time id="unbroken-date" datetime="2026-10-28">28 October 2026</time></p>' +
+          '<p><span class="beauty-nowrap" id="unbroken-value">300 students</span></p>',
+      ),
+    );
+  const margins = await page.locator("#caption-image, #prose > p").evaluateAll((nodes) =>
+    nodes.map((node) => ({
+      id: node.id,
+      bottom: parseFloat(getComputedStyle(node).marginBottom),
+    })),
+  );
+  expect(margins.find((node) => node.id === "caption-image").bottom).toBeLessThan(
+    margins.find((node) => node.id === "long-text").bottom,
+  );
+  await expect(page.locator("#unbroken-date")).toHaveCSS("white-space", "nowrap");
+  await expect(page.locator("#unbroken-value")).toHaveCSS("white-space", "nowrap");
+});
+
 for (const path of ["/", "/ru/", "/examples/classless.html", "/examples/prose.html"]) {
   test(`${path} stays inside narrow and wide viewports`, async ({ page }) => {
     for (const width of [320, 375, 768, 1440]) {

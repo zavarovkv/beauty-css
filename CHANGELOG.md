@@ -2,7 +2,12 @@
 
 ## Unreleased
 
-- Remove unused build/demo metadata and update the documented size budget, with byte-identical CSS artifacts.
+## 0.3.0 — 2026-10-28
+
+- Add an optional reading measure, native balanced/pretty wrapping, caption proximity and shared compound-link treatments.
+- Keep reading text at the base 1rem size by default on desktop and mobile.
+- Expose underline geometry and color tokens so consumers can replace border-based decorations consistently.
+- Remove unused build/demo metadata and update the documented size budget.
 
 ## 0.2.1 — 2026-10-28
 
