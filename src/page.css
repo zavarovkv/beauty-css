@@ -24,6 +24,10 @@
   gap: 0.65em 1.25em;
 }
 
+:where(body > header nav > .beauty-nav-end) {
+  margin-inline-start: auto;
+}
+
 @media print {
   :where(body) {
     max-inline-size: none;
