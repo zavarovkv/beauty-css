@@ -81,6 +81,23 @@ Use ordinary HTML. No component classes are required:
 This entry owns the document typography and a centered page layout. Direct `body > header` and
 `body > footer` elements receive page spacing; a quotation's footer remains a quotation footer.
 
+### Header navigation
+
+Place trailing links or actions in a direct child with `class="beauty-nav-end"`:
+
+```html
+<header>
+  <nav aria-label="Main navigation">
+    <strong>Site name</strong>
+    <div class="beauty-nav-end"><a href="/login">Sign in</a></div>
+  </nav>
+</header>
+```
+
+The group aligns to the inline end of the page header: right in left-to-right pages,
+left in right-to-left pages. It can wrap on small screens without changing its alignment.
+This helper belongs to the classless page entry; the prose entry leaves host navigation alone.
+
 ## Load from a CDN
 
 Published npm versions are also available through jsDelivr. For example, the stable 0.3.0 release

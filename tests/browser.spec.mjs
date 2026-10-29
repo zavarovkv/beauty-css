@@ -1,6 +1,37 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test("trailing header actions stay at the inline end when navigation wraps", async ({ page }) => {
+  await page.goto("/examples/classless.html");
+  await page.evaluate(() => {
+    document.body.insertAdjacentHTML(
+      "afterbegin",
+      `<header><nav aria-label="Account navigation" id="navigation">
+        <strong id="brand">Example website</strong>
+        <div class="beauty-nav-end" id="actions"><button type="button">Continue with your account</button></div>
+      </nav></header>`,
+    );
+  });
+  for (const direction of ["ltr", "rtl"]) {
+    await page.evaluate((value) => (document.documentElement.dir = value), direction);
+    for (const width of [375, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      const navigation = await page.locator("#navigation").boundingBox();
+      const actions = await page.locator("#actions").boundingBox();
+      const edge = direction === "ltr" ? actions.x + actions.width : actions.x;
+      const expected = direction === "ltr" ? navigation.x + navigation.width : navigation.x;
+      expect(Math.abs(edge - expected)).toBeLessThan(1);
+      if (width === 375) {
+        const brand = await page.locator("#brand").boundingBox();
+        expect(actions.y).toBeGreaterThanOrEqual(brand.y + brand.height);
+      }
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+      ).toBeTruthy();
+    }
+  }
+});
+
 test("prose does not change the surrounding page or an opted-out component's own styles", async ({
   page,
 }) => {

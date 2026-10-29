@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.0 — 2026-10-29
+
+- Add `beauty-nav-end` for trailing header actions, with logical alignment and wrapping on narrow pages.
+
 ## 0.3.0 — 2026-10-28
 
 - Add an optional reading measure, native balanced/pretty wrapping, caption proximity and shared compound-link treatments.

@@ -1,30 +1,30 @@
 {
   "name": "beauty-css",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "files": {
     "beauty.css": {
-      "bytes": 20985,
-      "gzip": 3656,
-      "sha256": "150ce132ded919b4b5b70ebcaae9b9ebed0ba5ecb626f31747b1ff10aa502dd3",
-      "integrity": "sha384-H/+hbqx6hoASCrSaKt+XLmKu1zcru0IQmFGj1ohd7c7uHmO9YhzTF/Ef8LyT5Hb/"
+      "bytes": 21109,
+      "gzip": 3671,
+      "sha256": "2ab7d3a0ed7e4e347f0e9fcb9350000940a0997aa5c0774458588aa2c2a4ae1a",
+      "integrity": "sha384-XTTlz5wzaqSGNDS9DkKUltr7WNHyHw6Y1uAHB+1ESpDy1sHxe/4uz3QSv9ZS0wuD"
     },
     "beauty.min.css": {
-      "bytes": 17449,
-      "gzip": 3430,
-      "sha256": "d0ed35c5a8c2afcda9899646ba0cf3f9e488549f8f7f2e22bce82c84cd78d75c",
-      "integrity": "sha384-NB+wZHdVVC/zx+kF8nxmekr/fd+LuKtYBvDBNeA4MpcmeFMZXoEQVY4RMwDxDDMs"
+      "bytes": 17553,
+      "gzip": 3446,
+      "sha256": "d96bef989100461ad3edd637863010ed0cbdcc22c1162473d5a1ae519489d5b2",
+      "integrity": "sha384-Ge0dZ3euuILBgmlcTxXriFJcLb1FtjT5wuEX06aVICpbiLy3fAcEXg64GtPtl+Er"
     },
     "beauty.prose.css": {
       "bytes": 21628,
       "gzip": 3556,
-      "sha256": "605d86a3a1956c82c48a311e990d0eb5609776b53cf0eb9815219d69f8d7ec11",
-      "integrity": "sha384-iZ/nIqt4W/fmPz8+C6pZmXIgzCrmToRrqxDuiz55MbvhE3noizg2IBlfrpZlRskD"
+      "sha256": "137e97c0c980e9ac816a47238905191ca39746530d5888c19785852149cff0b9",
+      "integrity": "sha384-VNIUGvOO5pPcy8XLW2sOKRE2EJ7YfYTxrHhH0xzUMgHMCxuiX64yo9Ik9026h8dE"
     },
     "beauty.prose.min.css": {
       "bytes": 18267,
       "gzip": 3356,
-      "sha256": "3889c221f384bbf65e3833480707fd053520d81bb93563015f54cd1d52e9aab6",
-      "integrity": "sha384-eMJR7Jy+GnWEQ63z6AEbDWBrfqLTA0gdKKJOGG4cXOWAn/kwb1u8n2VYKWqgszkH"
+      "sha256": "c8f4640ad08c1a38d9fb69a11879b9d102e203d5a0ae282c66e8ec4f739e01c9",
+      "integrity": "sha384-zqHKlHKYbEK2t7VF/IMy3TiTCIhkFCnh5LkLGqWv2SFV4MMqIXTLZmW8RdXzJFJo"
     }
   }
 }
