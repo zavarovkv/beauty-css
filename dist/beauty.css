@@ -488,6 +488,10 @@
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
+
+    :where(pre code, pre samp):where(:not(.not-beauty, .not-beauty *)) {
+      overflow-wrap: inherit;
+    }
   }
 
   :where(.beauty-lead):where(:not(.not-beauty, .not-beauty *)) {

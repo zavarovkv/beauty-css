@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Wrap long code and sample-output tokens when printing, in both classless and prose entries; screen scrolling is unchanged.
+
 ## 0.4.0 — 2026-10-29
 
 - Add `beauty-nav-end` for trailing header actions, with logical alignment and wrapping on narrow pages.

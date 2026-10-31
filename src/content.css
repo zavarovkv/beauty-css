@@ -376,6 +376,10 @@
     white-space: pre-wrap;
     overflow-wrap: anywhere;
   }
+
+  :where(pre code, pre samp) {
+    overflow-wrap: inherit;
+  }
 }
 
 /* Optional editorial treatments; semantic HTML remains the default. */

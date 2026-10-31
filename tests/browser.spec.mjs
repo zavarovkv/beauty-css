@@ -313,6 +313,40 @@ test("right-to-left prose puts the quotation rule on the reading edge", async ({
   await expect(page.locator("blockquote")).toHaveCSS("border-left-width", "0px");
 });
 
+test("print wraps long code and sample output in both entries without changing screen scrolling", async ({
+  page,
+}) => {
+  const source = "long_identifier_".repeat(80);
+  for (const entry of ["classless", "prose"]) {
+    await page.emulateMedia({ media: "screen" });
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(`/examples/${entry}.html`);
+    await page.locator(entry === "prose" ? "#prose" : "body").evaluate((container, text) => {
+      for (const tag of ["code", "samp"]) {
+        const pre = document.createElement("pre");
+        pre.id = `print-${tag}`;
+        const content = document.createElement(tag);
+        content.textContent = text;
+        pre.append(content);
+        container.append(pre);
+      }
+    }, source);
+    for (const tag of ["code", "samp"]) {
+      expect(
+        await page.locator(`#print-${tag}`).evaluate((node) => node.scrollWidth > node.clientWidth),
+      ).toBeTruthy();
+    }
+    await page.emulateMedia({ media: "print" });
+    for (const tag of ["code", "samp"]) {
+      const output = page.locator(`#print-${tag}`);
+      expect(
+        await output.evaluate((node) => node.scrollWidth <= node.clientWidth + 1),
+      ).toBeTruthy();
+      await expect(output).toHaveText(source);
+    }
+  }
+});
+
 test("print restores a light page after an explicit dark choice", async ({ page }) => {
   await page.goto("/examples/classless.html");
   await page.locator("html").evaluate((element) => {
