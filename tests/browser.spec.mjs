@@ -107,6 +107,8 @@ test("editorial helpers preserve inline quotation semantics and remain scoped", 
       `<p class="beauty-lead" id="lead">An opening paragraph.</p>
       <blockquote class="beauty-callout" id="callout"><p>A block quotation.</p></blockquote>
       <small class="beauty-fine-print" id="attribution">An attribution.</small>
+      <p class="beauty-note" id="note">Already invited? <a href="#fixture-title">Log in</a>.</p>
+      <small class="beauty-step-marker" id="step" aria-hidden="true">1</small>
       <p><span class="beauty-emphasis" id="emphasis">An emphasized phrase.</span></p>
       <a class="beauty-button" id="action" href="#fixture-title">A prominent link.</a>`,
     );
@@ -115,6 +117,13 @@ test("editorial helpers preserve inline quotation semantics and remain scoped", 
   await expect(page.locator("#lead")).toHaveCSS("font-size", "20px");
   await expect(page.locator("#callout")).toHaveCSS("display", "block");
   await expect(page.locator("#attribution")).toHaveCSS("font-size", "12px");
+  await page.addStyleTag({ content: ".beauty { --beauty-link-weight: 600; }" });
+  await expect(page.locator("#note")).toHaveCSS("font-size", "14px");
+  await expect(page.locator("#note")).toHaveCSS("color", "rgb(85, 102, 119)");
+  await expect(page.locator("#note a")).toHaveCSS("font-weight", "400");
+  await expect(page.locator("#note a")).toHaveCSS("text-decoration-line", "underline");
+  await expect(page.locator("#step")).toHaveCSS("font-variant-numeric", "lining-nums tabular-nums");
+  await expect(page.locator("#step")).toHaveCSS("color", "rgb(0, 96, 160)");
   await expect(page.locator("#emphasis")).toHaveCSS("text-decoration-style", "wavy");
   await expect(page.locator("#action")).toHaveCSS("font-weight", "600");
   await expect(page.locator("#action")).toHaveCSS("text-decoration-line", "none");
@@ -386,3 +395,32 @@ for (const scheme of ["light", "dark"]) {
     }
   });
 }
+
+test("numeric highlights share responsive type and configurable sizing in both entries", async ({
+  page,
+}) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.goto(`/examples/${entry}.html`);
+    await page.locator(entry === "prose" ? "#prose" : "main").evaluate((container) => {
+      container.insertAdjacentHTML(
+        "beforeend",
+        `<dl id="statistics"><dt class="beauty-stat-label">Tasks completed</dt><dd class="beauty-stat-value">120</dd></dl>`,
+      );
+    });
+    const value = page.locator("#statistics dd");
+    const label = page.locator("#statistics dt");
+    await expect(value).toHaveCSS("color", "rgb(0, 96, 160)");
+    for (const [width, size] of [
+      [1280, "56px"],
+      [375, "32px"],
+    ]) {
+      await page.setViewportSize({ width, height: 900 });
+      await expect(value).toHaveCSS("font-size", size);
+      await expect(value).toHaveCSS("font-variant-numeric", "lining-nums tabular-nums");
+      await expect(label).toHaveCSS("font-size", "14px");
+      await expect(label).toHaveCSS("font-weight", "400");
+    }
+    await page.addStyleTag({ content: ".beauty-stat-value { --beauty-stat-size: 40px; }" });
+    await expect(value).toHaveCSS("font-size", "40px");
+  }
+});

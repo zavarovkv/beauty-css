@@ -73,6 +73,8 @@
   --beauty-callout-background: var(--beauty-surface);
   --beauty-callout-border: 1px solid var(--beauty-heading);
   --beauty-lead-weight: var(--beauty-font-weight);
+  --beauty-stat-size: clamp(2rem, 5vw, 3.5rem);
+  --beauty-stat-color: var(--beauty-link);
   --beauty-caption-align: start;
   --beauty-caption-style: normal;
   --beauty-caption-margin: 0.6em 0 var(--beauty-space);

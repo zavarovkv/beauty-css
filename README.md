@@ -320,11 +320,57 @@ The core adds no animations. Print rules restore a light page and allow code to 
 Ordinary paragraphs, headings and block quotations need no classes. For exceptional treatments,
 use `.beauty-lead` for a larger opening paragraph, `.beauty-fine-print` for attribution,
 `.beauty-caption` for a standalone caption, or `.beauty-emphasis` for a wavy underline.
+Use `.beauty-heading-compact` on short card or step headings that need tighter
+wrapped lines. It sets a 1.3 line height while retaining the native heading size,
+weight, margins and semantic level.
 A `<blockquote class="beauty-callout">` adds a quiet surface to a block quotation. Native `<q>`
 remains an inline quotation. These classes also work within a prose container.
 `--beauty-emphasis-color` controls the wavy decoration (default: `currentColor`).
 Use `.beauty-button` on a link only when the destination needs the visual prominence of a button;
 keep its native link semantics and a real `href`.
+
+Use `.beauty-note` on a paragraph for secondary instructions or an alternative action.
+It uses a smaller size and the muted text color; its links keep the normal body weight
+and visible underline. Keep essential instructions at the regular text size. Do not
+nest `<small>` inside the helper, which would shrink the text twice.
+
+```html
+<p class="beauty-note">Already invited? <a href="/login">Log in</a>.</p>
+```
+
+### Numeric highlights
+
+Use `.beauty-stat-value` for a prominent number and `.beauty-stat-label` for its label.
+Both work in classless and prose entries, using the host's heading font and palette.
+Values use tabular numerals and scale from 2rem to 3.5rem; override
+`--beauty-stat-size` (default: `clamp(2rem, 5vw, 3.5rem)`) to suit the available space.
+`--beauty-stat-color` controls their color (default: `var(--beauty-link)`).
+The host owns the grid, spacing and number formatting. Keep values as text with
+native semantics; do not turn them into headings just to make them larger.
+Use `.beauty-stat-unit` inside a value for a smaller, baseline-aligned unit or
+compact-number suffix. Include a nonbreaking space before the unit in the markup
+(for example, `<small class="beauty-stat-unit">&nbsp;M</small>`) so copied text
+retains the separation. Preserve the exact quantity in a `<data value="…">` element
+and its title when the displayed number is rounded.
+
+```html
+<dl>
+  <dt class="beauty-stat-label">Tasks completed</dt>
+  <dd class="beauty-stat-value">120</dd>
+</dl>
+```
+
+### Step markers
+
+Use `.beauty-step-marker` for a number beside a semantic process step. It uses the
+heading font, tabular numerals, the link color and a subtle tinted surface. The
+host owns marker dimensions, alignment and any connecting line. This helper adds
+no interactivity or progress state. When an ordered list already conveys the
+sequence, mark a duplicate decorative number with `aria-hidden="true"`.
+
+```html
+<small class="beauty-step-marker" aria-hidden="true">1</small>
+```
 
 ## Browser support
 

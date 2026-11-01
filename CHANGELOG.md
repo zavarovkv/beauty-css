@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add `beauty-note` for secondary instructions with quiet, readable text and ordinary link weight.
+
+- Add `beauty-heading-compact` for short card and step headings with a tighter multiline rhythm.
+
+- Add `beauty-step-marker` for quiet numbered steps, using the shared heading font and adaptive accent palette.
+
+- Add optional `beauty-stat-value`, `beauty-stat-label` and `beauty-stat-unit` treatments for responsive numeric highlights, with tabular numerals and the `--beauty-stat-size` and `--beauty-stat-color` tokens.
+
 - Wrap long code and sample-output tokens when printing, in both classless and prose entries; screen scrolling is unchanged.
 
 ## 0.4.0 — 2026-10-29

@@ -1,4 +1,4 @@
-/*! Beauty.css v0.4.0 | MIT | github.com/zavarovkv/beauty-css */
+/*! Beauty.css v0.5.0-dev.0 | MIT | github.com/zavarovkv/beauty-css */
 @layer beauty {
   :where(:root):where(:not(.not-beauty, .not-beauty *)) {
     --beauty-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -74,6 +74,8 @@
     --beauty-callout-background: var(--beauty-surface);
     --beauty-callout-border: 1px solid var(--beauty-heading);
     --beauty-lead-weight: var(--beauty-font-weight);
+    --beauty-stat-size: clamp(2rem, 5vw, 3.5rem);
+    --beauty-stat-color: var(--beauty-link);
     --beauty-caption-align: start;
     --beauty-caption-style: normal;
     --beauty-caption-margin: .6em 0 var(--beauty-space);
@@ -498,6 +500,54 @@
     font-size: 1.25em;
     font-weight: var(--beauty-lead-weight);
     line-height: 1.5;
+  }
+
+  :where(.beauty-heading-compact):where(:not(.not-beauty, .not-beauty *)) {
+    line-height: 1.3;
+  }
+
+  :where(.beauty-stat-value):where(:not(.not-beauty, .not-beauty *)) {
+    color: var(--beauty-stat-color);
+    font-family: var(--beauty-heading-font);
+    font-size: var(--beauty-stat-size);
+    font-weight: var(--beauty-heading-weight);
+    font-variant-numeric: lining-nums tabular-nums;
+    letter-spacing: -.04em;
+    line-height: 1.1;
+  }
+
+  :where(.beauty-stat-unit):where(:not(.not-beauty, .not-beauty *)) {
+    letter-spacing: normal;
+    font-size: .45em;
+  }
+
+  :where(.beauty-stat-label):where(:not(.not-beauty, .not-beauty *)) {
+    color: var(--beauty-muted);
+    font-size: .875rem;
+    font-weight: var(--beauty-font-weight);
+    line-height: var(--beauty-line-height);
+  }
+
+  :where(.beauty-step-marker):where(:not(.not-beauty, .not-beauty *)) {
+    color: var(--beauty-link);
+    background: var(--beauty-background);
+    background: color-mix(in srgb, var(--beauty-link) 7%, var(--beauty-background));
+    border: 1px solid var(--beauty-border);
+    border-color: color-mix(in srgb, var(--beauty-link) 24%, var(--beauty-background));
+    font-family: var(--beauty-heading-font);
+    font-size: .875rem;
+    font-weight: var(--beauty-heading-weight);
+    font-variant-numeric: lining-nums tabular-nums;
+    border-radius: 50%;
+    line-height: 1;
+  }
+
+  :where(.beauty-note):where(:not(.not-beauty, .not-beauty *)) {
+    --beauty-link-weight: var(--beauty-font-weight);
+    color: var(--beauty-muted);
+    font-size: .875em;
+    font-weight: var(--beauty-font-weight);
+    line-height: var(--beauty-line-height);
   }
 
   :where(.beauty-fine-print):where(:not(.not-beauty, .not-beauty *)) {
