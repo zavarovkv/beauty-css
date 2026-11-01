@@ -447,18 +447,19 @@ with PostCSS; Lightning CSS validates and minifies the results. Each minified en
 The npm package contains only source CSS, distributables, README, changelog and license. Build,
 test, demo and browser dependencies are development-only. There are no install-time scripts.
 
-## Deploy the demo
+## Build the independent demo
 
 ```sh
 npm run build
-SITE_BASE_URL=https://zavarov.com/beauty/ SITE_DEFAULT_LANGUAGE=ru npm run build:site
+SITE_BASE_URL=https://example.com/beauty/ SITE_DEFAULT_LANGUAGE=ru npm run build:site
 ```
 
 Serve `_site/` at that URL. All local assets and navigation links are relative, so a subdirectory
 works without rewriting files. Canonicals, alternate languages and the demo sitemap use
 `SITE_BASE_URL`. `SITE_DEFAULT_LANGUAGE` accepts `en` (default) or `ru`; the other language lives
-under its language code. The published catalog uses Russian at `/beauty/` and English at `/beauty/en/`.
-Keep this independent demo outside your blog theme's templates and styles.
+under its language code. The public catalog uses Russian at `/beauty/` and English at `/beauty/en/`.
+It renders the same specimens inside the blog's existing Hugo shell, with its header, footer,
+fonts and shared Beauty stylesheet. The independent demo's shell and assets are not imported.
 
 The catalog includes 17 live specimens with expandable, copyable HTML, every public helper,
 light/dark palette swatches and the complete variable reference. `site/catalog.mjs` owns the bilingual
@@ -467,8 +468,8 @@ from `src/tokens.css`. On wide screens contents stay beside the examples; on mob
 a native disclosure. The optional script adds theme choice, copying and a local form demonstration.
 
 The generator uses Node built-ins and the committed `dist/` files, so publishing a reviewed snapshot
-needs no npm dependencies in the host site. The blog vendors an explicit upstream commit with file
-checksums; its normal builds never download or rebuild this catalog. Downloaded CSS matches the
+needs no npm dependencies in a host site. The blog imports only specimens, token data and downloads
+from an explicit upstream commit with file checksums; its normal builds need no upstream access. Downloaded CSS matches the
 shown development version, which may be ahead of npm. The demo does not publish an npm release.
 
 See [architecture](https://github.com/zavarovkv/beauty-css/blob/main/docs/architecture.md),
