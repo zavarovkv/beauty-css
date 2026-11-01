@@ -101,8 +101,7 @@ function document(
   <meta name="twitter:card" content="summary">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>
   <link rel="stylesheet" href="${prefix}dist/beauty${prose ? ".prose" : ""}.min.css?v=${manifest.files[prose ? "beauty.prose.min.css" : "beauty.min.css"].sha256.slice(0, 12)}">
-  ${noindex ? "" : `<link rel="stylesheet" href="${prefix}assets/site.css?v=${hashes["site/assets/site.css"]}">`}
-  <script src="${prefix}assets/theme.js?v=${hashes["site/assets/theme.js"]}"></script>
+${noindex ? "" : `  <link rel="stylesheet" href="${prefix}assets/site.css?v=${hashes["site/assets/site.css"]}">\n`}  <script src="${prefix}assets/theme.js?v=${hashes["site/assets/theme.js"]}"></script>
 </head>
 <body>
 ${content}
