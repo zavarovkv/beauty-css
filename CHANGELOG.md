@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Restore placeholder color and opacity in both CSS entries by keeping the pseudo-element outside `:where()`; scoped and opted-out controls remain isolated.
+
 - Honor `--beauty-heading-weight` for semantic emphasis (`strong`, `b`, `dt`) in both entries, matching the documented customization contract while retaining the 600 default.
 
 - Add `beauty-steps`, a reusable connected ordered list with numbered circles, shared text rhythm, logical positioning and configurable spacing in both CSS entries.

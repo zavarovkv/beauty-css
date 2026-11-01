@@ -718,7 +718,7 @@
     background: var(--beauty-surface);
   }
 
-  :where(.beauty) :where():where(:not(.not-beauty, .not-beauty *)) {
+  :where(.beauty) :where(input, textarea):where(:not(.not-beauty, .not-beauty *))::placeholder {
     color: var(--beauty-muted);
     opacity: 1;
   }

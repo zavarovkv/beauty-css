@@ -503,3 +503,40 @@ test("connected steps stay scoped, fit small screens and follow text direction",
     }
   }
 });
+
+test("input and textarea placeholders follow the muted token within their scope", async ({
+  page,
+}) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.goto(`/examples/${entry}.html`);
+    await page.addStyleTag({ content: ":root, .beauty { --beauty-muted: #123456; }" });
+    await page.locator(entry === "prose" ? "#prose" : "main").evaluate((container) => {
+      container.insertAdjacentHTML(
+        "beforeend",
+        `<input id="hint-input" placeholder="Your name"><textarea id="hint-textarea" placeholder="Your message"></textarea>`,
+      );
+      document
+        .querySelector("#escape")
+        .insertAdjacentHTML("beforeend", `<input id="escape-hint" placeholder="Independent hint">`);
+      if (container.classList.contains("beauty"))
+        document.body.insertAdjacentHTML(
+          "beforeend",
+          `<input id="outside-hint" placeholder="Outside hint">`,
+        );
+    });
+    const placeholder = (selector) =>
+      page.locator(selector).evaluate((node) => {
+        const style = getComputedStyle(node, "::placeholder");
+        return { color: style.color, opacity: style.opacity };
+      });
+    for (const selector of ["#hint-input", "#hint-textarea"]) {
+      expect(await placeholder(selector)).toEqual({ color: "rgb(18, 52, 86)", opacity: "1" });
+    }
+    const independent = entry === "prose" ? ["#escape-hint", "#outside-hint"] : ["#escape-hint"];
+    const withBeauty = await Promise.all(independent.map(placeholder));
+    await page.evaluate(() => {
+      document.querySelector('link[rel="stylesheet"]').disabled = true;
+    });
+    expect(await Promise.all(independent.map(placeholder))).toEqual(withBeauty);
+  }
+});

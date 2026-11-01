@@ -16,6 +16,8 @@ The classless entry includes all four. The prose entry omits `page.css`, replace
 with `.beauty`, prefixes descendant selectors, and inserts `.not-beauty` exclusions. The transformation
 works on a parsed selector tree. Commas, quoted attributes and pseudo-elements are never split or
 rewritten with regular expressions. Styles inside media and print rules follow the same path.
+Keep pseudo-elements outside `:where()`, for example `:where(input, textarea)::placeholder`;
+pseudo-elements inside its forgiving selector list are discarded by CSS parsers.
 
 The build emits one cascade layer and no remote imports. Customization through ordinary CSS remains
 predictable. All public variables have a `--beauty-` prefix. Component-specific selectors, behavior,
@@ -25,6 +27,9 @@ Heading font shorthands, responsive sizes, rhythm, link decoration, quotations a
 tokens. A consuming theme configures them rather than maintaining a second set of native-element
 rules. Optional editorial helpers share the same sources in both entries. Legacy class aliases,
 font loading, syntax highlighting and application-specific component styles remain consumer-owned.
+Numeric highlights (`beauty-stat-*`) and connected ordered steps (`beauty-steps`) are shared
+editorial helpers. The library owns their type, marker geometry and internal rhythm; consumers
+own section grids, page spacing, data formatting and behavior.
 
 ## Distribution
 

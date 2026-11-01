@@ -93,7 +93,7 @@
   background: var(--beauty-surface);
 }
 
-:where(input::placeholder, textarea::placeholder) {
+:where(input, textarea)::placeholder {
   color: var(--beauty-muted);
   opacity: 1;
 }

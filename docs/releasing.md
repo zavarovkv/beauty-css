@@ -61,6 +61,9 @@ its API; explain those changes explicitly.
 
 ## Consumer updates
 
-Update a consuming theme's pinned artifact only after the upstream release is available. Check its
-manifest hash and retain the MIT license. Build and inspect representative pages before shipping
-the consumer update. Library releases and theme releases have independent version numbers.
+For stable package consumers, update the pin after the upstream release is available. A theme
+vendoring CSS directly may instead pin a reviewed, pushed full commit SHA; record the actual
+package version, including any `-dev` suffix, without presenting it as an npm release. Check the
+manifest hash and retain the MIT license. Replace local development snapshots with a public
+upstream pin before releasing the theme, and inspect representative pages before shipping the
+consumer update. Library releases and theme releases have independent version numbers.
