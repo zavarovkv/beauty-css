@@ -251,7 +251,7 @@
 
   :where(strong, b, dt):where(:not(.not-beauty, .not-beauty *)) {
     color: var(--beauty-heading);
-    font-weight: 600;
+    font-weight: var(--beauty-heading-weight);
   }
 
   :where(a strong, a b):where(:not(.not-beauty, .not-beauty *)) {

@@ -97,6 +97,25 @@ test("typography tokens configure responsive headings and quotations without sel
   await expect(page.locator("#content-link")).toHaveCSS("font-weight", "500");
 });
 
+test("the heading weight token also configures semantic emphasis in both entries", async ({
+  page,
+}) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.goto(`/examples/${entry}.html`);
+    const root = entry === "prose" ? ".beauty" : "body";
+    await page.locator(root).evaluate((node) => {
+      node.style.setProperty("--beauty-heading-weight", "500");
+      node.insertAdjacentHTML(
+        "beforeend",
+        '<div id="weight-fixture"><h3>Heading</h3><p><strong>Strong</strong> <b>Bold</b></p><dl><dt>Term</dt><dd>Meaning</dd></dl></div>',
+      );
+    });
+    for (const selector of ["h3", "strong", "b", "dt"]) {
+      await expect(page.locator(`#weight-fixture ${selector}`)).toHaveCSS("font-weight", "500");
+    }
+  }
+});
+
 test("editorial helpers preserve inline quotation semantics and remain scoped", async ({
   page,
 }) => {

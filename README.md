@@ -439,7 +439,7 @@ After editing a source file, rebuild it with `npm run build` and `npm run build:
 | `docs/`        | Architecture and release process                                 |
 
 `npm run build` generates readable/minified classless and prose files. Parsed selectors are scoped
-with PostCSS; Lightning CSS validates and minifies the results. Each entry stays below 4 KiB gzip.
+with PostCSS; Lightning CSS validates and minifies the results. Each minified entry stays below 4 KiB gzip.
 `dist/manifest.json` records version, byte/gzip sizes, SHA-256 and SHA-384 integrity values.
 
 The npm package contains only source CSS, distributables, README, changelog and license. Build,

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Honor `--beauty-heading-weight` for semantic emphasis (`strong`, `b`, `dt`) in both entries, matching the documented customization contract while retaining the 600 default.
+
 - Add `beauty-steps`, a reusable connected ordered list with numbered circles, shared text rhythm, logical positioning and configurable spacing in both CSS entries.
 
 - Make mobile numeric highlights more prominent with a 2.5rem minimum and a steeper responsive scale, keeping the desktop maximum unchanged.
