@@ -66,7 +66,10 @@ URLs. Files and links work under a subdirectory without a router or a framework.
 Native details and system colors work without scripting; the sample form has no named fields and
 its optional submit handler only shows local feedback. Demo assets use content hashes for cache
 refreshes. The catalog has no remote runtime dependencies, font downloads or analytics. Core CSS
-remains independent of the demo's JavaScript.
+remains independent of the demo's JavaScript. The generated body retains Cloudflare's documented
+`email_off` comments so its optional email protection does not rewrite sample addresses inside
+copyable HTML or add a decoder script. This exemption applies only to the standalone demo;
+[Cloudflare documents the scoped markup](https://developers.cloudflare.com/waf/tools/scrape-shield/email-address-obfuscation/#prevent-cloudflare-from-obfuscating-email).
 
 The blog publishes a checksum-verified snapshot pinned to an upstream commit. This keeps source
 ownership here while avoiding a second CSS toolchain in the host. Demo publication and npm releases

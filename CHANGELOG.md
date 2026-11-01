@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Preserve example email addresses and copyable HTML when the demo is served through Cloudflare's
+  email obfuscation, without changing the host site's settings.
+
 - Expand the independent bilingual documentation site into 17 live specimens with copyable HTML,
   all public helpers, generated palette/token references, responsive contents and optional local UI.
   Support a Russian root with English at `/en/` for publication under `zavarov.com/beauty/`.

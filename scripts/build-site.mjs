@@ -104,7 +104,9 @@ function document(
 ${noindex ? "" : `  <link rel="stylesheet" href="${prefix}assets/site.css?v=${hashes["site/assets/site.css"]}">\n`}  <script src="${prefix}assets/theme.js?v=${hashes["site/assets/theme.js"]}"></script>
 </head>
 <body>
+<!--email_off-->
 ${content}
+<!--/email_off-->
 </body>
 </html>\n`;
 }
