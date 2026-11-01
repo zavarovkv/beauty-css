@@ -71,11 +71,9 @@ remains independent of the demo's JavaScript. The generated body retains Cloudfl
 copyable HTML or add a decoder script. This exemption applies only to the standalone demo;
 [Cloudflare documents the scoped markup](https://developers.cloudflare.com/waf/tools/scrape-shield/email-address-obfuscation/#prevent-cloudflare-from-obfuscating-email).
 
-The public blog catalog imports a checksum-verified snapshot of specimens, tokens and downloadable
-CSS pinned to an upstream commit. Hugo renders these inside the existing blog shell, reusing its
-header, footer, fonts, menu, theme control and code-copy behavior. It does not import the independent
-demo's HTML, layout CSS or script. Source ownership stays here without a second CSS toolchain in the
-host. Catalog publication and npm releases remain independent; downloads identify their exact version.
+The demo is independent of the blog and can be previewed locally or hosted separately.
+The blog consumes only the library CSS through Hugo Mini and links visitors to the npm package.
+Demo hosting and npm releases remain independent.
 
 ## Verification
 

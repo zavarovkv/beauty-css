@@ -12,8 +12,6 @@ JavaScript, external requests, or bundled fonts.
 
 Created by **[Konstantin Zavarov](https://zavarov.com/)**.
 
-**[Live examples and documentation](https://zavarov.com/beauty/en/)** · [По-русски](https://zavarov.com/beauty/)
-
 ## Why Beauty
 
 - **Made for reading.** A comfortable type scale, useful spacing and clear content hierarchy.
@@ -457,9 +455,7 @@ SITE_BASE_URL=https://example.com/beauty/ SITE_DEFAULT_LANGUAGE=ru npm run build
 Serve `_site/` at that URL. All local assets and navigation links are relative, so a subdirectory
 works without rewriting files. Canonicals, alternate languages and the demo sitemap use
 `SITE_BASE_URL`. `SITE_DEFAULT_LANGUAGE` accepts `en` (default) or `ru`; the other language lives
-under its language code. The public catalog uses Russian at `/beauty/` and English at `/beauty/en/`.
-It renders the same specimens inside the blog's existing Hugo shell, with its header, footer,
-fonts and shared Beauty stylesheet. The independent demo's shell and assets are not imported.
+under its language code. The demo is available for local preview or independent hosting.
 
 The catalog includes 17 live specimens with expandable, copyable HTML, every public helper,
 light/dark palette swatches and the complete variable reference. `site/catalog.mjs` owns the bilingual
@@ -468,9 +464,8 @@ from `src/tokens.css`. On wide screens contents stay beside the examples; on mob
 a native disclosure. The optional script adds theme choice, copying and a local form demonstration.
 
 The generator uses Node built-ins and the committed `dist/` files, so publishing a reviewed snapshot
-needs no npm dependencies in a host site. The blog imports only specimens, token data and downloads
-from an explicit upstream commit with file checksums; its normal builds need no upstream access. Downloaded CSS matches the
-shown development version, which may be ahead of npm. The demo does not publish an npm release.
+needs no npm dependencies in a host site. Downloaded CSS matches the shown development version,
+which may be ahead of npm. The demo does not publish an npm release.
 
 See [architecture](https://github.com/zavarovkv/beauty-css/blob/main/docs/architecture.md),
 [contributing](https://github.com/zavarovkv/beauty-css/blob/main/CONTRIBUTING.md) and

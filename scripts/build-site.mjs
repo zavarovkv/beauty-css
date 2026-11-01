@@ -8,7 +8,7 @@ const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url
 const manifest = JSON.parse(
   await readFile(new URL("../dist/manifest.json", import.meta.url), "utf8"),
 );
-const base = new URL(process.env.SITE_BASE_URL || "https://zavarov.com/beauty/");
+const base = new URL(process.env.SITE_BASE_URL || "http://localhost:4173/");
 if (!base.pathname.endsWith("/")) throw new Error("SITE_BASE_URL must end with /");
 const defaultLanguage = process.env.SITE_DEFAULT_LANGUAGE || "en";
 if (!["en", "ru"].includes(defaultLanguage))
