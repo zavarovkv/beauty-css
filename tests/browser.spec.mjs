@@ -540,3 +540,37 @@ test("input and textarea placeholders follow the muted token within their scope"
     expect(await Promise.all(independent.map(placeholder))).toEqual(withBeauty);
   }
 });
+
+test("catalog examples reveal copyable source and forms never submit", async ({ page }) => {
+  await page.goto("/ru/");
+  const source = page.locator(".source").first();
+  await source.locator("summary").click();
+  await expect(source.locator("pre")).toBeVisible();
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: async (value) => {
+          window.copiedExample = value;
+        },
+      },
+    });
+  });
+  await source.locator(".copy-button").click();
+  expect(await page.evaluate(() => window.copiedExample)).toBe(
+    await source.locator("pre").textContent(),
+  );
+  const url = page.url();
+  await page.locator("#button-email").fill("reader@example.com");
+  await page.locator('input[type="submit"]').click();
+  await expect(page.locator('[data-example-form] [role="status"]')).toContainText(
+    "никуда не отправлены",
+  );
+  expect(page.url()).toBe(url);
+  await page.locator('input[type="reset"]').click();
+  await expect(page.locator("#button-email")).toHaveValue("");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator("#contents-disclosure")).not.toHaveAttribute("open", "");
+  await page.locator("#contents-disclosure > summary").click();
+  await expect(page.locator('.contents a[href="#palette"]')).toBeVisible();
+});

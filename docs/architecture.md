@@ -54,6 +54,24 @@ not set container width or page layout. `.not-beauty` is a selector boundary, no
 ordinary inheritance continues. A component needing isolation should provide its own inherited
 properties or use a genuine platform boundary. Dark/light choices belong on each styled root.
 
+## Documentation site
+
+`site/catalog.mjs` supplies localized specimens. `scripts/build-site.mjs` renders each preview and
+its escaped source from the same string, reads the canonical tokens for the palette/reference,
+and copies exact distribution files with their license. It requires only Node built-ins. The default
+language is selected with `SITE_DEFAULT_LANGUAGE`; `SITE_BASE_URL` controls canonical and alternate
+URLs. Files and links work under a subdirectory without a router or a framework.
+
+`site/assets/` owns documentation layout and optional theme/copy controls, never library typography.
+Native details and system colors work without scripting; the sample form has no named fields and
+its optional submit handler only shows local feedback. Demo assets use content hashes for cache
+refreshes. The catalog has no remote runtime dependencies, font downloads or analytics. Core CSS
+remains independent of the demo's JavaScript.
+
+The blog publishes a checksum-verified snapshot pinned to an upstream commit. This keeps source
+ownership here while avoiding a second CSS toolchain in the host. Demo publication and npm releases
+are independent; the page identifies its exact CSS version and links to matching downloads.
+
 ## Verification
 
 Node tests validate distribution checksums, deterministic builds, selector containment, token

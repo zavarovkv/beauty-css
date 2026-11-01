@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Expand the independent bilingual documentation site into 17 live specimens with copyable HTML,
+  all public helpers, generated palette/token references, responsive contents and optional local UI.
+  Support a Russian root with English at `/en/` for publication under `zavarov.com/beauty/`.
+
 - Restore placeholder color and opacity in both CSS entries by keeping the pseudo-element outside `:where()`; scoped and opted-out controls remain isolated.
 
 - Honor `--beauty-heading-weight` for semantic emphasis (`strong`, `b`, `dt`) in both entries, matching the documented customization contract while retaining the 600 default.

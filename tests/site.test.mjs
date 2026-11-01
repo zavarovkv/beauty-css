@@ -56,7 +56,8 @@ test("every demo page has valid structure, unique IDs, labels and working local 
       if (tag === "label" && attrs.for) assert.ok(ids.has(attrs.for), `${file}: broken label`);
       const url = attrs.src || (tag === "a" || tag === "link" ? attrs.href : undefined);
       if (!url || /^(?:https?:|mailto:|data:)/.test(url)) continue;
-      const [path, hash] = url.split("#");
+      const [resource, hash] = url.split("#");
+      const path = resource.split("?")[0];
       let target = resolve(dirname(file), decodeURIComponent(path || file));
       if ((await stat(target)).isDirectory()) target = resolve(target, "index.html");
       await stat(target);
@@ -79,4 +80,24 @@ test("English and Russian demo pages advertise each other and keep fixture pages
       /name="robots" content="noindex, follow"/,
     );
   }
+});
+
+test("the catalog demonstrates every public editorial helper and lists every token", async () => {
+  const html = await readFile(resolve(site, "index.html"), "utf8");
+  const tree = parse(html);
+  const classes = new Set();
+  walk(tree, (node) => {
+    const value = node.attrs?.find((attribute) => attribute.name === "class")?.value;
+    for (const name of (value || "").split(/\s+/)) classes.add(name);
+  });
+  for (const file of ["content", "forms", "page"]) {
+    const css = await readFile(new URL(`../src/${file}.css`, import.meta.url), "utf8");
+    for (const [selector] of css.matchAll(/\.beauty-[a-z-]+/g)) {
+      assert.ok(classes.has(selector.slice(1)), `${selector} needs a live example`);
+    }
+  }
+  const css = await readFile(new URL("../src/tokens.css", import.meta.url), "utf8");
+  for (const [name] of css.matchAll(/--beauty-[a-z0-9-]+(?=:)/g))
+    assert.ok(html.includes(name), name);
+  assert.doesNotMatch(html, /https?:[^" ]+\.(?:css|js)["?]/, "no external runtime assets");
 });

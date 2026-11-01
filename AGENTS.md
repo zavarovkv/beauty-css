@@ -9,7 +9,10 @@ Beauty is an independent CSS library. Hugo Mini is a consumer, never a build/run
 - Preserve native semantics, visible focus, print and light/dark/system schemes.
 - No required JavaScript, fonts, remote requests, framework adapters or install hooks in the core.
 - Demo-only layout and JavaScript live under `site/assets/`; demo content is built by
-  `scripts/build-site.mjs`. Russian copy uses U+0435 rather than U+0451.
+  `scripts/build-site.mjs` from bilingual specimens in `site/catalog.mjs`. Generate preview and source
+  from the same markup; derive palette/token documentation from `src/tokens.css`. Russian copy uses
+  U+0435 rather than U+0451. The public catalog is hosted at `https://zavarov.com/beauty/` (RU) and
+  `/beauty/en/` (EN); keep its source here and vendor reviewed snapshots into the blog.
 - Run `npm run check` and `npm run test:browser` for style/build changes; inspect desktop/mobile.
 - Run `npm pack --dry-run` after changing package metadata or distribution paths.
 - Keep dependencies exact and lockfile committed. Do not add build tools to consuming websites.

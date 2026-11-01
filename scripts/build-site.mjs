@@ -1,5 +1,7 @@
-import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, writeFile, rm } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
+import { catalog } from "../site/catalog.mjs";
 
 const output = new URL("../_site/", import.meta.url);
 const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
@@ -8,219 +10,69 @@ const manifest = JSON.parse(
 );
 const base = new URL(process.env.SITE_BASE_URL || "https://zavarov.com/beauty/");
 if (!base.pathname.endsWith("/")) throw new Error("SITE_BASE_URL must end with /");
+const defaultLanguage = process.env.SITE_DEFAULT_LANGUAGE || "en";
+if (!["en", "ru"].includes(defaultLanguage))
+  throw new Error("SITE_DEFAULT_LANGUAGE must be en or ru");
+const languages = ["en", "ru"];
+const paths = Object.fromEntries(
+  languages.map((lang) => [lang, lang === defaultLanguage ? "" : `${lang}/`]),
+);
 const escape = (value) =>
   String(value).replace(
     /[&<>"']/g,
     (character) =>
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character],
   );
-
-const copy = {
-  en: {
-    title: "Beauty.css — Simple styles. Beautiful websites.",
-    description: pkg.description,
-    skip: "Skip to content",
-    elements: "Examples",
-    guide: "Get started",
-    theme: "Theme",
-    auto: "System",
-    light: "Light",
-    dark: "Dark",
-    alternate: "Русский",
-    alternatePath: "ru/",
-    tagline: "Simple styles. Beautiful websites.",
-    intro:
-      "A small CSS library for people who write. Add one stylesheet to your HTML and give your words a comfortable place to live.",
-    download: "Download CSS",
-    source: "View on GitHub",
-    preview: "CSS typography",
-    features: "No required JavaScript. No bundled fonts. No build step for your website.",
-    examplesIntro:
-      "The article below uses ordinary HTML. Its headings, links, quotes, lists, table and form are styled by the same file you can download.",
-    articleTitle: "Make room for the words",
-    articleLead: "A short field guide to pages that feel good to read.",
-    para: "Good typography gives a page a rhythm. Headings help us find our place, paragraphs give an idea room to develop, and links make the next step clear. The details work together so the reader can focus on the story.",
-    inline:
-      "You can emphasize a phrase, highlight an idea, add a footnote, or include a line of code without interrupting the flow.",
-    emphasis: "This deserves a little emphasis",
-    bold: "this matters",
-    mark: "keep this in mind",
-    quote: "Design is as much about the space between things as the things themselves.",
-    attribution: "An observation from building this library",
-    listTitle: "A few useful defaults",
-    list: [
-      "A comfortable line length and generous leading.",
-      "Visible links and a clear keyboard focus.",
-      "Light and dark palettes that follow your preference.",
-    ],
-    tableTitle: "A small reading list",
-    caption: "Books read this year",
-    book: "Book",
-    author: "Author",
-    read: "Read",
-    books: [
-      ["The Little Prince", "Antoine de Saint-Exupéry", "March"],
-      ["A Room of One’s Own", "Virginia Woolf", "February"],
-      ["The Design of Everyday Things", "Don Norman", "January"],
-    ],
-    codeTitle: "One file, plain HTML",
-    codeIntro:
-      "Download the file, put it next to your page, and add a stylesheet link. Your browser does the rest.",
-    detailsTitle: "What happens without JavaScript?",
-    details:
-      "Everything you see in the article still works: typography, native form validation, this disclosure, and the system color scheme. JavaScript on this demo only remembers your theme choice and shows a local form confirmation.",
-    formTitle: "A form should feel like part of the page",
-    email: "Email address",
-    emailHint: "Demo only. Nothing is sent or stored.",
-    submit: "Try the form",
-    full: "Style the whole page",
-    fullText:
-      "Use the classless file for a new blog, personal website or documentation page. Standard HTML elements get sensible defaults, including a centered page layout.",
-    scoped: "Style a single article",
-    scopedText:
-      "Use the prose file inside an existing website. Add the beauty class to the content container. The host page keeps its layout and controls.",
-    fixture: "Open the scoped example",
-    customize: "Make it yours",
-    customizeText:
-      "Override public CSS variables with your own stylesheet. Your normal CSS takes priority over the beauty cascade layer, so there is no need for !important.",
-    themeTitle: "Choose a color scheme",
-    themeText:
-      "The default follows the system. Set data-theme on html for the classless file, or directly on the .beauty container for prose. Use light, dark, or auto.",
-    tableHelpTitle: "Keep wide content usable",
-    tableHelp:
-      "Wrap a wide table in .beauty-scroll with a descriptive accessible name and tabindex=0. It scrolls locally without changing the table’s native semantics. Give overflowing pre elements tabindex=0 too, so keyboard users can scroll them.",
-    escapeTitle: "Leave a component alone",
-    escapeText:
-      "Add .not-beauty to an embedded component. Beauty selectors stop at that element and its descendants. Normal CSS inheritance still applies: set the component’s own font or colors if it needs them.",
-    installTitle: "Install and contribute",
-    installText:
-      "Install the package with npm, or download the CSS above. Distribution files are included; your website needs no build tools.",
-    tokenTitle: "Public variables",
-    token: "Variable",
-    purpose: "Purpose",
-    fontPurpose: "Text font family",
-    monoPurpose: "Code font family",
-    sizePurpose: "Base text size",
-    weightPurpose: "Text weight",
-    linePurpose: "Text leading",
-    widthPurpose: "Classless page width",
-    spacePurpose: "Paragraph spacing",
-    radiusPurpose: "Control and code radius",
-    footer: "Created by Konstantin Zavarov",
-    built: "This page is built with Beauty.css.",
-  },
-  ru: {
-    title: "Beauty.css — Простые стили. Красивые сайты.",
-    description: "Легкая CSS-библиотека для красивых сайтов, которые приятно читать.",
-    skip: "К содержимому",
-    elements: "Примеры",
-    guide: "Подключение",
-    theme: "Тема",
-    auto: "Системная",
-    light: "Светлая",
-    dark: "Темная",
-    alternate: "English",
-    alternatePath: "../",
-    tagline: "Простые стили. Красивые сайты.",
-    intro:
-      "Небольшая CSS-библиотека для тех, кто пишет. Подключите один файл к HTML-странице — и у вашего текста появится удобное место для жизни.",
-    download: "Скачать CSS",
-    source: "Код на GitHub",
-    preview: "Типографика на CSS",
-    features: "Без обязательного JavaScript, встроенных шрифтов и сборки на вашем сайте.",
-    examplesIntro:
-      "Эта статья написана на обычном HTML. Заголовки, ссылки, цитаты, списки, таблица и форма оформлены тем же файлом, который можно скачать.",
-    articleTitle: "Дайте тексту пространство",
-    articleLead: "Небольшое руководство по страницам, которые приятно читать.",
-    para: "Хорошая типографика задает странице ритм. Заголовки помогают ориентироваться, абзацы дают мысли раскрыться, а ссылки показывают, куда идти дальше. Детали работают вместе, чтобы читатель мог сосредоточиться на истории.",
-    inline:
-      "Можно выделить фразу, подчеркнуть мысль, добавить сноску или строку кода, сохранив плавное течение текста.",
-    emphasis: "Здесь нужен легкий акцент",
-    bold: "это важно",
-    mark: "стоит запомнить",
-    quote: "Дизайн складывается из самих элементов и пространства между ними.",
-    attribution: "Наблюдение из работы над этой библиотекой",
-    listTitle: "Несколько полезных настроек",
-    list: [
-      "Удобная длина строки и свободный интерлиньяж.",
-      "Заметные ссылки и четкий фокус при навигации с клавиатуры.",
-      "Светлая и темная палитры, которые следуют вашим предпочтениям.",
-    ],
-    tableTitle: "Небольшой список прочитанного",
-    caption: "Книги, прочитанные в этом году",
-    book: "Книга",
-    author: "Автор",
-    read: "Прочитана",
-    books: [
-      ["Маленький принц", "Антуан де Сент-Экзюпери", "Март"],
-      ["Своя комната", "Вирджиния Вулф", "Февраль"],
-      ["Дизайн привычных вещей", "Дон Норман", "Январь"],
-    ],
-    codeTitle: "Один файл, обычный HTML",
-    codeIntro:
-      "Скачайте файл, положите рядом со страницей и подключите его. Остальное сделает браузер.",
-    detailsTitle: "Что работает без JavaScript?",
-    details:
-      "Все элементы статьи: типографика, встроенная проверка формы, этот раскрывающийся блок и системная цветовая схема. JavaScript в демо только запоминает выбранную тему и показывает локальное подтверждение формы.",
-    formTitle: "Форма как часть страницы",
-    email: "Электронная почта",
-    emailHint: "Это демо. Данные никуда не отправляются и не сохраняются.",
-    submit: "Попробовать",
-    full: "Оформить страницу целиком",
-    fullText:
-      "Файл без классов подойдет новому блогу, личному сайту или документации. Обычные HTML-элементы получают базовые стили, включая ширину страницы и поля.",
-    scoped: "Оформить отдельную статью",
-    scopedText:
-      "На существующем сайте используйте файл prose. Добавьте класс beauty контейнеру с текстом. Внешняя страница сохранит свою верстку и элементы управления.",
-    fixture: "Открыть пример с контейнером",
-    customize: "Настроить под себя",
-    customizeText:
-      "Переопределите публичные CSS-переменные в своем файле. Обычные стили имеют приоритет над слоем beauty, поэтому !important не нужен.",
-    themeTitle: "Выбрать цветовую схему",
-    themeText:
-      "По умолчанию используется системная тема. Добавьте data-theme к html для всей страницы или к контейнеру .beauty для prose. Доступны light, dark и auto.",
-    tableHelpTitle: "Сохранить удобство широкого контента",
-    tableHelp:
-      "Оберните широкую таблицу в .beauty-scroll с понятным доступным названием и tabindex=0. Она будет прокручиваться внутри блока, сохраняя семантику таблицы. Добавьте tabindex=0 и к переполненным pre, чтобы их можно было прокручивать с клавиатуры.",
-    escapeTitle: "Исключить отдельный компонент",
-    escapeText:
-      "Добавьте класс .not-beauty встроенному компоненту. Селекторы Beauty перестанут применяться к нему и его содержимому. Обычное наследование CSS сохраняется: при необходимости задайте компоненту собственные шрифт и цвета.",
-    installTitle: "Установка и участие",
-    installText:
-      "Установите пакет через npm или скачайте CSS выше. Готовые файлы включены: вашему сайту инструменты сборки не нужны.",
-    tokenTitle: "Публичные переменные",
-    token: "Переменная",
-    purpose: "Назначение",
-    fontPurpose: "Шрифт текста",
-    monoPurpose: "Шрифт кода",
-    sizePurpose: "Базовый размер текста",
-    weightPurpose: "Насыщенность текста",
-    linePurpose: "Межстрочный интервал",
-    widthPurpose: "Ширина страницы",
-    spacePurpose: "Интервал между абзацами",
-    radiusPurpose: "Скругление полей и кода",
-    footer: "Автор — Константин Заваров",
-    built: "Эта страница оформлена Beauty.css.",
-  },
-};
-
+const fingerprint = async (file) =>
+  createHash("sha256")
+    .update(await readFile(new URL(`../${file}`, import.meta.url)))
+    .digest("hex")
+    .slice(0, 12);
+const hashes = Object.fromEntries(
+  await Promise.all(
+    ["site/assets/site.css", "site/assets/theme.js"].map(async (file) => [
+      file,
+      await fingerprint(file),
+    ]),
+  ),
+);
+const tokenCSS = await readFile(new URL("../src/tokens.css", import.meta.url), "utf8");
+const defaults = new Map();
+const colors = new Map();
+for (const [, name, value] of tokenCSS.matchAll(/(--beauty-[\w-]+):\s*([^;]+);/g)) {
+  if (!defaults.has(name)) defaults.set(name, value.trim());
+  if (/^#[a-f0-9]{6}$/.test(value.trim())) {
+    if (!colors.has(name)) colors.set(name, [value.trim(), value.trim()]);
+    else colors.get(name)[1] = value.trim();
+  }
+}
 function code(value) {
   return `<pre tabindex="0"><code>${escape(value)}</code></pre>`;
 }
-
+function source(value, lang) {
+  return `<details class="source"><summary>${lang === "ru" ? "HTML примера" : "Example HTML"}</summary>${code(value)}</details>`;
+}
 function document(
   lang,
   content,
   { prefix = "", title, path = "", noindex = false, prose = false } = {},
 ) {
-  const t = copy[lang];
-  const pageTitle = title || t.title;
+  const description =
+    lang === "ru"
+      ? "Легкая CSS-библиотека для красивых сайтов. Живые примеры типографики, форм, таблиц, счетчиков и шагов с готовым HTML."
+      : "A lightweight CSS library for readable websites. Live typography, form, table, statistic and workflow examples with ready-to-use HTML.";
+  const pageTitle =
+    title ||
+    (lang === "ru"
+      ? "Beauty.css — красивые сайты на обычном HTML"
+      : "Beauty.css — beautiful websites, ordinary HTML");
   const canonical = new URL(path, base).href;
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     name: "Beauty.css",
-    description: t.description,
+    description,
+    url: canonical,
     codeRepository: "https://github.com/zavarovkv/beauty-css",
     programmingLanguage: "CSS",
     license: "https://opensource.org/license/mit",
@@ -233,24 +85,24 @@ function document(
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <title>${escape(pageTitle)}</title>
-  <meta name="description" content="${escape(t.description)}">
+  <meta name="description" content="${escape(description)}">
+  <link rel="icon" href="data:,">
   ${
     noindex
       ? '<meta name="robots" content="noindex, follow">'
       : `<link rel="canonical" href="${escape(canonical)}">
-  <link rel="alternate" hreflang="en" href="${base.href}">
-  <link rel="alternate" hreflang="ru" href="${new URL("ru/", base).href}">
+  ${languages.map((code) => `<link rel="alternate" hreflang="${code}" href="${new URL(paths[code], base).href}">`).join("\n  ")}
   <link rel="alternate" hreflang="x-default" href="${base.href}">`
   }
   <meta property="og:type" content="website">
   <meta property="og:title" content="${escape(pageTitle)}">
-  <meta property="og:description" content="${escape(t.description)}">
+  <meta property="og:description" content="${escape(description)}">
   <meta property="og:url" content="${escape(canonical)}">
   <meta name="twitter:card" content="summary">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>
-  <link rel="stylesheet" href="${prefix}dist/beauty${prose ? ".prose" : ""}.min.css">
-  ${noindex ? "" : `<link rel="stylesheet" href="${prefix}assets/site.css">`}
-  <script src="${prefix}assets/theme.js"></script>
+  <link rel="stylesheet" href="${prefix}dist/beauty${prose ? ".prose" : ""}.min.css?v=${manifest.files[prose ? "beauty.prose.min.css" : "beauty.min.css"].sha256.slice(0, 12)}">
+  ${noindex ? "" : `<link rel="stylesheet" href="${prefix}assets/site.css?v=${hashes["site/assets/site.css"]}">`}
+  <script src="${prefix}assets/theme.js?v=${hashes["site/assets/theme.js"]}"></script>
 </head>
 <body>
 ${content}
@@ -259,105 +111,110 @@ ${content}
 }
 
 function home(lang) {
-  const t = copy[lang];
-  const prefix = lang === "ru" ? "../" : "";
-  const tokens = [
-    ["font", t.fontPurpose],
-    ["font-mono", t.monoPurpose],
-    ["font-size", t.sizePurpose],
-    ["font-weight", t.weightPurpose],
-    ["line-height", t.linePurpose],
-    ["width", t.widthPurpose],
-    ["space", t.spacePurpose],
-    ["radius", t.radiusPurpose],
-    ["background", lang === "ru" ? "Фон страницы или контейнера" : "Page or container background"],
-    ["text", lang === "ru" ? "Основной текст" : "Body text"],
-    ["heading", lang === "ru" ? "Заголовки и акценты" : "Headings and emphasis"],
-    ["muted", lang === "ru" ? "Второстепенный текст" : "Secondary text"],
-    ["link", lang === "ru" ? "Ссылки, кнопки и фокус" : "Links, buttons and focus"],
-    ["hover", lang === "ru" ? "Состояние наведения" : "Hover state"],
-    ["border", lang === "ru" ? "Линии в контенте" : "Content rules"],
-    ["control-border", lang === "ru" ? "Границы полей" : "Control boundaries"],
-    ["danger", lang === "ru" ? "Граница поля с ошибкой" : "Invalid field boundary"],
-    [
-      "surface",
-      lang === "ru" ? "Фон кода и полей для чтения" : "Code and read-only control background",
-    ],
-    ["mark", lang === "ru" ? "Фон выделения" : "Highlight background"],
-  ];
+  const t = (ru, en) => (lang === "ru" ? ru : en);
+  const prefix = paths[lang] ? "../" : "";
+  const alternate = lang === "ru" ? "en" : "ru";
+  const sections = catalog(lang, prefix);
+  const count = sections.reduce((sum, section) => sum + section.examples.length, 0);
+  const example = (
+    section,
+  ) => `<section id="${section.id}" class="catalog-section" aria-labelledby="${section.id}-title">
+    <h2 id="${section.id}-title">${section.title}</h2><p class="beauty-note">${section.text}</p>
+    ${section.examples
+      .map(
+        (item, index) => `<div class="example" data-example="${section.id}-${index}">
+      <p class="example-label beauty-note">${item.title}</p>
+      <div class="sample">${item.html}</div>${source(item.html, lang)}
+    </div>`,
+      )
+      .join("\n")}
+  </section>`;
+  const swatch = (value) =>
+    `<span class="color-value"><span class="swatch" style="--swatch:${value}" aria-hidden="true"></span><code>${value}</code></span>`;
+  const colorLabels = {
+    background: t("Фон", "Background"),
+    text: t("Текст", "Text"),
+    heading: t("Заголовки", "Headings"),
+    muted: t("Второстепенный текст", "Secondary text"),
+    link: t("Ссылки и фокус", "Links and focus"),
+    hover: t("Наведение", "Hover"),
+    border: t("Разделители", "Content borders"),
+    "control-border": t("Границы полей", "Control borders"),
+    danger: t("Ошибка", "Invalid field"),
+    surface: t("Поверхность", "Surface"),
+    mark: t("Выделение", "Highlight"),
+  };
   return document(
     lang,
     `
-<a class="skip-link" href="#main">${t.skip}</a>
-<header>
-  <nav class="site-nav" aria-label="${lang === "ru" ? "Основная навигация" : "Main navigation"}">
-    <a class="wordmark" href="${prefix || "./"}">Beauty.css</a>
-    <div class="site-tools">
-      <a href="#examples">${t.elements}</a>
-      <a href="#start">${t.guide}</a>
-      <a href="${t.alternatePath}" lang="${lang === "en" ? "ru" : "en"}" hreflang="${lang === "en" ? "ru" : "en"}">${t.alternate}</a>
-      <label>${t.theme} <select id="theme"><option value="auto">${t.auto}</option><option value="light">${t.light}</option><option value="dark">${t.dark}</option></select></label>
+<a class="skip-link" href="#main">${t("К содержимому", "Skip to content")}</a>
+<header class="site-header">
+  <nav class="site-nav" aria-label="${t("Основная навигация", "Main navigation")}">
+    <a class="wordmark" href="./"><strong>Beauty.css</strong></a>
+    <a href="#examples">${t("Примеры", "Examples")}</a>
+    <a href="#start">${t("Подключение", "Get started")}</a>
+    <div class="site-tools beauty-nav-end">
+      <a href="${prefix}${paths[alternate] || "./"}" lang="${alternate}" hreflang="${alternate}">${t("EN", "RU")}</a>
+      <label class="theme-control"><span class="visually-hidden">${t("Цветовая тема", "Color scheme")}</span><select id="theme" disabled><option value="auto">${t("Системная", "System")}</option><option value="light">${t("Светлая", "Light")}</option><option value="dark">${t("Темная", "Dark")}</option></select></label>
     </div>
   </nav>
 </header>
 <main id="main">
   <section class="hero" aria-labelledby="product-title">
-    <p class="eyebrow">${t.preview} · v${pkg.version} · ${(manifest.files["beauty.min.css"].gzip / 1024).toFixed(1)} KB gzip</p>
-    <hgroup><h1 id="product-title">Beauty.css</h1><p>${t.tagline}</p></hgroup>
-    <p class="hero-description">${t.intro}</p>
-    <p class="actions"><a href="${prefix}dist/beauty.min.css" download>${t.download} ↓</a><a href="https://github.com/zavarovkv/beauty-css">${t.source} ↗</a></p>
-    <p class="version">${t.features}</p>
+    <p class="beauty-note">v${pkg.version} · ${new Intl.NumberFormat(lang, { maximumFractionDigits: 1 }).format(manifest.files["beauty.min.css"].gzip / 1024)} ${t("КиБ", "KiB")} gzip · MIT</p>
+    <h1 id="product-title">${t("Красивые сайты.\nОбычный HTML.", "Beautiful websites.\nOrdinary HTML.")}</h1>
+    <p class="beauty-lead">${t("Типографика, формы и детали, которые делают страницу удобной. Подключите один CSS-файл — и пишите.", "Typography, forms and details that make a page feel right. Add one stylesheet, then start writing.")}</p>
+    <p class="actions"><a class="beauty-button" href="${prefix}dist/beauty.min.css" download>${t("Скачать CSS", "Download CSS")}</a><a href="https://github.com/zavarovkv/beauty-css"><span class="beauty-link-label">GitHub</span><span class="beauty-link-icon" aria-hidden="true">↗</span></a><a href="https://www.npmjs.com/package/beauty-css">npm</a></p>
+    <p class="beauty-note">${t("Без зависимостей и встроенных шрифтов. Светлая и темная темы.", "No dependencies or bundled fonts. Light and dark themes.")}</p>
   </section>
-  <section class="specimen" id="examples" aria-labelledby="examples-title">
-    <h2 id="examples-title">${t.elements}</h2>
-    <p>${t.examplesIntro}</p>
-    <article class="sample-article" aria-labelledby="article-title">
-      <hgroup><h2 id="article-title">${t.articleTitle}</h2><p>${t.articleLead}</p></hgroup>
-      <p>${t.para}</p>
-      <p><em>${t.emphasis}</em>, <strong>${t.bold}</strong>, <mark>${t.mark}</mark>. ${t.inline} <code>line-height: 1.65</code>.</p>
-      <blockquote><p>${t.quote}</p><footer>${t.attribution}</footer></blockquote>
-      <h3>${t.listTitle}</h3>
-      <ul>${t.list.map((item) => `<li>${item}</li>`).join("")}</ul>
-      <h3 id="reading-list">${t.tableTitle}</h3>
-      <div class="beauty-scroll" tabindex="0" role="region" aria-labelledby="reading-list">
-        <table><caption>${t.caption}</caption><thead><tr><th scope="col">${t.book}</th><th scope="col">${t.author}</th><th scope="col">${t.read}</th></tr></thead><tbody>${t.books.map((book) => `<tr>${book.map((cell) => `<td>${cell}</td>`).join("")}</tr>`).join("")}</tbody></table>
-      </div>
-      <h3>${t.codeTitle}</h3><p>${t.codeIntro}</p>
-      ${code('<link rel="stylesheet" href="beauty.min.css">')}
-      <details><summary>${t.detailsTitle}</summary><p>${t.details}</p></details>
-      <h3 id="forms">${t.formTitle}</h3>
-      <form data-demo-form action="#forms">
-        <label for="email">${t.email}</label>
-        <div class="form-row"><input id="email" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="email-hint" required><button type="submit">${t.submit}</button></div>
-        <p id="email-hint"><small>${t.emailHint}</small></p>
-        <p id="form-status" role="status" hidden></p>
-      </form>
-    </article>
-  </section>
-  <section class="guide" id="start" aria-labelledby="start-title">
-    <h2 id="start-title">${t.guide}</h2>
-    <h3>${t.full}</h3><p>${t.fullText}</p>
-    ${code('<!doctype html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>A place for words</title>\n  <link rel="stylesheet" href="beauty.min.css">\n</head>\n<body>\n  <main>\n    <h1>A place for words</h1>\n    <p>Your story starts here.</p>\n  </main>\n</body>\n</html>')}
-    <h3>${t.scoped}</h3><p>${t.scopedText}</p>
-    ${code('<link rel="stylesheet" href="beauty.prose.min.css">\n\n<article class="beauty">\n  <h1>A place for words</h1>\n  <p>Your existing site stays in charge.</p>\n</article>')}
-    <p><a href="${prefix}examples/prose.html">${t.fixture} →</a></p>
-    <h3>${t.customize}</h3><p>${t.customizeText}</p>
-    ${code(':root {\n  --beauty-font: "Inter", system-ui, sans-serif;\n  --beauty-width: 48rem;\n  --beauty-link: #7250a5;\n}\n\n/* Prose mode: set variables on the container. */\n.beauty { --beauty-font-size: 1.125rem; }')}
-    <h3>${t.themeTitle}</h3><p>${t.themeText}</p>
-    ${code('<html data-theme="dark">\n\n<!-- Or an isolated article: -->\n<article class="beauty" data-theme="light">...</article>')}
-    <h3>${t.tableHelpTitle}</h3><p>${t.tableHelp}</p>
-    ${code('<h2 id="results">Results</h2>\n<div class="beauty-scroll" role="region"\n     aria-labelledby="results" tabindex="0">\n  <table>...</table>\n</div>')}
-    <h3>${t.escapeTitle}</h3><p>${t.escapeText}</p>
-    ${code('<article class="beauty">\n  <p>Article content.</p>\n  <div class="not-beauty">Your independent component</div>\n</article>')}
-    <h3 id="variables">${t.tokenTitle}</h3>
-    <div class="beauty-scroll" tabindex="0" role="region" aria-labelledby="variables"><table><thead><tr><th scope="col">${t.token}</th><th scope="col">${t.purpose}</th></tr></thead><tbody>${tokens.map(([name, purpose]) => `<tr><td><code>--beauty-${name}</code></td><td>${purpose}</td></tr>`).join("")}</tbody></table></div>
-    <h3>${t.installTitle}</h3><p>${t.installText}</p>
-    ${code("npm install beauty-css")}
-    ${code('import "beauty-css";\n// Or only a content container:\nimport "beauty-css/prose";')}
-  </section>
+  <div class="documentation" id="examples">
+    <aside class="contents">
+      <details id="contents-disclosure"><summary>${t("На этой странице", "On this page")}</summary>
+      <nav aria-label="${t("Содержание примеров", "Example contents")}">
+        <ul><li><a href="#start">${t("Подключение", "Get started")}</a></li>${sections.map((section) => `<li><a href="#${section.id}">${section.title}</a></li>`).join("")}<li><a href="#integration">${t("Контейнер и навигация", "Scope and navigation")}</a></li><li><a href="#palette">${t("Палитра", "Palette")}</a></li><li><a href="#customize">${t("Настройка", "Customization")}</a></li></ul>
+        <p class="beauty-note">${count} ${t("живых примеров с HTML", "live HTML examples")}</p>
+      </nav></details>
+    </aside>
+    <div class="catalog">
+      <section id="start" class="catalog-section" aria-labelledby="start-title">
+        <h2 id="start-title">${t("Один файл — и готово", "One file. Ready to go.")}</h2>
+        <p>${t("Для новой страницы используйте версию без классов. Скачайте файл и добавьте эту строку в", "For a new page, use the classless version. Download the file and add this line to")} <code>&lt;head&gt;</code>:</p>
+        ${code('<link rel="stylesheet" href="beauty.min.css">')}
+        <p>${t("Для существующего сайта — только prose и контейнер", "For an existing website, use only prose and a container")} <code>.beauty</code>:</p>
+        ${code('<link rel="stylesheet" href="beauty.prose.min.css">\n\n<article class="beauty">\n  <h1>' + t("Ваш заголовок", "Your heading") + "</h1>\n  <p>" + t("Ваш текст.", "Your words.") + "</p>\n</article>")}
+        <p><a href="${prefix}dist/beauty.prose.min.css" download>${t("Скачать prose", "Download prose")}</a> · <a href="${prefix}examples/prose.html">${t("Посмотреть изоляцию стилей", "See scoped styles")}</a></p>
+        <details><summary>${t("Установка через npm", "Install with npm")}</summary>${code("npm install beauty-css")}${code('import "beauty-css";\n// ' + t("Или только контейнер:", "Or just a container:") + '\nimport "beauty-css/prose";')}</details>
+        <p class="beauty-note">${t("Примеры показывают версию", "These examples show version")} ${pkg.version}. ${t("Чтобы получить точно такие же стили, скачайте CSS с этой страницы. Версия в npm может отличаться.", "Download CSS from this page to get the exact same styles. The npm version may differ.")}</p>
+      </section>
+      ${sections.map(example).join("\n")}
+      <section id="integration" class="catalog-section" aria-labelledby="integration-title">
+        <h2 id="integration-title">${t("Внутри вашего сайта", "Inside your website")}</h2>
+        <p>${t("Prose оформляет только содержимое .beauty. Встроенный виджет можно исключить классом .not-beauty; обычное наследование шрифтов и цветов сохраняется.", "Prose styles only the contents of .beauty. Exclude an embedded widget with .not-beauty; ordinary font and color inheritance still applies.")}</p>
+        ${code('<article class="beauty" data-theme="light">\n  <p>' + t("Стилизованный текст.", "Styled text.") + '</p>\n  <div class="not-beauty">' + t("Независимый компонент", "Independent component") + "</div>\n</article>")}
+        <p><a href="${prefix}examples/prose.html">${t("Открыть живой пример prose", "Open the live prose example")}</a> · <a href="${prefix}examples/classless.html">${t("HTML без классов", "Classless HTML")}</a> · <a href="${prefix}examples/rtl.html">RTL</a></p>
+        <h3>${t("Навигация без лишней разметки", "Simple navigation")}</h3>
+        <p>${t("В версии без классов header, nav и footer получают базовую компоновку. beauty-nav-end прижимает последний элемент к краю. Верхнее меню этой страницы использует тот же класс.", "The classless entry gives header, nav and footer their basic layout. beauty-nav-end aligns a trailing item to the inline end. This page uses it in its own navigation.")}</p>
+        ${code("<header>\n  <nav>\n    <strong>" + t("Проект", "Project") + '</strong>\n    <a href="#about">' + t("О проекте", "About") + '</a>\n    <a class="beauty-nav-end" href="/login">' + t("Войти", "Log in") + "</a>\n  </nav>\n</header>")}
+      </section>
+      <section id="palette" class="catalog-section" aria-labelledby="palette-title">
+        <h2 id="palette-title">${t("Две палитры. Одна система.", "Two palettes. One system.")}</h2>
+        <p>${t("По умолчанию тема следует настройке устройства. Переключатель вверху позволяет примерить обе палитры.", "By default, the palette follows your device. Use the control at the top to try both schemes.")}</p>
+        <div class="beauty-scroll" role="region" aria-labelledby="palette-title" tabindex="0"><table class="palette-table"><thead><tr><th scope="col">${t("Назначение / переменная", "Purpose / variable")}</th><th scope="col">${t("Светлая", "Light")}</th><th scope="col">${t("Темная", "Dark")}</th></tr></thead><tbody>${[...colors].map(([name, values]) => `<tr><th scope="row">${colorLabels[name.slice(9)]}<br><code>${name}</code></th><td>${swatch(values[0])}</td><td>${swatch(values[1])}</td></tr>`).join("")}</tbody></table></div>
+        ${code('<html data-theme="dark">\n\n<!-- ' + t("Или на отдельном контейнере:", "Or on a prose container:") + ' -->\n<article class="beauty" data-theme="light">...</article>')}
+      </section>
+      <section id="customize" class="catalog-section" aria-labelledby="customize-title">
+        <h2 id="customize-title">${t("Подстройте под себя", "Make it yours")}</h2>
+        <p>${t("Меняйте публичные переменные. Ваши стили имеют приоритет над слоем beauty, поэтому для обычной настройки !important не нужен.", "Override public variables. Your normal styles take priority over the beauty layer, so ordinary customization needs no !important.")}</p>
+        ${code(":root {\n  --beauty-link: #7250a5;\n  --beauty-reading-width: 42.5rem;\n}\n\n/* " + t("Для prose переменные задаются на контейнере.", "For prose, set variables on the container.") + " */\n.beauty { --beauty-line-height: 1.7; }")}
+        <details><summary>${t("Все переменные и значения по умолчанию", "All variables and their defaults")} (${defaults.size})</summary><div class="beauty-scroll" role="region" aria-label="${t("Публичные переменные", "Public variables")}" tabindex="0"><table><thead><tr><th scope="col">${t("Переменная", "Variable")}</th><th scope="col">${t("Значение", "Default")}</th></tr></thead><tbody>${[...defaults].map(([name, value]) => `<tr><th scope="row"><code>${name}</code></th><td><code>${escape(value)}</code></td></tr>`).join("")}</tbody></table></div></details>
+        <p class="beauty-note">${t("Фокус, нативная проверка полей, RTL и стили печати уже предусмотрены. При печати возвращается светлая палитра, длинные строки кода переносятся. Подписи полей и понятные тексты ссылок остаются задачей автора страницы.", "Visible focus, native validation, RTL and print styles are built in. Printing restores a light palette and wraps long code. Field labels and meaningful link text remain the page author's responsibility.")}</p>
+        <p><a href="https://github.com/zavarovkv/beauty-css#readme">${t("Документация на GitHub", "Documentation on GitHub")}</a></p>
+      </section>
+    </div>
+  </div>
 </main>
-<footer class="site-footer"><p><a href="https://zavarov.com/">${t.footer}</a> · <a href="https://github.com/zavarovkv/beauty-css/blob/main/LICENSE">MIT</a></p><p>${t.built}</p></footer>`,
-    { prefix, path: lang === "ru" ? "ru/" : "" },
+<footer class="site-footer"><p><a href="https://zavarov.com/">${t("Константин Заваров", "Konstantin Zavarov")}</a> · <a href="${prefix}LICENSE">MIT</a></p><p>${t("Эта страница оформлена Beauty.css.", "This page is styled with Beauty.css.")}</p></footer>`,
+    { prefix, path: paths[lang] },
   );
 }
 
@@ -407,19 +264,23 @@ function fixtures() {
   return { "prose.html": prose, "classless.html": full, "rtl.html": rtl };
 }
 
+// Regenerate a complete output tree so switching the default language leaves no stale routes.
+await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-await mkdir(new URL("ru/", output), { recursive: true });
 await mkdir(new URL("examples/", output), { recursive: true });
 await cp(new URL("../dist/", import.meta.url), new URL("dist/", output), { recursive: true });
 await cp(new URL("../site/assets/", import.meta.url), new URL("assets/", output), {
   recursive: true,
 });
-await writeFile(new URL("index.html", output), home("en"));
-await writeFile(new URL("ru/index.html", output), home("ru"));
+await cp(new URL("../LICENSE", import.meta.url), new URL("LICENSE", output));
+for (const lang of languages) {
+  await mkdir(new URL(paths[lang], output), { recursive: true });
+  await writeFile(new URL(`${paths[lang]}index.html`, output), home(lang));
+}
 for (const [name, content] of Object.entries(fixtures()))
   await writeFile(new URL(`examples/${name}`, output), content);
 await writeFile(
   new URL("sitemap.xml", output),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${base.href}</loc></url><url><loc>${new URL("ru/", base).href}</loc></url></urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${languages.map((lang) => `<url><loc>${new URL(paths[lang], base).href}</loc></url>`).join("")}</urlset>\n`,
 );
 process.stdout.write(`Demo built in ${fileURLToPath(output)}\n`);

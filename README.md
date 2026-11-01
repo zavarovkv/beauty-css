@@ -12,6 +12,8 @@ JavaScript, external requests, or bundled fonts.
 
 Created by **[Konstantin Zavarov](https://zavarov.com/)**.
 
+**[Live examples and documentation](https://zavarov.com/beauty/en/)** · [По-русски](https://zavarov.com/beauty/)
+
 ## Why Beauty
 
 - **Made for reading.** A comfortable type scale, useful spacing and clear content hierarchy.
@@ -429,14 +431,14 @@ Open `http://127.0.0.1:4173/`. Russian documentation is at `/ru/`. The English a
 classless/prose specimens and right-to-left fixture are generated from `scripts/build-site.mjs`.
 After editing a source file, rebuild it with `npm run build` and `npm run build:site`, then reload.
 
-| Directory      | Responsibility                                                   |
-| -------------- | ---------------------------------------------------------------- |
-| `src/`         | Canonical plain CSS: tokens, content, forms, page layout         |
-| `dist/`        | Generated distributables and checksums, committed for direct use |
-| `scripts/`     | Deterministic build, static demo generation and local preview    |
-| `site/assets/` | Demo-only layout and optional theme control                      |
-| `tests/`       | Distribution, contrast, markup and browser behavior checks       |
-| `docs/`        | Architecture and release process                                 |
+| Directory  | Responsibility                                                   |
+| ---------- | ---------------------------------------------------------------- |
+| `src/`     | Canonical plain CSS: tokens, content, forms, page layout         |
+| `dist/`    | Generated distributables and checksums, committed for direct use |
+| `scripts/` | Deterministic build, static demo generation and local preview    |
+| `site/`    | Localized live specimens, demo layout and optional UI controls   |
+| `tests/`   | Distribution, contrast, markup and browser behavior checks       |
+| `docs/`    | Architecture and release process                                 |
 
 `npm run build` generates readable/minified classless and prose files. Parsed selectors are scoped
 with PostCSS; Lightning CSS validates and minifies the results. Each minified entry stays below 4 KiB gzip.
@@ -449,12 +451,25 @@ test, demo and browser dependencies are development-only. There are no install-t
 
 ```sh
 npm run build
-SITE_BASE_URL=https://example.com/beauty/ npm run build:site
+SITE_BASE_URL=https://zavarov.com/beauty/ SITE_DEFAULT_LANGUAGE=ru npm run build:site
 ```
 
 Serve `_site/` at that URL. All local assets and navigation links are relative, so a subdirectory
 works without rewriting files. Canonicals, alternate languages and the demo sitemap use
-`SITE_BASE_URL`. Keep this independent demo outside your blog theme's templates and styles.
+`SITE_BASE_URL`. `SITE_DEFAULT_LANGUAGE` accepts `en` (default) or `ru`; the other language lives
+under its language code. The published catalog uses Russian at `/beauty/` and English at `/beauty/en/`.
+Keep this independent demo outside your blog theme's templates and styles.
+
+The catalog includes 17 live specimens with expandable, copyable HTML, every public helper,
+light/dark palette swatches and the complete variable reference. `site/catalog.mjs` owns the bilingual
+specimens; each preview and its source share the same markup. Colors and token defaults come directly
+from `src/tokens.css`. On wide screens contents stay beside the examples; on mobile they collapse into
+a native disclosure. The optional script adds theme choice, copying and a local form demonstration.
+
+The generator uses Node built-ins and the committed `dist/` files, so publishing a reviewed snapshot
+needs no npm dependencies in the host site. The blog vendors an explicit upstream commit with file
+checksums; its normal builds never download or rebuild this catalog. Downloaded CSS matches the
+shown development version, which may be ahead of npm. The demo does not publish an npm release.
 
 See [architecture](https://github.com/zavarovkv/beauty-css/blob/main/docs/architecture.md),
 [contributing](https://github.com/zavarovkv/beauty-css/blob/main/CONTRIBUTING.md) and
