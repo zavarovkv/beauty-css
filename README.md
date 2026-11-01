@@ -342,8 +342,8 @@ nest `<small>` inside the helper, which would shrink the text twice.
 
 Use `.beauty-stat-value` for a prominent number and `.beauty-stat-label` for its label.
 Both work in classless and prose entries, using the host's heading font and palette.
-Values use tabular numerals and scale from 2rem to 3.5rem; override
-`--beauty-stat-size` (default: `clamp(2rem, 5vw, 3.5rem)`) to suit the available space.
+Values use tabular numerals and scale from 2.25rem to 3.5rem; override
+`--beauty-stat-size` (default: `clamp(2.25rem, 5vw, 3.5rem)`) to suit the available space.
 `--beauty-stat-color` controls their color (default: `var(--beauty-link)`).
 The host owns the grid, spacing and number formatting. Keep values as text with
 native semantics; do not turn them into headings just to make them larger.

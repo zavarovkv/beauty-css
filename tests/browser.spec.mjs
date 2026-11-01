@@ -412,7 +412,7 @@ test("numeric highlights share responsive type and configurable sizing in both e
     await expect(value).toHaveCSS("color", "rgb(0, 96, 160)");
     for (const [width, size] of [
       [1280, "56px"],
-      [375, "32px"],
+      [375, "36px"],
     ]) {
       await page.setViewportSize({ width, height: 900 });
       await expect(value).toHaveCSS("font-size", size);

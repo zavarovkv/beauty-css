@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Raise the minimum numeric-highlight size from 2rem to 2.25rem for clearer mobile counters, keeping the desktop maximum unchanged.
+
 - Add `beauty-note` for secondary instructions with quiet, readable text and ordinary link weight.
 
 - Add `beauty-heading-compact` for short card and step headings with a tighter multiline rhythm.
