@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Raise the minimum numeric-highlight size from 2rem to 2.25rem for clearer mobile counters, keeping the desktop maximum unchanged.
+- Add `beauty-steps`, a reusable connected ordered list with numbered circles, shared text rhythm, logical positioning and configurable spacing in both CSS entries.
+
+- Make mobile numeric highlights more prominent with a 2.5rem minimum and a steeper responsive scale, keeping the desktop maximum unchanged.
 
 - Add `beauty-note` for secondary instructions with quiet, readable text and ordinary link weight.
 

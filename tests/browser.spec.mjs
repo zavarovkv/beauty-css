@@ -412,7 +412,8 @@ test("numeric highlights share responsive type and configurable sizing in both e
     await expect(value).toHaveCSS("color", "rgb(0, 96, 160)");
     for (const [width, size] of [
       [1280, "56px"],
-      [375, "36px"],
+      [375, "45px"],
+      [320, "40px"],
     ]) {
       await page.setViewportSize({ width, height: 900 });
       await expect(value).toHaveCSS("font-size", size);
@@ -422,5 +423,64 @@ test("numeric highlights share responsive type and configurable sizing in both e
     }
     await page.addStyleTag({ content: ".beauty-stat-value { --beauty-stat-size: 40px; }" });
     await expect(value).toHaveCSS("font-size", "40px");
+  }
+});
+
+test("connected steps stay scoped, fit small screens and follow text direction", async ({
+  page,
+}) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.setViewportSize({ width: 320, height: 900 });
+    await page.goto(`/examples/${entry}.html`);
+    await page.locator(entry === "prose" ? "#prose" : "main").evaluate((container) => {
+      container.insertAdjacentHTML(
+        "beforeend",
+        `<ol class="beauty-steps" id="steps" role="list">
+        <li><small class="beauty-step-marker" aria-hidden="true">1</small><div><h3>Make a clear plan</h3><p>Choose a useful goal and agree on the next steps.</p></div></li>
+        <li><small class="beauty-step-marker" aria-hidden="true">2</small><div><h3>Share the result</h3><p>Explain what changed.</p></div></li>
+      </ol>`,
+      );
+    });
+    const list = page.locator("#steps");
+    await expect(list).toHaveCSS("display", "grid");
+    await expect(list.locator("small").first()).toHaveCSS("width", "24px");
+    await expect(list.locator("li").last()).toHaveCSS("margin-top", "0px");
+    expect(await list.evaluate((node) => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
+    for (const dir of ["ltr", "rtl"]) {
+      await list.evaluate((node, value) => node.setAttribute("dir", value), dir);
+      const geometry = await list
+        .locator("li")
+        .first()
+        .evaluate((node) => {
+          const marker = node.querySelector("small").getBoundingClientRect();
+          const text = node.querySelector("div").getBoundingClientRect();
+          const rule = getComputedStyle(node, "::after");
+          return {
+            marker: marker.x,
+            text: text.x,
+            line: rule.borderInlineStartWidth,
+            content: rule.content,
+          };
+        });
+      expect(
+        dir === "ltr" ? geometry.marker < geometry.text : geometry.marker > geometry.text,
+      ).toBe(true);
+      expect(geometry.line).toBe("1px");
+      expect(geometry.content).toBe('""');
+    }
+    expect(
+      await list
+        .locator("li")
+        .last()
+        .evaluate((node) => getComputedStyle(node, "::after").content),
+    ).toBe("none");
+    if (entry === "prose") {
+      await list.evaluate((node) => {
+        const clone = node.cloneNode(true);
+        clone.id = "outside-steps";
+        document.body.append(clone);
+      });
+      await expect(page.locator("#outside-steps")).not.toHaveCSS("display", "grid");
+    }
   }
 });

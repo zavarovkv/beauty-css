@@ -16,7 +16,7 @@ Created by **[Konstantin Zavarov](https://zavarov.com/)**.
 
 - **Made for reading.** A comfortable type scale, useful spacing and clear content hierarchy.
 - **Two ways to use it.** Style a whole page or a single `.beauty` content container.
-- **Small by design.** About 3 KiB gzip per minified entry, with no runtime dependencies.
+- **Small by design.** About 4 KiB gzip per minified entry, with no runtime dependencies.
 - **Your HTML, your fonts.** Semantic elements, native controls and the font family you choose.
 - **Easy to customize.** Named CSS variables and a low-priority cascade layer.
 - **Light, dark and print.** System-aware colors, an explicit theme choice and practical print styles.
@@ -342,8 +342,8 @@ nest `<small>` inside the helper, which would shrink the text twice.
 
 Use `.beauty-stat-value` for a prominent number and `.beauty-stat-label` for its label.
 Both work in classless and prose entries, using the host's heading font and palette.
-Values use tabular numerals and scale from 2.25rem to 3.5rem; override
-`--beauty-stat-size` (default: `clamp(2.25rem, 5vw, 3.5rem)`) to suit the available space.
+Values use tabular numerals and scale from 2.5rem to 3.5rem; override
+`--beauty-stat-size` (default: `clamp(2.5rem, 12vw, 3.5rem)`) to suit the available space.
 `--beauty-stat-color` controls their color (default: `var(--beauty-link)`).
 The host owns the grid, spacing and number formatting. Keep values as text with
 native semantics; do not turn them into headings just to make them larger.
@@ -371,6 +371,41 @@ sequence, mark a duplicate decorative number with `aria-hidden="true"`.
 ```html
 <small class="beauty-step-marker" aria-hidden="true">1</small>
 ```
+
+### Connected steps
+
+Use `beauty-steps` on an ordered list for a sequence with numbered circles and a
+connecting line. It includes the marker geometry, heading rhythm and text spacing
+in both classless and prose entries. No JavaScript is needed.
+
+```html
+<ol class="beauty-steps" role="list">
+  <li>
+    <small class="beauty-step-marker" aria-hidden="true">1</small>
+    <div>
+      <h3>Make a plan</h3>
+      <p>Agree on the goal and choose the next steps.</p>
+    </div>
+  </li>
+  <li>
+    <small class="beauty-step-marker" aria-hidden="true">2</small>
+    <div>
+      <h3>Do the work</h3>
+      <p>Complete the plan and share the result.</p>
+    </div>
+  </li>
+</ol>
+```
+
+Keep `role="list"` so the sequence remains a list in assistive technologies when
+native markers are hidden. Decorative numbers are excluded from accessible text.
+The line follows the text direction and ends before the last item.
+
+| Token                | Default   | Controls                          |
+| -------------------- | --------- | --------------------------------- |
+| `--beauty-steps-gap` | `1.5rem`  | Space between steps               |
+| `--beauty-step-size` | `1.5rem`  | Number circle and marker column   |
+| `--beauty-step-gap`  | `0.75rem` | Space between the marker and text |
 
 ## Browser support
 

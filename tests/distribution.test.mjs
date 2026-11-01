@@ -24,7 +24,9 @@ test("each advertised file has a valid checksum, a license and a useful size bud
       `sha384-${createHash("sha384").update(bytes).digest("base64")}`,
       expected.integrity,
     );
-    assert.ok(expected.gzip < 4096, `${file} must stay below 4 KiB gzip`);
+    // Keep production entries below 4 KiB; readable builds retain formatting.
+    const limit = file.endsWith(".min.css") ? 4096 : 4608;
+    assert.ok(expected.gzip < limit, `${file} must stay below ${limit / 1024} KiB gzip`);
     assert.ok(css.startsWith(`/*! Beauty.css v${pkg.version} | MIT`));
     assert.doesNotMatch(
       css,

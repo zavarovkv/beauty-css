@@ -432,6 +432,49 @@
   line-height: 1;
 }
 
+/* Connected ordered steps. */
+:where(.beauty-steps) {
+  display: grid;
+  gap: var(--beauty-steps-gap);
+  max-inline-size: 40rem;
+  padding: 0;
+  list-style: none;
+}
+
+:where(.beauty-steps > li) {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--beauty-step-size) minmax(0, 1fr);
+  gap: var(--beauty-step-gap);
+  min-inline-size: 0;
+  margin: 0;
+}
+
+:where(.beauty-steps > li:not(:last-child))::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(var(--beauty-step-size) / 2 - 0.5px);
+  inset-block: var(--beauty-step-size) calc(0px - var(--beauty-steps-gap));
+  border-inline-start: 1px solid var(--beauty-border);
+  pointer-events: none;
+}
+
+:where(.beauty-steps > li > .beauty-step-marker) {
+  display: grid;
+  place-items: center;
+  inline-size: var(--beauty-step-size);
+  block-size: var(--beauty-step-size);
+}
+
+:where(.beauty-steps > li > div > :is(h2, h3, h4, h5, h6)) {
+  margin-block: 0 0.25rem;
+  line-height: 1.3;
+}
+
+:where(.beauty-steps > li > div > p) {
+  margin: 0;
+}
+
 :where(.beauty-note) {
   --beauty-link-weight: var(--beauty-font-weight);
   color: var(--beauty-muted);
