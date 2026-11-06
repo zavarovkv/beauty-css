@@ -37,15 +37,19 @@
   font-weight: var(--beauty-heading-weight);
   line-height: inherit;
   scroll-margin-block-start: 0.75rem;
-  text-wrap: var(--beauty-heading-wrap);
 }
 
 :where(h1) {
+  text-wrap: var(--beauty-heading-wrap);
   font: var(--beauty-h1-font);
   font-size: var(--beauty-h1-size);
   margin-block: var(--beauty-h1-margin);
   letter-spacing: var(--beauty-h1-tracking);
   transform: var(--beauty-h1-transform);
+}
+
+:where(h2, h3, h4, h5, h6) {
+  text-wrap: var(--beauty-section-heading-wrap);
 }
 
 :where(h2) {

@@ -97,6 +97,46 @@ test("typography tokens configure responsive headings and quotations without sel
   await expect(page.locator("#content-link")).toHaveCSS("font-weight", "500");
 });
 
+test("page titles balance while section headings wrap naturally in both entries", async ({
+  page,
+}) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.goto(`/examples/${entry}.html`);
+    const root = entry === "prose" ? ".beauty" : "body";
+    await page.locator(root).evaluate((node) => {
+      node.insertAdjacentHTML(
+        "beforeend",
+        `<section id="heading-wrap-fixture">
+          <h1>A page title spanning multiple lines</h1>
+          <h2>A section heading spanning multiple lines</h2>
+          <h3>Subsection heading</h3>
+          <h4>Fourth-level heading</h4>
+          <h5>Fifth-level heading</h5>
+          <h6>Sixth-level heading</h6>
+        </section>`,
+      );
+    });
+
+    for (const width of [375, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await expect(page.locator("#heading-wrap-fixture h1")).toHaveCSS("text-wrap", "balance");
+      for (const level of [2, 3, 4, 5, 6]) {
+        await expect(page.locator(`#heading-wrap-fixture h${level}`)).toHaveCSS(
+          "text-wrap",
+          "wrap",
+        );
+      }
+    }
+
+    await page.locator(root).evaluate((node) => {
+      node.style.setProperty("--beauty-heading-wrap", "wrap");
+      node.style.setProperty("--beauty-section-heading-wrap", "balance");
+    });
+    await expect(page.locator("#heading-wrap-fixture h1")).toHaveCSS("text-wrap", "wrap");
+    await expect(page.locator("#heading-wrap-fixture h2")).toHaveCSS("text-wrap", "balance");
+  }
+});
+
 test("the heading weight token also configures semantic emphasis in both entries", async ({
   page,
 }) => {

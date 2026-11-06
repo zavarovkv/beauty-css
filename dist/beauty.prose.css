@@ -11,6 +11,7 @@
     --beauty-reading-width: 42.5rem;
     --beauty-reading-line-height: 1.6;
     --beauty-heading-wrap: balance;
+    --beauty-section-heading-wrap: wrap;
     --beauty-text-wrap: pretty;
     --beauty-h3-margin: 1em;
     --beauty-width: 45rem;
@@ -155,16 +156,20 @@
     color: var(--beauty-heading);
     font-weight: var(--beauty-heading-weight);
     line-height: inherit;
-    text-wrap: var(--beauty-heading-wrap);
     scroll-margin-block-start: .75rem;
   }
 
   :where(.beauty) :where(h1):where(:not(.not-beauty, .not-beauty *)) {
+    text-wrap: var(--beauty-heading-wrap);
     font: var(--beauty-h1-font);
     font-size: var(--beauty-h1-size);
     margin-block: var(--beauty-h1-margin);
     letter-spacing: var(--beauty-h1-tracking);
     transform: var(--beauty-h1-transform);
+  }
+
+  :where(.beauty) :where(h2, h3, h4, h5, h6):where(:not(.not-beauty, .not-beauty *)) {
+    text-wrap: var(--beauty-section-heading-wrap);
   }
 
   :where(.beauty) :where(h2):where(:not(.not-beauty, .not-beauty *)) {
