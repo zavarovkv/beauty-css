@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Keep balanced wrapping for page titles while letting `h2`–`h6` wrap naturally across
+  screen sizes. Expose a separate section-heading wrapping token for both CSS entries.
+
 - Bring table column headings closer to a thin rule in their text color, shared by
   classless and prose tables. Expose cell padding and heading-to-rule spacing tokens.
 
