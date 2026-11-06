@@ -280,6 +280,17 @@ Block quotation surfaces and spacing can be configured without overriding elemen
 `var(--beauty-block-start) var(--beauty-space)`. The existing `--beauty-quote-padding` token controls
 start padding. A host can use these tokens to give ordinary quotations and callouts the same frame.
 
+### Tables
+
+Column headings in `<thead>` sit close to a thin, 1px rule that follows the heading
+text color in both schemes. Body-row separators remain muted. All semantic tables
+share this treatment in classless and prose mode; no extra class is required.
+
+| Variable                      | Default         | Purpose                                  |
+| ----------------------------- | --------------- | ---------------------------------------- |
+| `--beauty-table-cell-padding` | `0.65em 0.75em` | Spacing within header and body cells     |
+| `--beauty-table-header-gap`   | `0.1em`         | Gap from column heading text to its rule |
+
 ## Color schemes
 
 Without an explicit choice, CSS follows `prefers-color-scheme`. Override it on the styled root:

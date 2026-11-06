@@ -282,7 +282,7 @@
 }
 
 :where(th, td) {
-  padding: 0.65em 0.75em;
+  padding: var(--beauty-table-cell-padding);
   border-block-end: 1px solid var(--beauty-border);
   text-align: start;
   vertical-align: top;
@@ -291,6 +291,11 @@
 :where(th) {
   color: var(--beauty-heading);
   font-weight: 600;
+}
+
+:where(thead th) {
+  padding-block-end: var(--beauty-table-header-gap);
+  border-block-end-color: currentColor;
 }
 
 :where(.beauty-scroll) {
