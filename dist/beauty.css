@@ -45,6 +45,8 @@
     --beauty-block-start: 0;
     --beauty-list-indent: 1.5em;
     --beauty-list-gap: .35em;
+    --beauty-table-cell-padding: .65em .75em;
+    --beauty-table-header-gap: .1em;
     --beauty-link-weight: var(--beauty-font-weight);
     --beauty-link-decoration: underline;
     --beauty-link-thickness: .06em;
@@ -399,15 +401,20 @@
   }
 
   :where(th, td):where(:not(.not-beauty, .not-beauty *)) {
+    padding: var(--beauty-table-cell-padding);
     border-block-end: 1px solid var(--beauty-border);
     text-align: start;
     vertical-align: top;
-    padding: .65em .75em;
   }
 
   :where(th):where(:not(.not-beauty, .not-beauty *)) {
     color: var(--beauty-heading);
     font-weight: 600;
+  }
+
+  :where(thead th):where(:not(.not-beauty, .not-beauty *)) {
+    border-block-end-color: currentColor;
+    padding-block-end: var(--beauty-table-header-gap);
   }
 
   :where(.beauty-scroll):where(:not(.not-beauty, .not-beauty *)) {

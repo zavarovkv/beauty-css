@@ -335,6 +335,41 @@ test("native controls, inline quotations, focus and hidden content keep their me
   await expect(page.getByText("Native disclosure needs no script.")).toBeVisible();
 });
 
+test("table headers share a tight text-colored rule across entries and color schemes", async ({
+  page,
+}) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.goto(`/examples/${entry}.html`);
+    for (const scheme of ["light", "dark"]) {
+      await page.locator(entry === "prose" ? "#prose" : "html").evaluate((element, theme) => {
+        element.dataset.theme = theme;
+      }, scheme);
+
+      const metrics = await page.locator("#wide-table").evaluate((table) => {
+        const heading = getComputedStyle(table.querySelector("thead th"));
+        const data = getComputedStyle(table.querySelector("tbody td"));
+        return {
+          color: heading.color,
+          borderColor: heading.borderBottomColor,
+          borderWidth: heading.borderBottomWidth,
+          paddingEnd: parseFloat(heading.paddingBottom),
+          dataBorderColor: data.borderBottomColor,
+        };
+      });
+      expect(metrics.borderWidth).toBe("1px");
+      expect(metrics.borderColor).toBe(metrics.color);
+      expect(metrics.paddingEnd).toBeLessThan(3);
+      expect(metrics.dataBorderColor).not.toBe(metrics.color);
+    }
+
+    await page.locator("#wide-table").evaluate((table) => {
+      table.style.setProperty("--beauty-table-cell-padding", "0.65em 0");
+    });
+    await expect(page.locator("#wide-table thead th").first()).toHaveCSS("padding-left", "0px");
+    await expect(page.locator("#wide-table tbody td").first()).toHaveCSS("padding-left", "0px");
+  }
+});
+
 test("right-to-left prose puts the quotation rule on the reading edge", async ({ page }) => {
   await page.goto("/examples/rtl.html");
   await expect(page.locator("blockquote")).toHaveCSS("border-right-width", "2px");

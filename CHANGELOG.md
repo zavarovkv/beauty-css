@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Bring table column headings closer to a thin rule in their text color, shared by
+  classless and prose tables. Expose cell padding and heading-to-rule spacing tokens.
+
 - Preserve example email addresses and copyable HTML when the demo is served through Cloudflare's
   email obfuscation, without changing the host site's settings.
 
