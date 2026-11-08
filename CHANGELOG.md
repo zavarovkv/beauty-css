@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Use a 0.5 CSS px table-header rule on high-density screens (2dppx and above), preserving 1px on standard screens and in print.
+
 - Remove the extra gap below table column headings in both entries, retaining the shared 1px rule.
 
 - Give the documentation site an editorial graphite paragraph mark, with light/dark wordmarks

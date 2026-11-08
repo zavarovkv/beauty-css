@@ -302,6 +302,24 @@
   border-block-end-color: currentColor;
 }
 
+@media screen and (min-resolution: 2dppx) {
+  :where(thead th) {
+    position: relative;
+    border-block-end-width: 0;
+  }
+
+  :where(thead th)::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 0.5px;
+    background: currentColor;
+    forced-color-adjust: none;
+    pointer-events: none;
+  }
+}
+
 :where(.beauty-scroll) {
   max-inline-size: 100%;
   margin-block-end: var(--beauty-space);

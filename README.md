@@ -287,7 +287,8 @@ start padding. A host can use these tokens to give ordinary quotations and callo
 ### Tables
 
 Column headings in `<thead>` sit close to a thin, 1px rule that follows the heading
-text color in both schemes. Body-row separators remain muted. All semantic tables
+text color in both schemes. On screens with a pixel ratio of 2 or higher, this rule
+uses 0.5 CSS px; printing retains 1px. Body-row separators remain muted. All semantic tables
 share this treatment in classless and prose mode; no extra class is required.
 
 | Variable                      | Default         | Purpose                                  |

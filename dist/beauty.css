@@ -422,6 +422,24 @@
     padding-block-end: var(--beauty-table-header-gap);
   }
 
+  @media screen and (resolution >= 2x) {
+    :where(thead th):where(:not(.not-beauty, .not-beauty *)) {
+      border-block-end-width: 0;
+      position: relative;
+    }
+
+    :where(thead th):where(:not(.not-beauty, .not-beauty *)):after {
+      content: "";
+      forced-color-adjust: none;
+      pointer-events: none;
+      background: currentColor;
+      block-size: .5px;
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline: 0;
+    }
+  }
+
   :where(.beauty-scroll):where(:not(.not-beauty, .not-beauty *)) {
     max-inline-size: 100%;
     margin-block-end: var(--beauty-space);

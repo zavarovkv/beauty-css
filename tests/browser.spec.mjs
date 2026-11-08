@@ -396,7 +396,9 @@ test("table headers share a tight text-colored rule across entries and color sch
           dataBorderColor: data.borderBottomColor,
         };
       });
-      expect(metrics.borderWidth).toBe("1px");
+      expect(metrics.borderWidth).toBe(
+        (await page.evaluate(() => matchMedia("(min-resolution: 2dppx)").matches)) ? "0px" : "1px",
+      );
       expect(metrics.borderColor).toBe(metrics.color);
       expect(metrics.paddingEnd).toBe(0);
       expect(metrics.dataBorderColor).not.toBe(metrics.color);
@@ -648,4 +650,36 @@ test("catalog examples reveal copyable source and forms never submit", async ({ 
   await expect(page.locator("#contents-disclosure")).not.toHaveAttribute("open", "");
   await page.locator("#contents-disclosure > summary").click();
   await expect(page.locator('.contents a[href="#palette"]')).toBeVisible();
+});
+
+test("high-density table header rules stay thin in both entries and restore print width", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  const context = await browser.newContext({
+    baseURL,
+    deviceScaleFactor: 2,
+    viewport: { width: 390, height: 844 },
+  });
+  try {
+    const page = await context.newPage();
+    for (const entry of ["classless", "prose"]) {
+      await page.goto(`/examples/${entry}.html`);
+      const heading = page.locator("#wide-table thead th").first();
+      await page.emulateMedia({ media: "screen" });
+      expect(await page.evaluate(() => matchMedia("(min-resolution: 2dppx)").matches)).toBe(true);
+      await expect(heading).toHaveCSS("border-bottom-width", "0px");
+      expect(
+        await heading.evaluate((element) => getComputedStyle(element, "::after").blockSize),
+      ).toBe("0.5px");
+      await heading.screenshot({ path: testInfo.outputPath(`${entry}-retina-header.png`) });
+      await page.emulateMedia({ media: "print" });
+      await expect(heading).toHaveCSS("border-bottom-width", "1px");
+      expect(
+        await heading.evaluate((element) => getComputedStyle(element, "::after").content),
+      ).toBe("none");
+    }
+  } finally {
+    await context.close();
+  }
 });
