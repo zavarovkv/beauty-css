@@ -47,7 +47,7 @@
     --beauty-list-indent: 1.5em;
     --beauty-list-gap: .35em;
     --beauty-table-cell-padding: .65em .75em;
-    --beauty-table-header-gap: .1em;
+    --beauty-table-header-gap: 0;
     --beauty-link-weight: var(--beauty-font-weight);
     --beauty-link-decoration: underline;
     --beauty-link-thickness: .06em;

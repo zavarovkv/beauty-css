@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove the extra gap below table column headings in both entries, retaining the shared 1px rule.
+
 - Give the documentation site an editorial graphite paragraph mark, with light/dark wordmarks
   and a theme-adaptive SVG favicon. The CSS library remains unchanged.
 

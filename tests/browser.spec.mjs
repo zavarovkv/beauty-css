@@ -398,7 +398,7 @@ test("table headers share a tight text-colored rule across entries and color sch
       });
       expect(metrics.borderWidth).toBe("1px");
       expect(metrics.borderColor).toBe(metrics.color);
-      expect(metrics.paddingEnd).toBeLessThan(3);
+      expect(metrics.paddingEnd).toBe(0);
       expect(metrics.dataBorderColor).not.toBe(metrics.color);
     }
 

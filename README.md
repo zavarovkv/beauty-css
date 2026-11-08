@@ -293,7 +293,7 @@ share this treatment in classless and prose mode; no extra class is required.
 | Variable                      | Default         | Purpose                                  |
 | ----------------------------- | --------------- | ---------------------------------------- |
 | `--beauty-table-cell-padding` | `0.65em 0.75em` | Spacing within header and body cells     |
-| `--beauty-table-header-gap`   | `0.1em`         | Gap from column heading text to its rule |
+| `--beauty-table-header-gap`   | `0`             | Gap from column heading text to its rule |
 
 ## Color schemes
 
