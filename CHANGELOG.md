@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Give the documentation site an editorial graphite paragraph mark, with light/dark wordmarks
+  and a theme-adaptive SVG favicon. The CSS library remains unchanged.
+
 - Keep balanced wrapping for page titles while letting `h2`–`h6` wrap naturally across
   screen sizes. Expose a separate section-heading wrapping token for both CSS entries.
 

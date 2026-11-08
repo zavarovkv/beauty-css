@@ -86,7 +86,7 @@ function document(
   <meta name="color-scheme" content="light dark">
   <title>${escape(pageTitle)}</title>
   <meta name="description" content="${escape(description)}">
-  <link rel="icon" href="data:,">
+  <link rel="icon" href="${prefix}assets/beauty-favicon.svg" type="image/svg+xml">
   ${
     noindex
       ? '<meta name="robots" content="noindex, follow">'
@@ -151,7 +151,7 @@ function home(lang) {
 <a class="skip-link" href="#main">${t("К содержимому", "Skip to content")}</a>
 <header class="site-header">
   <nav class="site-nav" aria-label="${t("Основная навигация", "Main navigation")}">
-    <a class="wordmark" href="./"><strong>Beauty.css</strong></a>
+    <a class="wordmark" href="./"><span class="wordmark-mark" aria-hidden="true"><img class="wordmark-mark-light" src="${prefix}assets/beauty-mark-light.svg" alt="" width="20" height="20"><img class="wordmark-mark-dark" src="${prefix}assets/beauty-mark-dark.svg" alt="" width="20" height="20"></span><strong>Beauty.css</strong></a>
     <a href="#examples">${t("Примеры", "Examples")}</a>
     <a href="#start">${t("Подключение", "Get started")}</a>
     <div class="site-tools beauty-nav-end">

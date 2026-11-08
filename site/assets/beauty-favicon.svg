@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Beauty.css">
+  <title>Beauty.css</title>
+  <style>
+    g { stroke: #242424; }
+    @media (prefers-color-scheme: dark) { g { stroke: #e8e8e8; } }
+  </style>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 11H32C21 11 15 18 15 28s6 17 17 17h6" stroke-width="7"/>
+    <path d="M38 11v42" stroke-width="6.5"/>
+    <path d="M50 11v42" stroke-width="4.5"/>
+  </g>
+</svg>

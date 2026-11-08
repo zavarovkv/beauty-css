@@ -12,6 +12,38 @@ body {
   --beauty-link-decoration: none;
   --beauty-link: var(--beauty-heading);
   --beauty-hover: var(--beauty-heading);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+.wordmark-mark {
+  position: relative;
+  flex: none;
+  inline-size: 1.2em;
+  block-size: 1.2em;
+}
+.wordmark-mark img {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+.wordmark-mark-dark {
+  display: none;
+}
+:root[data-theme="dark"] .wordmark-mark-light {
+  display: none;
+}
+:root[data-theme="dark"] .wordmark-mark-dark {
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .wordmark-mark-light {
+    display: none;
+  }
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .wordmark-mark-dark {
+    display: block;
+  }
 }
 .site-tools {
   display: flex;

@@ -72,6 +72,10 @@ test("English and Russian demo pages advertise each other and keep fixture pages
     assert.match(html, /hreflang="en"/);
     assert.match(html, /hreflang="ru"/);
     assert.match(html, /rel="canonical"/);
+    assert.match(html, /class="wordmark-mark"/);
+    assert.match(html, /assets\/beauty-mark-light\.svg/);
+    assert.match(html, /assets\/beauty-mark-dark\.svg/);
+    assert.match(html, /assets\/beauty-favicon\.svg/);
     assert.doesNotMatch(html, /[\u0451\u0401]/);
   }
   for (const name of ["classless", "prose", "rtl"]) {
