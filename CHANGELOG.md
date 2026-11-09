@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Expose `--beauty-emphasis-offset` to adjust the wavy underline for a chosen font, retaining the default 0.25em in both entries.
+
 - Use `--beauty-heading-weight` for table column headings in both entries, so custom font families use their configured bold face.
 
 - Expose `--beauty-fine-print-size` for readable attribution sizing in both entries, retaining the default 0.75rem.

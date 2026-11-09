@@ -89,6 +89,7 @@
     --beauty-caption-gap: .5em;
     --beauty-button-font: 600 1em/1.4 var(--beauty-font);
     --beauty-emphasis-color: currentColor;
+    --beauty-emphasis-offset: .25em;
     color-scheme: light;
   }
 
@@ -645,7 +646,7 @@
   :where(.beauty) :where(.beauty-emphasis):where(:not(.not-beauty, .not-beauty *)) {
     text-decoration: underline wavy;
     text-decoration-color: var(--beauty-emphasis-color);
-    text-underline-offset: .25em;
+    text-underline-offset: var(--beauty-emphasis-offset);
     text-decoration-skip-ink: none;
     font-style: italic;
     text-decoration-thickness: .06em;

@@ -88,6 +88,7 @@
   --beauty-caption-gap: 0.5em;
   --beauty-button-font: 600 1em/1.4 var(--beauty-font);
   --beauty-emphasis-color: currentColor;
+  --beauty-emphasis-offset: 0.25em;
   color-scheme: light;
 }
 

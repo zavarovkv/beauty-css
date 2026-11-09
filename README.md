@@ -348,6 +348,7 @@ weight, margins and semantic level.
 A `<blockquote class="beauty-callout">` adds a quiet surface to a block quotation. Native `<q>`
 remains an inline quotation. These classes also work within a prose container.
 `--beauty-emphasis-color` controls the wavy decoration (default: `currentColor`).
+`--beauty-emphasis-offset` controls its distance from the text (default: `0.25em`).
 Use `.beauty-button` on a link only when the destination needs the visual prominence of a button;
 keep its native link semantics and a real `href`.
 
