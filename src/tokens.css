@@ -10,6 +10,8 @@
   --beauty-reading-width: 42.5rem;
   --beauty-reading-line-height: 1.6;
   --beauty-heading-wrap: balance;
+  --beauty-h1-hyphens: manual;
+  --beauty-h1-hyphen-limit: 10 4 4;
   --beauty-section-heading-wrap: wrap;
   --beauty-text-wrap: pretty;
   --beauty-h3-margin: 1em;

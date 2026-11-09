@@ -41,6 +41,9 @@
 
 :where(h1) {
   text-wrap: var(--beauty-heading-wrap);
+  -webkit-hyphens: var(--beauty-h1-hyphens);
+  hyphens: var(--beauty-h1-hyphens);
+  hyphenate-limit-chars: var(--beauty-h1-hyphen-limit);
   font: var(--beauty-h1-font);
   font-size: var(--beauty-h1-size);
   margin-block: var(--beauty-h1-margin);
@@ -178,7 +181,10 @@
 :where(sup:has(> .beauty-footnote-ref)) {
   font-size: var(--beauty-footnote-ref-size);
   font-style: italic;
-  vertical-align: super;
+  position: relative;
+  vertical-align: baseline;
+  inset-block-start: -0.5em;
+  line-height: 0;
 }
 
 :where(.beauty-footnote-ref, .beauty-footnote-backref) {
@@ -306,6 +312,13 @@
 
 :where(img) {
   vertical-align: middle;
+}
+
+:where(.beauty-link-icon > svg) {
+  display: inline-block;
+  inline-size: 1em;
+  block-size: 1em;
+  vertical-align: -0.125em;
 }
 
 :where(figcaption) {
@@ -560,6 +573,12 @@
   font-size: 0.875em;
   font-style: var(--beauty-caption-style);
   text-align: var(--beauty-caption-align);
+}
+
+:where(.beauty-caption.beauty-caption-credit) {
+  --beauty-caption-align: end;
+  --beauty-caption-style: italic;
+  color: var(--beauty-muted);
 }
 
 :where(p:has(> img:only-child):has(+ .beauty-caption), pre:has(> svg):has(+ .beauty-caption)) {

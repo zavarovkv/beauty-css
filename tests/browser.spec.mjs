@@ -265,6 +265,20 @@ test("reading text is responsive and compound links underline only their label",
   await expect(page.locator("#compound-label")).toHaveCSS("text-decoration-line", "underline");
   await expect(page.locator("#compound-label")).toHaveCSS("font-weight", "500");
   await expect(page.locator("#compound-icon")).toHaveCSS("font-weight", "300");
+  const beforeIcon = await page
+    .locator("#reading")
+    .evaluate((node) => node.getBoundingClientRect().height);
+  await page.locator("#compound-icon").evaluate((node) => {
+    node.innerHTML =
+      '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" aria-hidden="true" focusable="false"><path d="M2 8h12M9 3l5 5-5 5"/></svg>';
+  });
+  const iconBox = await page.locator("#compound-icon svg").boundingBox();
+  expect(iconBox.width).toBeCloseTo(16, 1);
+  expect(iconBox.height).toBeCloseTo(16, 1);
+  expect(
+    await page.locator("#reading").evaluate((node) => node.getBoundingClientRect().height),
+  ).toBeCloseTo(beforeIcon, 1);
+  await expect(page.getByRole("link", { name: "All articles", exact: true })).toBeVisible();
   await page.locator("#compound").hover();
   expect(
     await page.locator("#compound-icon").evaluate((node) => getComputedStyle(node).color),
@@ -292,6 +306,7 @@ test("captions stay close to their image and short semantic values do not split"
         "beforeend",
         '<p id="caption-image"><img src="../assets/specimen.svg" width="160" height="60" alt="Sample"></p>' +
           '<p class="beauty-caption" id="image-caption">A caption.</p>' +
+          '<p class="beauty-caption beauty-caption-credit" id="image-credit">Illustration by the author.</p>' +
           '<p><time id="unbroken-date" datetime="2026-10-28">28 October 2026</time></p>' +
           '<p><span class="beauty-nowrap" id="unbroken-value">300 students</span></p>',
       ),
@@ -305,6 +320,10 @@ test("captions stay close to their image and short semantic values do not split"
   expect(margins.find((node) => node.id === "caption-image").bottom).toBeLessThan(
     margins.find((node) => node.id === "long-text").bottom,
   );
+  await expect(page.locator("#image-caption")).toHaveCSS("font-style", "normal");
+  await expect(page.locator("#image-caption")).toHaveCSS("text-align", "start");
+  await expect(page.locator("#image-credit")).toHaveCSS("font-style", "italic");
+  await expect(page.locator("#image-credit")).toHaveCSS("text-align", "end");
   await expect(page.locator("#unbroken-date")).toHaveCSS("white-space", "nowrap");
   await expect(page.locator("#unbroken-value")).toHaveCSS("white-space", "nowrap");
 });
@@ -732,6 +751,20 @@ test("footnotes keep their numbers for every first block, focus, print and prose
       </ol></div>`,
       ),
     );
+    const leading = await page.locator(root).evaluate((node) => {
+      const fixture = document.createElement("div");
+      fixture.style.cssText = "font-size:20px;line-height:1.1";
+      fixture.innerHTML = '<p style="margin:0">First line.<br>Second line.<br>Third line.</p>';
+      node.append(fixture);
+      const paragraph = fixture.firstElementChild;
+      const plain = paragraph.getBoundingClientRect().height;
+      paragraph.innerHTML =
+        'First line<sup><a class="beauty-footnote-ref" href="#notes-1">1</a></sup>.<br>Second line<sup><a class="beauty-footnote-ref" href="#notes-1">2</a></sup>.<br>Third line.';
+      const withNotes = paragraph.getBoundingClientRect().height;
+      fixture.remove();
+      return { plain, withNotes };
+    });
+    expect(leading.withNotes).toBeCloseTo(leading.plain, 1);
     const ref = page.locator("#notes-ref");
     await expect(ref).toHaveCSS("text-decoration-line", "none");
     await ref.focus();

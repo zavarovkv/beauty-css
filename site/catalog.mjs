@@ -257,6 +257,13 @@ H<sub>2</sub>O · x<sup>2</sup> · <small>${t("небольшое уточнен
 <hr>`,
         },
         {
+          title: t("Автор или источник", "Author or source"),
+          html: `<figure>
+  <img src="${prefix}assets/specimen.svg" width="960" height="360" loading="lazy" alt="${t("Три строки разной длины", "Three lines of different lengths")}">
+  <figcaption class="beauty-caption beauty-caption-credit">${t("Иллюстрация автора", "Illustration by the author")}</figcaption>
+</figure>`,
+        },
+        {
           title: t("Дополнительные подробности", "A little more detail"),
           html: `<details>
   <summary>${t("Что работает без JavaScript?", "What works without JavaScript?")}</summary>

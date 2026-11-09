@@ -11,6 +11,8 @@
     --beauty-reading-width: 42.5rem;
     --beauty-reading-line-height: 1.6;
     --beauty-heading-wrap: balance;
+    --beauty-h1-hyphens: manual;
+    --beauty-h1-hyphen-limit: 10 4 4;
     --beauty-section-heading-wrap: wrap;
     --beauty-text-wrap: pretty;
     --beauty-h3-margin: 1em;
@@ -167,6 +169,9 @@
 
   :where(h1):where(:not(.not-beauty, .not-beauty *)) {
     text-wrap: var(--beauty-heading-wrap);
+    -webkit-hyphens: var(--beauty-h1-hyphens);
+    hyphens: var(--beauty-h1-hyphens);
+    hyphenate-limit-chars: var(--beauty-h1-hyphen-limit);
     font: var(--beauty-h1-font);
     font-size: var(--beauty-h1-size);
     margin-block: var(--beauty-h1-margin);
@@ -301,8 +306,11 @@
 
   :where(sup:has( > .beauty-footnote-ref)):where(:not(.not-beauty, .not-beauty *)) {
     font-size: var(--beauty-footnote-ref-size);
-    vertical-align: super;
+    vertical-align: baseline;
     font-style: italic;
+    line-height: 0;
+    position: relative;
+    inset-block-start: -.5em;
   }
 
   :where(.beauty-footnote-ref, .beauty-footnote-backref):where(:not(.not-beauty, .not-beauty *)) {
@@ -430,6 +438,13 @@
 
   :where(img):where(:not(.not-beauty, .not-beauty *)) {
     vertical-align: middle;
+  }
+
+  :where(.beauty-link-icon > svg):where(:not(.not-beauty, .not-beauty *)) {
+    vertical-align: -.125em;
+    block-size: 1em;
+    inline-size: 1em;
+    display: inline-block;
   }
 
   :where(figcaption):where(:not(.not-beauty, .not-beauty *)) {
@@ -679,6 +694,12 @@
     font-size: .875em;
     font-style: var(--beauty-caption-style);
     text-align: var(--beauty-caption-align);
+  }
+
+  :where(.beauty-caption.beauty-caption-credit):where(:not(.not-beauty, .not-beauty *)) {
+    --beauty-caption-align: end;
+    --beauty-caption-style: italic;
+    color: var(--beauty-muted);
   }
 
   :where(p:has( > img:only-child):has( + .beauty-caption), pre:has( > svg):has( + .beauty-caption)):where(:not(.not-beauty, .not-beauty *)) {

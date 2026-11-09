@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Keep footnote references out of paragraph line-box height while preserving native focus and links.
+- Add the `beauty-caption-credit` modifier for short attributions, keeping ordinary captions upright and start-aligned by default.
+- Size decorative inline SVGs in `beauty-link-icon` relative to text and align them to the baseline.
+
+- Add opt-in page-title hyphenation through `--beauty-h1-hyphens` and
+  `--beauty-h1-hyphen-limit`, shared by classless and prose entries. Keep the default
+  manual hyphenation and existing heading layout; consumers select the viewport range.
+
 - Keep both minified entries below a reviewed 4.5 KiB gzip budget after adding shared footnotes (about 4.2 KiB for the classless entry).
 
 - Let ordinary ordered-list markers inherit text weight. Set the default item gap to 0.875rem (14 px) and the responsive indentation to min(2.5rem, 8%) (up to 40 px).

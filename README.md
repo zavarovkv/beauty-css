@@ -268,6 +268,10 @@ ancestor, in prose mode.
 
 ### Lists and footnotes
 
+Footnote references are visually raised without contributing to the line box, so references
+do not change paragraph leading. This applies only to `sup` containing `beauty-footnote-ref`;
+ordinary superscripts, subscripts and math rendering retain their own styles.
+
 Ordinary ordered-list markers inherit their item's weight. `--beauty-list-gap` controls the space
 between items (0.875rem, or 14 px at the default root size). `--beauty-list-indent` uses
 `min(2.5rem, 8%)`: a 40 px inset in a wide reading column that contracts to 8% in a narrow column.
@@ -314,6 +318,18 @@ Hugo and other generators may adapt their native classes to these helpers in the
 
 ### Reading and editorial rhythm
 
+Page-title hyphenation is opt-in through `--beauty-h1-hyphens: auto` (default: `manual`).
+`--beauty-h1-hyphen-limit` defaults to `10 4 4`: request at least ten characters in a word
+and four on either side of a hyphen where supported. Set the document/container `lang`;
+break positions depend on browser dictionaries. Other headings and paragraphs are unaffected.
+Consumers choose the viewport range and may keep desktop and print titles unhyphenated.
+No soft hyphens are inserted into source or copied text.
+
+The existing `--beauty-h1-transform` and `--beauty-h2-transform` tokens can make a small
+optical adjustment for the host font, for example `translateX(-0.025em)` on an LTR page.
+Transforms do not change the available line width or surrounding flow. Defaults remain `none`;
+choose the direction and amount for the actual font and inspect multiline titles.
+
 Use `class="beauty-reading"` on an article or other reading container inside the classless page
 or a prose root. It keeps the base text size by default and sets a comfortable reading measure
 without changing navigation, controls or a surrounding application's layout. Page titles (`h1`)
@@ -338,6 +354,9 @@ no text rewriting or JavaScript is used.
 For a compound link, put its text in `<span class="beauty-link-label">` and its trailing arrow in
 `<span class="beauty-link-icon" aria-hidden="true">`. Only the label is underlined; the icon keeps
 the text color and the base text weight. Both use the same native decoration settings as ordinary links.
+The icon wrapper also accepts a decorative inline SVG: it is sized to `1em` with a `-0.125em`
+baseline adjustment. The host owns its path and stroke; use `currentColor`, `aria-hidden="true"`
+and `focusable="false"`. Unicode icons remain supported.
 
 | Variable                         | Default        | Purpose                              |
 | -------------------------------- | -------------- | ------------------------------------ |
@@ -407,6 +426,11 @@ The core adds no animations. Print rules restore a light page and allow code to 
 Ordinary paragraphs, headings and block quotations need no classes. For exceptional treatments,
 use `.beauty-lead` for a larger opening paragraph, `.beauty-fine-print` for attribution,
 `.beauty-caption` for a standalone caption, or `.beauty-emphasis` for a wavy underline.
+For a short author/source credit, combine `beauty-caption beauty-caption-credit`: it keeps
+the caption size and spacing but uses italic, muted text aligned to the inline end.
+Explanatory captions remain upright and start-aligned by default. Both treatments share
+`--beauty-caption-gap` so the caption stays closer to its image than the following paragraph.
+Choose one treatment for a caption rather than inferring its role from the text.
 Use `.beauty-heading-compact` on short card or step headings that need tighter
 wrapped lines. It sets a 1.3 line height while retaining the native heading size,
 weight, margins and semantic level.
