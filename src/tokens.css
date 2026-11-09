@@ -43,8 +43,12 @@
   --beauty-h2-transform: none;
   --beauty-content-line-height: var(--beauty-line-height);
   --beauty-block-start: 0;
-  --beauty-list-indent: 1.5em;
-  --beauty-list-gap: 0.35em;
+  --beauty-list-indent: min(2.5rem, 8%);
+  --beauty-list-gap: 0.875rem;
+  --beauty-footnote-size: 0.85em;
+  --beauty-footnote-ref-size: 0.7em;
+  --beauty-footnote-space: 1.5em;
+  --beauty-footnote-item-gap: 0.4em;
   --beauty-table-cell-padding: 0.65em 0.75em;
   --beauty-table-header-gap: 0;
   --beauty-link-weight: var(--beauty-font-weight);

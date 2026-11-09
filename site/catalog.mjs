@@ -109,6 +109,23 @@ H<sub>2</sub>O · x<sup>2</sup> · <small>${t("небольшое уточнен
       ],
     },
     {
+      id: "footnotes",
+      title: t("Примечания", "Footnotes"),
+      text: t(
+        "Надстрочные ссылки и компактные примечания с обратным переходом.",
+        "Superscript references and compact notes with return links.",
+      ),
+      examples: [
+        {
+          title: t("Источник и возврат к тексту", "A source and a return link"),
+          html: `<p>${t("Утверждение с источником", "A sourced statement")}<sup id="note-example-ref"><a class="beauty-footnote-ref" href="#note-example" role="doc-noteref">1</a></sup>.</p>
+<div class="beauty-footnotes" role="doc-endnotes"><ol role="list">
+  <li id="note-example"><p>${t("Краткое пояснение к утверждению.", "A short explanation of the statement.")} <a class="beauty-footnote-backref" href="#note-example-ref" role="doc-backlink" aria-label="${t("Вернуться к ссылке 1", "Back to reference 1")}">↩</a></p></li>
+</ol></div>`,
+        },
+      ],
+    },
+    {
       id: "statistics",
       title: t("Цифры и шаги", "Numbers and steps"),
       text: t(

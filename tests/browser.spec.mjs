@@ -683,3 +683,92 @@ test("high-density table header rules stay thin in both entries and restore prin
     await context.close();
   }
 });
+
+test("list markers inherit text weight and item spacing stays configurable", async ({ page }) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.goto(`/examples/${entry}.html`);
+    const root = entry === "prose" ? ".beauty" : "body";
+    await page
+      .locator(root)
+      .evaluate((node) =>
+        node.insertAdjacentHTML(
+          "beforeend",
+          '<ol id="list-fixture"><li>First item</li><li><strong>Emphasis</strong> within an item<ul><li>Nested item</li></ul></li></ol>',
+        ),
+      );
+    const item = page.locator("#list-fixture > li").first();
+    const weights = await item.evaluate((node) => [
+      getComputedStyle(node).fontWeight,
+      getComputedStyle(node, "::marker").fontWeight,
+    ]);
+    expect(weights[1]).toBe(weights[0]);
+    expect(
+      Number.parseFloat(await item.evaluate((node) => getComputedStyle(node).marginBlockEnd)),
+    ).toBeCloseTo(14, 1);
+    await expect(page.locator("#list-fixture strong")).toHaveCSS("font-weight", "600");
+    await page
+      .locator("#list-fixture")
+      .evaluate((node) => node.style.setProperty("--beauty-list-gap", "1em"));
+    await expect(item).toHaveCSS("margin-bottom", "16px");
+  }
+});
+
+test("footnotes keep their numbers for every first block, focus, print and prose scope", async ({
+  page,
+}) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.goto(`/examples/${entry}.html`);
+    const root = entry === "prose" ? ".beauty" : "body";
+    await page.locator(root).evaluate((node) =>
+      node.insertAdjacentHTML(
+        "beforeend",
+        `
+      <p>Reference<sup><a id="notes-ref" class="beauty-footnote-ref" href="#notes-1">1</a></sup>.</p>
+      <div class="beauty-footnotes" id="notes-fixture"><hr><ol role="list">
+        <li id="notes-1"><p>A paragraph. <a class="beauty-footnote-backref" href="#notes-ref">↩</a></p></li>
+        <li><blockquote><p>A quotation.</p></blockquote></li>
+        <li><ul><li>A nested list.</li></ul></li>
+        <li><pre><code>source()</code></pre></li>
+      </ol></div>`,
+      ),
+    );
+    const ref = page.locator("#notes-ref");
+    await expect(ref).toHaveCSS("text-decoration-line", "none");
+    await ref.focus();
+    await expect(ref).toHaveCSS("outline-style", "solid");
+    await expect(ref).toHaveCSS("outline-width", "2px");
+    for (const scheme of ["light", "dark"]) {
+      await page
+        .locator(root)
+        .evaluate((node, value) => node.setAttribute("data-theme", value), scheme);
+      for (const width of [375, 1280]) {
+        await page.setViewportSize({ width, height: 900 });
+        const markers = await page.locator("#notes-fixture > ol > li").evaluateAll((nodes) =>
+          nodes.map((node) => ({
+            content: getComputedStyle(node, "::before").content,
+            position: getComputedStyle(node, "::before").position,
+            size: Number.parseFloat(getComputedStyle(node, "::before").fontSize),
+          })),
+        );
+        expect(
+          markers.every(
+            (marker) =>
+              marker.content.includes("list-item") &&
+              marker.position === "absolute" &&
+              marker.size > 0,
+          ),
+        ).toBe(true);
+      }
+    }
+    await page.emulateMedia({ media: "print" });
+    await expect(page.locator("#notes-fixture")).toBeVisible();
+    await page.emulateMedia({ media: "screen" });
+    if (entry === "prose") {
+      await page.locator("#notes-fixture").evaluate((node) => node.classList.add("not-beauty"));
+      const content = await page
+        .locator("#notes-1")
+        .evaluate((node) => getComputedStyle(node, "::before").content);
+      expect(["none", "normal"]).toContain(content);
+    }
+  }
+});

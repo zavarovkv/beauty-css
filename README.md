@@ -16,13 +16,32 @@ Created by **[Konstantin Zavarov](https://zavarov.com/)**.
 
 - **Made for reading.** A comfortable type scale, useful spacing and clear content hierarchy.
 - **Two ways to use it.** Style a whole page or a single `.beauty` content container.
-- **Small by design.** About 4 KiB gzip per minified entry, with no runtime dependencies.
+- **Small by design.** Under 4.5 KiB gzip per minified entry, with no runtime dependencies.
 - **Your HTML, your fonts.** Semantic elements, native controls and the font family you choose.
 - **Easy to customize.** Named CSS variables and a low-priority cascade layer.
 - **Light, dark and print.** System-aware colors, an explicit theme choice and practical print styles.
 
 Beauty started as the typography in [Hugo Mini](https://github.com/zavarovkv/hugo-mini).
 It works independently of Hugo and every JavaScript framework.
+
+## Feature map
+
+| Area               | Included                                                                                                                                     |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Scope              | Classless document or `.beauty` container; `.not-beauty` opt-out; one low-specificity cascade layer; logical properties for RTL              |
+| Native HTML        | Headings, paragraphs, lists, definition lists, links, quotations, images/figures, rules, inline semantics, code and keyboard notation        |
+| Forms              | Native labels, inputs, selects, textareas, checkboxes/radios, buttons, fieldsets and validation/disabled/read-only states                    |
+| Reading            | Responsive reading scale and rhythm, lead/note/caption text, linked footnotes, quotation frames and editorial emphasis                       |
+| Structured content | Tables with hairline dividers, wide-content scroll wrapper, numeric highlights and connected numbered steps                                  |
+| Schemes and access | Light/dark/system palettes, print styles, visible focus, contrast checks and wrapping; accessible markup remains the author's responsibility |
+| Customization      | Public `--beauty-*` tokens, your own fonts, compound link labels/icons and nowrap helpers                                                    |
+| Examples           | Bilingual independent demo, every public helper, copyable HTML, classless/prose and RTL specimens                                            |
+
+**Usage:** [install](#install) · [plain HTML](#start-with-one-file) · [existing site](#add-typography-to-an-existing-site) · [CDN](#load-from-a-cdn).
+
+**Reference:** [tokens](#make-it-yours) · [lists and footnotes](#lists-and-footnotes) · [reading](#reading-and-editorial-rhythm) · [tables](#tables) · [schemes](#color-schemes) · [accessibility](#wide-content-and-accessibility) · [editorial helpers](#optional-editorial-treatments) · [numbers](#numeric-highlights) · [steps](#connected-steps).
+
+**Maintenance:** [browser support](#browser-support) · [development](#development) · [demo](#build-the-independent-demo). This README describes the current checkout; a development snapshot can contain features not yet published on npm. Pin a reviewed release or commit when integrating it.
 
 ## Install
 
@@ -214,8 +233,8 @@ sizing. H3–H6 retain the browser's native hierarchy.
 | `--beauty-h2-transform`        | `none`                                                     | Optional section optical adjustment |
 | `--beauty-content-line-height` | `var(--beauty-line-height)`                                | Main content leading                |
 | `--beauty-block-start`         | `0`                                                        | Paragraph and block top margin      |
-| `--beauty-list-indent`         | `1.5em`                                                    | List indentation                    |
-| `--beauty-list-gap`            | `0.35em`                                                   | List item spacing                   |
+| `--beauty-list-indent`         | `min(2.5rem, 8%)`                                          | List indentation                    |
+| `--beauty-list-gap`            | `0.875rem`                                                 | List item spacing                   |
 | `--beauty-link-weight`         | `var(--beauty-font-weight)`                                | Link weight                         |
 | `--beauty-link-decoration`     | `underline`                                                | Link decoration line                |
 | `--beauty-link-border`         | `0 solid transparent`                                      | Optional link bottom rule           |
@@ -246,6 +265,52 @@ ancestor, in prose mode.
 
 `--beauty-button-font` accepts a font shorthand for optional `.beauty-button` links
 (default: `600 1em/1.4 var(--beauty-font)`). Native buttons inherit the surrounding text family.
+
+### Lists and footnotes
+
+Ordinary ordered-list markers inherit their item's weight. `--beauty-list-gap` controls the space
+between items (0.875rem, or 14 px at the default root size). `--beauty-list-indent` uses
+`min(2.5rem, 8%)`: a 40 px inset in a wide reading column that contracts to 8% in a narrow column.
+Nested lists retain a compact inner gap. A deliberate `<strong>` inside a list item stays bold.
+
+Use the optional footnote helpers with native links and unique IDs:
+
+```html
+<p>
+  A statement<sup id="ref-1"
+    ><a class="beauty-footnote-ref" href="#note-1" role="doc-noteref">1</a></sup
+  >.
+</p>
+<div class="beauty-footnotes" role="doc-endnotes">
+  <ol role="list">
+    <li id="note-1">
+      <p>
+        A source note.
+        <a
+          class="beauty-footnote-backref"
+          href="#ref-1"
+          role="doc-backlink"
+          aria-label="Back to reference 1"
+          >↩</a
+        >
+      </p>
+    </li>
+  </ol>
+</div>
+```
+
+The number belongs to the list item, so notes may start with a quotation, nested list or code.
+References and return links inherit text color, keep visible keyboard focus, and work without JavaScript.
+The note text aligns with the surrounding column; numbers hang in the inline-start gutter.
+Provide enough gutter space for your numbering, especially inside tightly cropped containers.
+Hugo and other generators may adapt their native classes to these helpers in their own integration.
+
+| Variable                     | Default  | Purpose                             |
+| ---------------------------- | -------- | ----------------------------------- |
+| `--beauty-footnote-size`     | `0.85em` | Note text size                      |
+| `--beauty-footnote-ref-size` | `0.7em`  | Superscript and hanging number size |
+| `--beauty-footnote-space`    | `1.5em`  | Space before the notes              |
+| `--beauty-footnote-item-gap` | `0.4em`  | Compact spacing between notes       |
 
 ### Reading and editorial rhythm
 
@@ -462,7 +527,7 @@ After editing a source file, rebuild it with `npm run build` and `npm run build:
 | `docs/`    | Architecture and release process                                 |
 
 `npm run build` generates readable/minified classless and prose files. Parsed selectors are scoped
-with PostCSS; Lightning CSS validates and minifies the results. Each minified entry stays below 4 KiB gzip.
+with PostCSS; Lightning CSS validates and minifies the results. Each minified entry stays below 4.5 KiB gzip.
 `dist/manifest.json` records version, byte/gzip sizes, SHA-256 and SHA-384 integrity values.
 
 The npm package contains only source CSS, distributables, README, changelog and license. Build,

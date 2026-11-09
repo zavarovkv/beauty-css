@@ -29,7 +29,10 @@ rules. Optional editorial helpers share the same sources in both entries. Legacy
 font loading, syntax highlighting and application-specific component styles remain consumer-owned.
 Numeric highlights (`beauty-stat-*`) and connected ordered steps (`beauty-steps`) are shared
 editorial helpers. The library owns their type, marker geometry and internal rhythm; consumers
-own section grids, page spacing, data formatting and behavior.
+own section grids, page spacing, data formatting and behavior. Footnotes use the shared
+`beauty-footnotes`, `beauty-footnote-ref` and `beauty-footnote-backref` helpers. Beauty owns their
+type, counters and internal rhythm; generated IDs, anchor behavior and renderer-specific class
+aliases belong to consumers. Ordinary lists use native marker weight and a configurable gap.
 
 ## Distribution
 

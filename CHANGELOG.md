@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Keep both minified entries below a reviewed 4.5 KiB gzip budget after adding shared footnotes (about 4.2 KiB for the classless entry).
+
+- Let ordinary ordered-list markers inherit text weight. Set the default item gap to 0.875rem (14 px) and the responsive indentation to min(2.5rem, 8%) (up to 40 px).
+- Add reusable `beauty-footnotes`, `beauty-footnote-ref` and `beauty-footnote-backref` helpers in both entries, with quiet superscripts, hanging native counters, preserved focus and configurable sizing/spacing.
+
 - Expose `--beauty-emphasis-offset` to adjust the wavy underline for a chosen font, retaining the default 0.25em in both entries.
 
 - Use `--beauty-heading-weight` for table column headings in both entries, so custom font families use their configured bold face.

@@ -169,12 +169,53 @@
   margin-block-end: var(--beauty-list-gap);
 }
 
-:where(ol > li)::marker {
-  font-weight: 600;
-}
-
 :where(li > ul, li > ol) {
   margin-block: 0.4em 0;
+}
+
+/* Optional notes keep native links, ordered-list counters and keyboard focus.
+   Markers attach to li so a quotation, list or code block may start a note. */
+:where(sup:has(> .beauty-footnote-ref)) {
+  font-size: var(--beauty-footnote-ref-size);
+  font-style: italic;
+  vertical-align: super;
+}
+
+:where(.beauty-footnote-ref, .beauty-footnote-backref) {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  border-block-end: 0;
+}
+
+:where(.beauty-footnotes) {
+  --beauty-list-gap: var(--beauty-footnote-item-gap);
+  margin-block-start: var(--beauty-footnote-space);
+  font-size: var(--beauty-footnote-size);
+  color: var(--beauty-muted);
+}
+
+:where(.beauty-footnotes > hr) {
+  display: none;
+}
+
+:where(.beauty-footnotes > ol) {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+:where(.beauty-footnotes > ol > li) {
+  position: relative;
+}
+
+:where(.beauty-footnotes > ol > li)::before {
+  content: counter(list-item);
+  font-size: var(--beauty-footnote-ref-size);
+  font-style: italic;
+  position: absolute;
+  inset-inline-end: calc(100% + 0.35em);
+  inset-block-start: 0.2em;
+  line-height: 1;
 }
 
 :where(dd) {
