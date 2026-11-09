@@ -155,6 +155,12 @@ contrast of at least 3:1. Recheck contrast after changing colors.
 
 ## Make it yours
 
+`--beauty-heading-weight` controls headings, semantic bold emphasis and table headers.
+Use a semantic `<p class="beauty-lead">` for a larger paragraph with the ordinary paragraph spacing.
+
+Attribution size can be adjusted with `--beauty-fine-print-size` (default `0.75rem`);
+this controls `.beauty-fine-print` in both entries without changing ordinary body text.
+
 Beauty lives in a single `@layer beauty`. Normal unlayered styles in your website take priority,
 even when loaded before Beauty. Defaults use low-specificity selectors. No `!important` is needed
 for ordinary customization.

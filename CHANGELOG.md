@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Use `--beauty-heading-weight` for table column headings in both entries, so custom font families use their configured bold face.
+
+- Expose `--beauty-fine-print-size` for readable attribution sizing in both entries, retaining the default 0.75rem.
+
 - Use a 0.5 CSS px table-header rule on high-density screens (2dppx and above), preserving 1px on standard screens and in print.
 
 - Remove the extra gap below table column headings in both entries, retaining the shared 1px rule.

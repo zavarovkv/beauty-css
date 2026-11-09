@@ -137,7 +137,7 @@ test("page titles balance while section headings wrap naturally in both entries"
   }
 });
 
-test("the heading weight token also configures semantic emphasis in both entries", async ({
+test("the heading weight token also configures semantic emphasis and table headings in both entries", async ({
   page,
 }) => {
   for (const entry of ["classless", "prose"]) {
@@ -147,10 +147,10 @@ test("the heading weight token also configures semantic emphasis in both entries
       node.style.setProperty("--beauty-heading-weight", "500");
       node.insertAdjacentHTML(
         "beforeend",
-        '<div id="weight-fixture"><h3>Heading</h3><p><strong>Strong</strong> <b>Bold</b></p><dl><dt>Term</dt><dd>Meaning</dd></dl></div>',
+        '<div id="weight-fixture"><h3>Heading</h3><p><strong>Strong</strong> <b>Bold</b></p><dl><dt>Term</dt><dd>Meaning</dd></dl><table><thead><tr><th>Column</th></tr></thead><tbody><tr><td>Value</td></tr></tbody></table></div>',
       );
     });
-    for (const selector of ["h3", "strong", "b", "dt"]) {
+    for (const selector of ["h3", "strong", "b", "dt", "th"]) {
       await expect(page.locator(`#weight-fixture ${selector}`)).toHaveCSS("font-weight", "500");
     }
   }

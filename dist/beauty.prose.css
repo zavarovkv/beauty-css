@@ -82,6 +82,7 @@
     --beauty-steps-gap: 1.5rem;
     --beauty-step-size: 1.5rem;
     --beauty-step-gap: .75rem;
+    --beauty-fine-print-size: .75rem;
     --beauty-caption-align: start;
     --beauty-caption-style: normal;
     --beauty-caption-margin: .6em 0 var(--beauty-space);
@@ -414,7 +415,7 @@
 
   :where(.beauty) :where(th):where(:not(.not-beauty, .not-beauty *)) {
     color: var(--beauty-heading);
-    font-weight: 600;
+    font-weight: var(--beauty-heading-weight);
   }
 
   :where(.beauty) :where(thead th):where(:not(.not-beauty, .not-beauty *)) {
@@ -623,7 +624,7 @@
   }
 
   :where(.beauty) :where(.beauty-fine-print):where(:not(.not-beauty, .not-beauty *)) {
-    font-size: .75rem;
+    font-size: var(--beauty-fine-print-size);
   }
 
   :where(.beauty) :where(.beauty-caption):where(:not(.not-beauty, .not-beauty *)) {

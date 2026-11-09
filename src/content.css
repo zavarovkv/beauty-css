@@ -294,7 +294,7 @@
 
 :where(th) {
   color: var(--beauty-heading);
-  font-weight: 600;
+  font-weight: var(--beauty-heading-weight);
 }
 
 :where(thead th) {
@@ -511,7 +511,7 @@
 }
 
 :where(.beauty-fine-print) {
-  font-size: 0.75rem;
+  font-size: var(--beauty-fine-print-size);
 }
 
 :where(.beauty-caption) {

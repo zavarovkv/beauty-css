@@ -81,6 +81,7 @@
   --beauty-steps-gap: 1.5rem;
   --beauty-step-size: 1.5rem;
   --beauty-step-gap: 0.75rem;
+  --beauty-fine-print-size: 0.75rem;
   --beauty-caption-align: start;
   --beauty-caption-style: normal;
   --beauty-caption-margin: 0.6em 0 var(--beauty-space);
