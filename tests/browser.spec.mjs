@@ -805,3 +805,84 @@ test("footnotes keep their numbers for every first block, focus, print and prose
     }
   }
 });
+
+test("editorial numerals and hanging quotes stay scoped and preserve the text", async ({
+  page,
+}) => {
+  for (const entry of ["classless", "prose"]) {
+    await page.goto(`/examples/${entry}.html`);
+    await page.evaluate(() => {
+      const host = document.querySelector(".beauty") || document.body;
+      host.insertAdjacentHTML(
+        "beforeend",
+        `<article id="editorial" class="beauty-prose-numerals">
+        <h2 id="hanging"><span class="beauty-hanging-open">«</span><span id="first-word">Words</span> and figures»</h2>
+        <p id="prose-number">In 2021, <em id="em-number">15 years</em>.
+          <code id="code-number">2021</code><sup id="note-number">2</sup>
+          <time id="date-number">2026-11-10</time><span class="beauty-lining-nums" id="score">7/10</span>
+          <span class="beauty-fraction" id="fraction"><span>1</span>/<span>3</span></span></p>
+        <blockquote><p id="quote-number">2021</p></blockquote>
+        <p class="beauty-caption" id="caption-number">2021</p>
+        <p data-typography="off" id="off-number">2021</p>
+        <table><tbody><tr><td id="table-number">2021</td></tr></tbody></table>
+        <ol><li id="list-number">2021</li></ol>
+      </article>`,
+      );
+    });
+    // Hanging punctuation needs outer space; the unstyled host in the prose
+    // fixture has only the browser's default 8px body margin.
+    await page.addStyleTag({ content: "#editorial { margin-inline: 1em; }" });
+    for (const id of ["prose-number", "em-number", "quote-number"])
+      await expect(page.locator(`#${id}`)).toHaveCSS(
+        "font-variant-numeric",
+        "oldstyle-nums proportional-nums",
+      );
+    for (const id of ["code-number", "note-number", "date-number", "score", "off-number"])
+      await expect(page.locator(`#${id}`)).toHaveCSS("font-variant-numeric", "lining-nums");
+    for (const id of ["caption-number", "list-number"])
+      await expect(page.locator(`#${id}`)).toHaveCSS("font-variant-numeric", "normal");
+    await expect(page.locator("#table-number")).toHaveCSS(
+      "font-variant-numeric",
+      "lining-nums tabular-nums",
+    );
+    await expect(page.locator("#fraction")).toHaveCSS(
+      "font-variant-numeric",
+      "lining-nums proportional-nums",
+    );
+    await expect(page.locator("#hanging")).toHaveText("«Words and figures»");
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const dir of ["ltr", "rtl"]) {
+        await page.locator("#hanging").evaluate((node, direction) => {
+          node.dir = direction;
+        }, dir);
+        const edges = await page
+          .locator(".beauty-hanging-open")
+          .last()
+          .evaluate((node) => {
+            const range = document.createRange();
+            range.selectNodeContents(node);
+            const ink = range.getBoundingClientRect(),
+              box = node.getBoundingClientRect();
+            return {
+              ink: { left: ink.left, right: ink.right, width: ink.width },
+              box: { left: box.left, width: box.width },
+            };
+          });
+        expect(edges.box.width).toBe(0);
+        expect(edges.ink.width).toBeGreaterThan(0);
+        expect(
+          Math.abs((dir === "ltr" ? edges.ink.right : edges.ink.left) - edges.box.left),
+        ).toBeLessThan(1);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+          true,
+        );
+      }
+    }
+    await page.emulateMedia({ media: "print" });
+    expect(
+      (await page.locator("#hanging .beauty-hanging-open").boundingBox()).width,
+    ).toBeGreaterThan(0);
+    await page.emulateMedia({ media: "screen" });
+  }
+});

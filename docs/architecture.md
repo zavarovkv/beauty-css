@@ -34,6 +34,10 @@ own section grids, page spacing, data formatting and behavior. Footnotes use the
 type, counters and internal rhythm; generated IDs, anchor behavior and renderer-specific class
 aliases belong to consumers. Ordinary lists use native marker weight and a configurable gap.
 
+Opening punctuation and numeric variants are optional editorial helpers. Consumers identify
+eligible block starts and actual fractions; Beauty owns their geometry and OpenType CSS.
+No content rewriting, font dependency or JavaScript belongs in the library.
+
 ## Distribution
 
 `dist/` is generated and committed. This supports plain HTML downloads, offline use, Git dependencies,

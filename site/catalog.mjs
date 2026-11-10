@@ -31,6 +31,14 @@ H<sub>2</sub>O · x<sup>2</sup> · <small>${t("небольшое уточнен
 <p>${t("Встречаемся", "Meet us on")} <time datetime="2026-11-01">${t("1 ноября 2026", "1 November 2026")}</time>. <span class="beauty-nowrap">24 ${t("МБ", "MB")}</span>.</p>`,
         },
         {
+          title: t("Кавычки и цифры", "Quotes and numerals"),
+          html: `<article class="beauty-prose-numerals">
+  <h3><span class="beauty-hanging-open">${t("«", "“")}</span>${t("История в цифрах»", "A story in numbers”")}</h3>
+  <p>${t("В 2021 году мы начали проект, а через 15 месяцев подвели итоги.", "We started in 2021 and reviewed the results after 15 months.")}</p>
+  <p>${t("Доля времени", "A share of our time")}: <span class="beauty-fraction"><span>1</span>/<span>3</span></span>. ${t("Оценка", "Score")}: <span class="beauty-lining-nums">7/10</span>.</p>
+</article>`,
+        },
+        {
           title: t("Редакторские акценты", "Editorial treatments"),
           html: `<article class="beauty-reading">
   <p class="beauty-lead">${t("Первый абзац помогает войти в историю.", "An opening paragraph invites the reader into the story.")}</p>

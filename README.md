@@ -450,7 +450,25 @@ nest `<small>` inside the helper, which would shrink the text twice.
 <p class="beauty-note">Already invited? <a href="/login">Log in</a>.</p>
 ```
 
-### Numeric highlights
+#### Opening quotes, prose numerals and fractions
+
+- Wrap an initial opening quote in `<span class="beauty-hanging-open">«</span>` to
+  hang its actual glyph outside the text edge. Use only at the start of a heading or
+  quotation, with enough outer space. Works in LTR and RTL without JavaScript;
+  print restores the quote inside the line. The copied text retains the quote.
+- Add `beauty-prose-numerals` to an article for old-style proportional figures in
+  its direct paragraphs and direct blockquote paragraphs. Headings, lists, captions,
+  tables and metadata keep their own figures. Inline code, dates marked with `time`,
+  superscripts, subscripts, SVG and MathML retain lining figures.
+- Use `beauty-lining-nums` on a specific value (or paragraph) to retain lining figures.
+- Mark actual fractions with `<span class="beauty-fraction"><span>1</span>/<span>3</span></span>`.
+  The numerator is raised and both numbers are smaller, using the same font without
+  depending on fraction glyphs. Source text and copying remain `1/3`; paragraph leading
+  does not grow. Dates, URLs and scores are never detected or rewritten.
+  Old-style/proportional numerals require the matching OpenType features in the chosen
+  font; otherwise ordinary glyphs remain. Text and accessible names stay intact.
+
+## Numeric highlights
 
 Use `.beauty-stat-value` for a prominent number and `.beauty-stat-label` for its label.
 Both work in classless and prose entries, using the host's heading font and palette.

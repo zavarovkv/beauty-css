@@ -589,6 +589,44 @@
     }
   }
 
+  :where(.beauty-prose-numerals > p:not(.beauty-note, .beauty-caption, .beauty-fine-print, [data-typography="off"]), .beauty-prose-numerals > blockquote > p:not(.beauty-note, .beauty-caption, .beauty-fine-print, [data-typography="off"])):where(:not(.not-beauty, .not-beauty *)) {
+    font-variant-numeric: oldstyle-nums proportional-nums;
+  }
+
+  :where(.beauty-prose-numerals :is(code, kbd, samp, sup, sub, time, svg, math, [data-typography="off"]), .beauty-lining-nums):where(:not(.not-beauty, .not-beauty *)) {
+    font-variant-numeric: lining-nums;
+  }
+
+  :where(.beauty-fraction):where(:not(.not-beauty, .not-beauty *)) {
+    font-variant-numeric: lining-nums proportional-nums;
+    white-space: nowrap;
+  }
+
+  :where(.beauty-fraction > span):where(:not(.not-beauty, .not-beauty *)) {
+    vertical-align: baseline;
+    font-size: .7em;
+    line-height: 0;
+    position: relative;
+  }
+
+  :where(.beauty-fraction > span:first-child):where(:not(.not-beauty, .not-beauty *)) {
+    inset-block-start: -.5em;
+  }
+
+  :where(.beauty-hanging-open):where(:not(.not-beauty, .not-beauty *)) {
+    white-space: nowrap;
+    grid-template-columns: max-content;
+    justify-content: end;
+    inline-size: 0;
+    display: inline-grid;
+  }
+
+  @media print {
+    :where(.beauty-hanging-open):where(:not(.not-beauty, .not-beauty *)) {
+      inline-size: auto;
+    }
+  }
+
   :where(.beauty-lead):where(:not(.not-beauty, .not-beauty *)) {
     font-size: 1.25em;
     font-weight: var(--beauty-lead-weight);

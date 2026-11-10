@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add opt-in hanging opening quotes, old-style proportional prose numerals, lining-figure exceptions and explicit composed fractions, shared by classless and prose entries.
+
 - Keep footnote references out of paragraph line-box height while preserving native focus and links.
 - Add the `beauty-caption-credit` modifier for short attributions, keeping ordinary captions upright and start-aligned by default.
 - Size decorative inline SVGs in `beauty-link-icon` relative to text and align them to the baseline.
