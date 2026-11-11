@@ -79,8 +79,6 @@
     --beauty-quote-weight: var(--beauty-font-weight);
     --beauty-quote-text: var(--beauty-heading);
     --beauty-quote-attribution-align: start;
-    --beauty-quotation-rule: 1px solid var(--beauty-muted);
-    --beauty-quotation-rule-offset: 1rem;
     --beauty-quotation-width: 100%;
     --beauty-quotation-margin-block: 2em;
     --beauty-quotation-paragraph-gap: .75em;
@@ -101,6 +99,7 @@
     --beauty-rule-border: 1px solid var(--beauty-border);
     --beauty-callout-background: var(--beauty-surface);
     --beauty-callout-border: 1px solid var(--beauty-heading);
+    --beauty-lead-margin-block: var(--beauty-block-start) var(--beauty-space);
     --beauty-lead-weight: var(--beauty-font-weight);
     --beauty-stat-size: clamp(2.5rem, 12vw, 3.5rem);
     --beauty-stat-color: var(--beauty-link);
@@ -695,6 +694,7 @@
   }
 
   :where(.beauty-lead):where(:not(.not-beauty, .not-beauty *)) {
+    margin-block: var(--beauty-lead-margin-block);
     font-size: 1.25em;
     font-weight: var(--beauty-lead-weight);
     line-height: 1.5;
@@ -844,18 +844,6 @@
   :where(figure.beauty-quotation):where(:not(.not-beauty, .not-beauty *)) {
     max-inline-size: var(--beauty-quotation-width);
     margin-block: var(--beauty-quotation-margin-block);
-  }
-
-  :where(.beauty-quotation-rule):where(:not(.not-beauty, .not-beauty *)) {
-    position: relative;
-  }
-
-  :where(.beauty-quotation-rule):where(:not(.not-beauty, .not-beauty *)):before {
-    content: "";
-    border-inline-start: var(--beauty-quotation-rule);
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: calc(-1 * var(--beauty-quotation-rule-offset));
   }
 
   :where(.beauty-quotation > blockquote):where(:not(.not-beauty, .not-beauty *)) {

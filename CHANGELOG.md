@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Add `beauty-quotation-rule` with configurable gutter offset and border for author theses sharing quotation typography.
+- Add `--beauty-lead-margin-block` for shared spacing around enlarged author statements; retain the existing paragraph spacing by default.
 
 - Add `--beauty-hanging-gap` for optical clearance after hanging opening marks without changing line wraps; reset the offset in print.
 

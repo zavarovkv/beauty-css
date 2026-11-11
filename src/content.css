@@ -582,6 +582,7 @@
 
 /* Optional editorial treatments; semantic HTML remains the default. */
 :where(.beauty-lead) {
+  margin-block: var(--beauty-lead-margin-block);
   font-size: 1.25em;
   font-weight: var(--beauty-lead-weight);
   line-height: 1.5;
@@ -736,19 +737,6 @@
 :where(figure.beauty-quotation) {
   max-inline-size: var(--beauty-quotation-width);
   margin-block: var(--beauty-quotation-margin-block);
-}
-
-/* An optional gutter rule distinguishes author theses without adding quotes. */
-:where(.beauty-quotation-rule) {
-  position: relative;
-}
-
-:where(.beauty-quotation-rule)::before {
-  content: "";
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: calc(-1 * var(--beauty-quotation-rule-offset));
-  border-inline-start: var(--beauty-quotation-rule);
 }
 
 :where(.beauty-quotation > blockquote) {

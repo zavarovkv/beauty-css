@@ -390,10 +390,6 @@ and closing marks in the text, choosing punctuation for the language. The option
 `beauty-hanging-open` span aligns the opening mark outside the text edge; allow room
 for that glyph in the container gutter. Print restores inline punctuation and the
 surrounding text size. Both CSS entries support this treatment.
-Add `beauty-quotation-rule` to the figure for a quiet line in the inline-start gutter,
-for example an author's own thesis without quotation marks. It preserves the text edge
-and measure. `--beauty-quotation-rule` defaults to `1px solid var(--beauty-muted)`;
-`--beauty-quotation-rule-offset` defaults to `1rem`. Leave that space in the container gutter.
 Use a `beauty-quotation-author` span inside the caption for a name on its own line
 in the body text color; a role or source after the span retains the muted caption color.
 For an indented signature, add `beauty-quotation-attribution` to `figcaption`, with a
@@ -505,6 +501,10 @@ nest `<small>` inside the helper, which would shrink the text twice.
 ```html
 <p class="beauty-note">Already invited? <a href="/login">Log in</a>.</p>
 ```
+
+The `beauty-lead` helper keeps the body face at an enlarged size. Its outer spacing
+is controlled by `--beauty-lead-margin-block`, defaulting to
+`var(--beauty-block-start) var(--beauty-space)`, like ordinary prose blocks.
 
 #### Opening quotes, prose numerals and fractions
 

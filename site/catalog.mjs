@@ -109,7 +109,7 @@ H<sub>2</sub>O · x<sup>2</sup> · <small>${t("небольшое уточнен
         },
         {
           title: t("Цитата с подписью", "Attributed quotation"),
-          html: `<figure class="beauty-quotation beauty-quotation-rule">
+          html: `<figure class="beauty-quotation">
   <blockquote>
     <p><span class="beauty-hanging-open">${t("«", "“")}</span>${t("Хорошая типографика помогает сосредоточиться на смысле».", "Good typography helps the reader focus on the meaning.”")}</p>
   </blockquote>
