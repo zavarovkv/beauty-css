@@ -24,9 +24,9 @@ test("each advertised file has a valid checksum, a license and a useful size bud
       `sha384-${createHash("sha384").update(bytes).digest("base64")}`,
       expected.integrity,
     );
-    // Shared footnotes extend the core; retain a 4.5 KiB minified budget
-    // and a 5 KiB readable budget rather than dropping verification.
-    const limit = file.endsWith(".min.css") ? 4608 : 5120;
+    // Native drop caps add less than 200 gzip bytes to the shared typography.
+    // Keep a 4.75 KiB minified budget and the existing 5 KiB readable budget.
+    const limit = file.endsWith(".min.css") ? 4864 : 5120;
     assert.ok(expected.gzip < limit, `${file} must stay below ${limit / 1024} KiB gzip`);
     assert.ok(css.startsWith(`/*! Beauty.css v${pkg.version} | MIT`));
     assert.doesNotMatch(

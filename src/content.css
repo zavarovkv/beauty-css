@@ -463,6 +463,49 @@
   }
 }
 
+/* Only an opted-in container beginning with prose receives an initial.
+   Native shaping preserves the word, punctuation and font metrics. Print and
+   engines without initial-letter support keep ordinary paragraph typography. */
+@media screen {
+  @supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
+    :where(
+      .beauty-dropcap
+        > p:first-child:not(
+          .beauty-note,
+          .beauty-caption,
+          .beauty-fine-print,
+          [data-typography="off"]
+        )
+    ) {
+      min-block-size: calc(var(--beauty-dropcap-lines) * 1lh);
+    }
+
+    :where(
+      .beauty-dropcap
+        > p:first-child:not(
+          .beauty-note,
+          .beauty-caption,
+          .beauty-fine-print,
+          [data-typography="off"]
+        )
+    )::first-letter {
+      -webkit-initial-letter: var(--beauty-dropcap-lines);
+      initial-letter: var(--beauty-dropcap-lines);
+      font-family: var(--beauty-dropcap-font);
+      font-weight: var(--beauty-dropcap-weight);
+      font-style: normal;
+      margin-inline-end: var(--beauty-dropcap-gap);
+      margin-block-end: var(--beauty-dropcap-margin-block-end);
+    }
+  }
+}
+
+@media screen and (max-width: 48rem) {
+  :where(.beauty-dropcap) {
+    --beauty-dropcap-lines: var(--beauty-dropcap-lines-small);
+  }
+}
+
 /* Opt-in prose figures stop at paragraph boundaries, leaving tables, lists,
    captions, headings and embedded components in their ordinary numeral style. */
 :where(

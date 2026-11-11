@@ -31,6 +31,13 @@ H<sub>2</sub>O · x<sup>2</sup> · <small>${t("небольшое уточнен
 <p>${t("Встречаемся", "Meet us on")} <time datetime="2026-11-01">${t("1 ноября 2026", "1 November 2026")}</time>. <span class="beauty-nowrap">24 ${t("МБ", "MB")}</span>.</p>`,
         },
         {
+          title: t("Буквица", "Drop cap"),
+          html: `<article class="beauty-reading beauty-dropcap">
+  <p>${t("Цель хорошего оформления — помочь читателю войти в историю. Буквица отмечает начало текста, а спокойный ритм строк поддерживает чтение. Такой акцент стоит выбирать для отдельных рассказов и эссе.", "The purpose of good typography is to invite the reader into a story. A drop cap marks its beginning, while a calm rhythm carries the prose forward. Reserve this accent for selected stories and essays.")}</p>
+  <p>${t("Остальные абзацы сохраняют обычное оформление.", "The following paragraphs keep their usual typography.")}</p>
+</article>`,
+        },
+        {
           title: t("Кавычки и цифры", "Quotes and numerals"),
           html: `<article class="beauty-prose-numerals">
   <h3><span class="beauty-hanging-open">${t("«", "“")}</span>${t("История в цифрах»", "A story in numbers”")}</h3>

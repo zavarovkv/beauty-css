@@ -34,6 +34,11 @@ own section grids, page spacing, data formatting and behavior. Footnotes use the
 type, counters and internal rhythm; generated IDs, anchor behavior and renderer-specific class
 aliases belong to consumers. Ordinary lists use native marker weight and a configurable gap.
 
+Drop caps use native `::first-letter` / `initial-letter` shaping on the first paragraph
+of an opted-in container. Fonts stay consumer-owned; unsupported engines and print retain
+ordinary text without markup rewriting. The optional block-end margin token adjusts
+only the exclusion area; consumers must check descender clearance for their fonts.
+
 Opening punctuation and numeric variants are optional editorial helpers. Consumers identify
 eligible block starts and actual fractions; Beauty owns their geometry and OpenType CSS.
 No content rewriting, font dependency or JavaScript belongs in the library.

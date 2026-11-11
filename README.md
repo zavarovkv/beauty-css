@@ -16,7 +16,7 @@ Created by **[Konstantin Zavarov](https://zavarov.com/)**.
 
 - **Made for reading.** A comfortable type scale, useful spacing and clear content hierarchy.
 - **Two ways to use it.** Style a whole page or a single `.beauty` content container.
-- **Small by design.** Under 4.5 KiB gzip per minified entry, with no runtime dependencies.
+- **Small by design.** Under 4.75 KiB gzip per minified entry, with no runtime dependencies.
 - **Your HTML, your fonts.** Semantic elements, native controls and the font family you choose.
 - **Easy to customize.** Named CSS variables and a low-priority cascade layer.
 - **Light, dark and print.** System-aware colors, an explicit theme choice and practical print styles.
@@ -31,7 +31,7 @@ It works independently of Hugo and every JavaScript framework.
 | Scope              | Classless document or `.beauty` container; `.not-beauty` opt-out; one low-specificity cascade layer; logical properties for RTL              |
 | Native HTML        | Headings, paragraphs, lists, definition lists, links, quotations, images/figures, rules, inline semantics, code and keyboard notation        |
 | Forms              | Native labels, inputs, selects, textareas, checkboxes/radios, buttons, fieldsets and validation/disabled/read-only states                    |
-| Reading            | Responsive reading scale and rhythm, lead/note/caption text, linked footnotes, quotation frames and editorial emphasis                       |
+| Reading            | Responsive reading scale and rhythm, lead/note/caption text, linked footnotes, drop caps, quotation frames and editorial emphasis            |
 | Structured content | Tables with hairline dividers, wide-content scroll wrapper, numeric highlights and connected numbered steps                                  |
 | Schemes and access | Light/dark/system palettes, print styles, visible focus, contrast checks and wrapping; accessible markup remains the author's responsibility |
 | Customization      | Public `--beauty-*` tokens, your own fonts, compound link labels/icons and nowrap helpers                                                    |
@@ -468,6 +468,44 @@ nest `<small>` inside the helper, which would shrink the text twice.
   Old-style/proportional numerals require the matching OpenType features in the chosen
   font; otherwise ordinary glyphs remain. Text and accessible names stay intact.
 
+### Drop caps
+
+Add `beauty-dropcap` to a reading container that starts with an ordinary paragraph:
+
+```html
+<article class="beauty-reading beauty-dropcap">
+  <p>The story begins with a single, selectable word.</p>
+  <p>The following paragraphs keep their usual type.</p>
+</article>
+```
+
+Only the first direct child paragraph is eligible. A heading, quotation, list or
+figure before it prevents the treatment; note, caption, fine-print and
+`data-typography="off"` paragraphs are excluded. Choose openings with enough prose
+to wrap around the initial; short paragraphs still reserve its full height. The letter keeps the paragraph color and uses native
+`initial-letter` shaping: three lines, reduced to two at 48rem and below. The word
+is never split into separate DOM nodes. Print and browsers without `initial-letter`
+(including its WebKit-prefixed form) keep ordinary text. No font or script is loaded.
+
+For a one-letter opening word, use a nonbreaking separator (`I&nbsp;write`) to
+keep Chromium from dropping that space when copying the paragraph. The consuming
+site can add it during rendering, without changing its source text. Opening quotes
+grow with the initial; preview punctuation and inline decorations before opting in.
+
+| Variable                       | Default                        | Purpose                  |
+| ------------------------------ | ------------------------------ | ------------------------ |
+| `--beauty-dropcap-font`        | `var(--beauty-heading-font)`   | Initial font family      |
+| `--beauty-dropcap-weight`      | `var(--beauty-heading-weight)` | An available font weight |
+| `--beauty-dropcap-lines`       | `3`                            | Desktop line count       |
+| `--beauty-dropcap-lines-small` | `2`                            | Small-screen line count  |
+| `--beauty-dropcap-gap`         | `0.35em`                       | Space after the initial  |
+
+`--beauty-dropcap-margin-block-end` defaults to `0`. A consuming theme may use a
+small negative value to tighten the exclusion area below an initial with a descender,
+without moving or resizing the glyph. This is font-dependent: check that the next
+full-width line clears the actual ink on desktop and mobile, including after font
+loading. Keep `0` when the font needs the full exclusion area.
+
 ## Numeric highlights
 
 Use `.beauty-stat-value` for a prominent number and `.beauty-stat-label` for its label.
@@ -569,7 +607,7 @@ After editing a source file, rebuild it with `npm run build` and `npm run build:
 | `docs/`    | Architecture and release process                                 |
 
 `npm run build` generates readable/minified classless and prose files. Parsed selectors are scoped
-with PostCSS; Lightning CSS validates and minifies the results. Each minified entry stays below 4.5 KiB gzip.
+with PostCSS; Lightning CSS validates and minifies the results. Each minified entry stays below 4.75 KiB gzip.
 `dist/manifest.json` records version, byte/gzip sizes, SHA-256 and SHA-384 integrity values.
 
 The npm package contains only source CSS, distributables, README, changelog and license. Build,

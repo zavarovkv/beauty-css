@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Expose `--beauty-dropcap-margin-block-end` (default `0`) so consumers can tune descender wrapping for their font without moving or resizing the initial.
+
+- Add opt-in `beauty-dropcap` with configurable font and three-/two-line initials; preserve text, prose scope, print and unsupported-browser fallback. Reserve enough paragraph height even for a short opening. The classless minified entry grows by less than 200 gzip bytes; raise its checked budget from 4.5 to 4.75 KiB.
+
 - Add opt-in hanging opening quotes, old-style proportional prose numerals, lining-figure exceptions and explicit composed fractions, shared by classless and prose entries.
 
 - Keep footnote references out of paragraph line-box height while preserving native focus and links.
