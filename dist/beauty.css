@@ -49,6 +49,7 @@
     --beauty-list-indent: min(2.5rem, 8%);
     --beauty-list-gap: .875rem;
     --beauty-footnote-size: .85em;
+    --beauty-footnote-line-height: inherit;
     --beauty-footnote-ref-size: .7em;
     --beauty-footnote-space: 1.5em;
     --beauty-footnote-item-gap: .4em;
@@ -97,6 +98,7 @@
     --beauty-dropcap-weight: var(--beauty-heading-weight);
     --beauty-dropcap-lines: 3;
     --beauty-dropcap-lines-small: 2;
+    --beauty-dropcap-rise: 0;
     --beauty-dropcap-gap: .35em;
     --beauty-dropcap-margin-block-end: 0;
     --beauty-button-font: 600 1em/1.4 var(--beauty-font);
@@ -329,6 +331,7 @@
   :where(.beauty-footnotes):where(:not(.not-beauty, .not-beauty *)) {
     --beauty-list-gap: var(--beauty-footnote-item-gap);
     font-size: var(--beauty-footnote-size);
+    line-height: var(--beauty-footnote-line-height);
     color: var(--beauty-muted);
     margin-block-start: var(--beauty-footnote-space);
   }
@@ -596,16 +599,19 @@
   }
 
   @media screen {
-    @supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
+    @supports (initial-letter: 3 round(up, 3, 1)) or (-webkit-initial-letter: 3) {
       :where(.beauty-dropcap > p:first-child:not(.beauty-note, .beauty-caption, .beauty-fine-print, [data-typography="off"])):where(:not(.not-beauty, .not-beauty *)) {
         min-block-size: calc(var(--beauty-dropcap-lines) * 1lh);
       }
 
       :where(.beauty-dropcap > p:first-child:not(.beauty-note, .beauty-caption, .beauty-fine-print, [data-typography="off"])):where(:not(.not-beauty, .not-beauty *)):first-letter {
-        -webkit-initial-letter: var(--beauty-dropcap-lines);
-        initial-letter: var(--beauty-dropcap-lines);
+        -webkit-initial-letter: calc(var(--beauty-dropcap-lines) + var(--beauty-dropcap-rise))
+        var(--beauty-dropcap-lines);
+        initial-letter: calc(var(--beauty-dropcap-lines) + var(--beauty-dropcap-rise))
+        round(up, calc(var(--beauty-dropcap-lines) + var(--beauty-dropcap-rise)), 1);
         font-family: var(--beauty-dropcap-font);
         font-weight: var(--beauty-dropcap-weight);
+        margin-block-start: calc(-1 * var(--beauty-dropcap-rise) * 1lh);
         margin-block-end: var(--beauty-dropcap-margin-block-end);
         margin-inline-end: var(--beauty-dropcap-gap);
         font-style: normal;

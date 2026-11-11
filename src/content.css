@@ -198,6 +198,7 @@
   --beauty-list-gap: var(--beauty-footnote-item-gap);
   margin-block-start: var(--beauty-footnote-space);
   font-size: var(--beauty-footnote-size);
+  line-height: var(--beauty-footnote-line-height);
   color: var(--beauty-muted);
 }
 
@@ -467,7 +468,7 @@
    Native shaping preserves the word, punctuation and font metrics. Print and
    engines without initial-letter support keep ordinary paragraph typography. */
 @media screen {
-  @supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
+  @supports (initial-letter: 3 round(up, 3, 1)) or (-webkit-initial-letter: 3) {
     :where(
       .beauty-dropcap
         > p:first-child:not(
@@ -489,8 +490,14 @@
           [data-typography="off"]
         )
     )::first-letter {
-      -webkit-initial-letter: var(--beauty-dropcap-lines);
-      initial-letter: var(--beauty-dropcap-lines);
+      -webkit-initial-letter: calc(var(--beauty-dropcap-lines) + var(--beauty-dropcap-rise))
+        var(--beauty-dropcap-lines);
+      /* Top-align the standard initial before lifting it by the fractional rise.
+         An under-aligned fractional initial shifts prose by a whole line in Blink.
+         WebKit's prefixed shaping aligns the baseline itself and ignores this margin. */
+      initial-letter: calc(var(--beauty-dropcap-lines) + var(--beauty-dropcap-rise))
+        round(up, calc(var(--beauty-dropcap-lines) + var(--beauty-dropcap-rise)), 1);
+      margin-block-start: calc(-1 * var(--beauty-dropcap-rise) * 1lh);
       font-family: var(--beauty-dropcap-font);
       font-weight: var(--beauty-dropcap-weight);
       font-style: normal;

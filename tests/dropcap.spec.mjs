@@ -26,63 +26,79 @@ for (const entry of ["classless", "prose"]) {
           "normal"
         );
       });
+    const standard = await page.evaluate(() => CSS.supports("initial-letter:3 round(up,3,1)"));
     const supported = await page.evaluate(
-      () => CSS.supports("initial-letter:3") || CSS.supports("-webkit-initial-letter:3"),
+      () =>
+        CSS.supports("initial-letter:3 round(up,3,1)") || CSS.supports("-webkit-initial-letter:3"),
     );
-    for (const colorScheme of ["light", "dark"]) {
-      await page.emulateMedia({ colorScheme });
-      for (const width of [320, 390, 1440]) {
-        await page.setViewportSize({ width, height: 900 });
-        expect(await value(initial)).toBe(supported ? (width > 768 ? "3" : "2") : "normal");
-        await expect(initial).toHaveText(text.trim());
-        expect(
+    for (const rise of [0, 0.5]) {
+      await page.locator("#dropcap-fixture").evaluate((root, rise) => {
+        root.style.setProperty("--beauty-dropcap-rise", rise);
+      }, rise);
+      for (const colorScheme of ["light", "dark"]) {
+        await page.emulateMedia({ colorScheme });
+        for (const width of [320, 390, 1440]) {
+          await page.setViewportSize({ width, height: 900 });
+          const sink = width > 768 ? 3 : 2;
+          const actual = await value(initial);
+          if (supported) {
+            // Chromium preserves an explicit sink equal to the size; WebKit omits it.
+            const [size, explicitSink] = actual.split(" ").map(Number);
+            expect(size).toBe(sink + rise);
+            expect(explicitSink ?? Math.floor(size)).toBe(standard ? Math.ceil(sink + rise) : sink);
+          } else {
+            expect(actual).toBe("normal");
+          }
+          await expect(initial).toHaveText(text.trim());
+          expect(
+            await initial.evaluate((p) => {
+              const range = document.createRange();
+              range.selectNodeContents(p);
+              const selection = getSelection();
+              selection.removeAllRanges();
+              selection.addRange(range);
+              return selection.toString();
+            }),
+          ).toBe(text);
+          expect(
+            await initial.evaluate(
+              (p) => getComputedStyle(p, "::first-letter").color === getComputedStyle(p).color,
+            ),
+          ).toBe(true);
+          for (const selector of [
+            "#initial > p + p",
+            "#blocked p",
+            "#note p",
+            "#escape p",
+            "#disabled p",
+          ]) {
+            for (const paragraph of await page.locator(selector).all())
+              expect(await value(paragraph)).toBe("normal");
+          }
+          expect(
+            await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+          ).toBe(true);
+          const first = await initial.boundingBox();
+          const next = await page.locator("#initial > p").nth(1).boundingBox();
+          expect(next.y).toBeGreaterThanOrEqual(first.y + first.height);
+          // Even a one-word opening must reserve the initial's full line count.
           await initial.evaluate((p) => {
-            const range = document.createRange();
-            range.selectNodeContents(p);
-            const selection = getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            return selection.toString();
-          }),
-        ).toBe(text);
-        expect(
-          await initial.evaluate(
-            (p) => getComputedStyle(p, "::first-letter").color === getComputedStyle(p).color,
-          ),
-        ).toBe(true);
-        for (const selector of [
-          "#initial > p + p",
-          "#blocked p",
-          "#note p",
-          "#escape p",
-          "#disabled p",
-        ]) {
-          for (const paragraph of await page.locator(selector).all())
-            expect(await value(paragraph)).toBe("normal");
+            p.textContent = "Цель.";
+          });
+          if (supported) {
+            const short = await initial.evaluate((p) => ({
+              height: p.getBoundingClientRect().height,
+              leading: parseFloat(getComputedStyle(p).lineHeight),
+            }));
+            expect(short.height).toBeGreaterThanOrEqual(short.leading * (width > 768 ? 3 : 2) - 1);
+          }
+          await initial.evaluate((p, text) => {
+            p.textContent = text;
+          }, text);
+          await page.emulateMedia({ media: "print" });
+          expect(await value(initial)).toBe("normal");
+          await page.emulateMedia({ media: "screen" });
         }
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-          true,
-        );
-        const first = await initial.boundingBox();
-        const next = await page.locator("#initial > p").nth(1).boundingBox();
-        expect(next.y).toBeGreaterThanOrEqual(first.y + first.height);
-        // Even a one-word opening must reserve the initial's full line count.
-        await initial.evaluate((p) => {
-          p.textContent = "Цель.";
-        });
-        if (supported) {
-          const short = await initial.evaluate((p) => ({
-            height: p.getBoundingClientRect().height,
-            leading: parseFloat(getComputedStyle(p).lineHeight),
-          }));
-          expect(short.height).toBeGreaterThanOrEqual(short.leading * (width > 768 ? 3 : 2) - 1);
-        }
-        await initial.evaluate((p, text) => {
-          p.textContent = text;
-        }, text);
-        await page.emulateMedia({ media: "print" });
-        expect(await value(initial)).toBe("normal");
-        await page.emulateMedia({ media: "screen" });
       }
     }
   });

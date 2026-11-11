@@ -48,6 +48,7 @@
   --beauty-list-indent: min(2.5rem, 8%);
   --beauty-list-gap: 0.875rem;
   --beauty-footnote-size: 0.85em;
+  --beauty-footnote-line-height: inherit;
   --beauty-footnote-ref-size: 0.7em;
   --beauty-footnote-space: 1.5em;
   --beauty-footnote-item-gap: 0.4em;
@@ -96,6 +97,7 @@
   --beauty-dropcap-weight: var(--beauty-heading-weight);
   --beauty-dropcap-lines: 3;
   --beauty-dropcap-lines-small: 2;
+  --beauty-dropcap-rise: 0;
   --beauty-dropcap-gap: 0.35em;
   --beauty-dropcap-margin-block-end: 0;
   --beauty-button-font: 600 1em/1.4 var(--beauty-font);

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Expose `--beauty-footnote-line-height` to tune note leading independently; its default `inherit` preserves existing layouts in both entries.
+
+- Add `--beauty-dropcap-rise` for raised initials without changing their sink line, text semantics or print fallback.
+
 - Expose `--beauty-dropcap-margin-block-end` (default `0`) so consumers can tune descender wrapping for their font without moving or resizing the initial.
 
 - Add opt-in `beauty-dropcap` with configurable font and three-/two-line initials; preserve text, prose scope, print and unsupported-browser fallback. Reserve enough paragraph height even for a short opening. The classless minified entry grows by less than 200 gzip bytes; raise its checked budget from 4.5 to 4.75 KiB.

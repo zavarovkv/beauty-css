@@ -31,13 +31,18 @@ Numeric highlights (`beauty-stat-*`) and connected ordered steps (`beauty-steps`
 editorial helpers. The library owns their type, marker geometry and internal rhythm; consumers
 own section grids, page spacing, data formatting and behavior. Footnotes use the shared
 `beauty-footnotes`, `beauty-footnote-ref` and `beauty-footnote-backref` helpers. Beauty owns their
-type, counters and internal rhythm; generated IDs, anchor behavior and renderer-specific class
+type, counters and internal rhythm, with independently configurable note leading; generated IDs, anchor behavior and renderer-specific class
 aliases belong to consumers. Ordinary lists use native marker weight and a configurable gap.
 
 Drop caps use native `::first-letter` / `initial-letter` shaping on the first paragraph
 of an opted-in container. Fonts stay consumer-owned; unsupported engines and print retain
 ordinary text without markup rewriting. The optional block-end margin token adjusts
 only the exclusion area; consumers must check descender clearance for their fonts.
+The optional rise adds to the initial's size while preserving the configured sink
+line and short-paragraph containment. Standard shaping uses an explicitly rounded-up sink and a line-relative negative
+start margin; prefixed WebKit shaping uses the intended sink directly. This keeps
+fractional initials on the intended baseline without Blink's whole-line text shift.
+Do not add transforms, browser detection or consumer-specific pixel offsets.
 
 Opening punctuation and numeric variants are optional editorial helpers. Consumers identify
 eligible block starts and actual fractions; Beauty owns their geometry and OpenType CSS.

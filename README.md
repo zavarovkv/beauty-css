@@ -309,12 +309,13 @@ The note text aligns with the surrounding column; numbers hang in the inline-sta
 Provide enough gutter space for your numbering, especially inside tightly cropped containers.
 Hugo and other generators may adapt their native classes to these helpers in their own integration.
 
-| Variable                     | Default  | Purpose                             |
-| ---------------------------- | -------- | ----------------------------------- |
-| `--beauty-footnote-size`     | `0.85em` | Note text size                      |
-| `--beauty-footnote-ref-size` | `0.7em`  | Superscript and hanging number size |
-| `--beauty-footnote-space`    | `1.5em`  | Space before the notes              |
-| `--beauty-footnote-item-gap` | `0.4em`  | Compact spacing between notes       |
+| Variable                        | Default   | Purpose                                |
+| ------------------------------- | --------- | -------------------------------------- |
+| `--beauty-footnote-size`        | `0.85em`  | Note text size                         |
+| `--beauty-footnote-line-height` | `inherit` | Note leading, independent of body text |
+| `--beauty-footnote-ref-size`    | `0.7em`   | Superscript and hanging number size    |
+| `--beauty-footnote-space`       | `1.5em`   | Space before the notes                 |
+| `--beauty-footnote-item-gap`    | `0.4em`   | Compact spacing between notes          |
 
 ### Reading and editorial rhythm
 
@@ -492,13 +493,22 @@ keep Chromium from dropping that space when copying the paragraph. The consuming
 site can add it during rendering, without changing its source text. Opening quotes
 grow with the initial; preview punctuation and inline decorations before opting in.
 
-| Variable                       | Default                        | Purpose                  |
-| ------------------------------ | ------------------------------ | ------------------------ |
-| `--beauty-dropcap-font`        | `var(--beauty-heading-font)`   | Initial font family      |
-| `--beauty-dropcap-weight`      | `var(--beauty-heading-weight)` | An available font weight |
-| `--beauty-dropcap-lines`       | `3`                            | Desktop line count       |
-| `--beauty-dropcap-lines-small` | `2`                            | Small-screen line count  |
-| `--beauty-dropcap-gap`         | `0.35em`                       | Space after the initial  |
+| Variable                       | Default                        | Purpose                             |
+| ------------------------------ | ------------------------------ | ----------------------------------- |
+| `--beauty-dropcap-font`        | `var(--beauty-heading-font)`   | Initial font family                 |
+| `--beauty-dropcap-weight`      | `var(--beauty-heading-weight)` | An available font weight            |
+| `--beauty-dropcap-lines`       | `3`                            | Desktop line count                  |
+| `--beauty-dropcap-lines-small` | `2`                            | Small-screen line count             |
+| `--beauty-dropcap-gap`         | `0.35em`                       | Space after the initial             |
+| `--beauty-dropcap-rise`        | `0`                            | Extra height above the opening line |
+
+Keep line counts as positive integers. Set `--beauty-dropcap-rise: 0.5` to enlarge
+the initial by half a line while keeping its baseline on the configured sink line.
+Standard CSS top-aligns the enlarged initial and lifts it by the requested fraction
+of the paragraph's line height. WebKit's prefixed property aligns it at the sink
+baseline. This avoids Blink's whole-line text shift for fractional raised initials.
+Check the opening against the preceding heading and descender clearance with the actual font. The default `0`
+keeps the ordinary dropped initial. Short paragraphs reserve the sink height.
 
 `--beauty-dropcap-margin-block-end` defaults to `0`. A consuming theme may use a
 small negative value to tighten the exclusion area below an initial with a descender,
