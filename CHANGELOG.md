@@ -2,6 +2,30 @@
 
 ## Unreleased
 
+- Add `beauty-quotation-rule` with configurable gutter offset and border for author theses sharing quotation typography.
+
+- Add `--beauty-hanging-gap` for optical clearance after hanging opening marks without changing line wraps; reset the offset in print.
+
+- Add shared quote attribution alignment for figure captions and blockquote footers; end-aligned signatures keep their dash next to the author. Image captions remain independent. Allow 5.25 KiB minified for the quotation controls.
+
+- Add `--beauty-hanging-scale` to enlarge selected opening punctuation without changing line boxes; restore ordinary size in print.
+
+- Add `--beauty-quotation-author-display` for inline author and role signatures, retaining separate author lines by default.
+
+- Expose attribution spacing and signature inset tokens for hanging dashes; keep negative insets inside the page in print. The readable entry is 5404 gzip bytes: allow 5.5 KiB, retaining the 5 KiB minified budget.
+
+- Add `beauty-quotation-attribution` for a gently indented signature with a real em dash;
+  align the author, source and wrapped lines in both CSS entries.
+
+- Add `--beauty-quote-family` and `--beauty-quote-weight` for native block quotations and
+  callouts; keep their footer attributions in the body face and inline quotes unchanged.
+
+- Add opt-in `beauty-quotation` figures with responsive quotation type, a separate
+  body-face attribution with an optional separate author line and native selectable punctuation; preserve ordinary
+  quotations, both CSS scopes, color schemes and print. Expose the quotation measure,
+  outer spacing and paragraph gap as tokens; keep the attribution gap independent
+  of the last paragraph margin. Allow 5 KiB minified / 5.25 KiB readable.
+
 - Expose `--beauty-footnote-line-height` to tune note leading independently; its default `inherit` preserves existing layouts in both entries.
 
 - Add `--beauty-dropcap-rise` for raised initials without changing their sink line, text semantics or print fallback.

@@ -9,6 +9,8 @@
     --beauty-reading-size: 1rem;
     --beauty-reading-size-small: 1rem;
     --beauty-reading-width: 42.5rem;
+    --beauty-hanging-scale: 1;
+    --beauty-hanging-gap: 0em;
     --beauty-reading-line-height: 1.6;
     --beauty-heading-wrap: balance;
     --beauty-h1-hyphens: manual;
@@ -73,7 +75,23 @@
     --beauty-quote-margin-block: var(--beauty-block-start) var(--beauty-space);
     --beauty-quote-background: transparent;
     --beauty-quote-style: normal;
+    --beauty-quote-family: var(--beauty-font);
+    --beauty-quote-weight: var(--beauty-font-weight);
     --beauty-quote-text: var(--beauty-heading);
+    --beauty-quote-attribution-align: start;
+    --beauty-quotation-rule: 1px solid var(--beauty-muted);
+    --beauty-quotation-rule-offset: 1rem;
+    --beauty-quotation-width: 100%;
+    --beauty-quotation-margin-block: 2em;
+    --beauty-quotation-paragraph-gap: .75em;
+    --beauty-quotation-caption-gap: 1rem;
+    --beauty-quotation-author-display: block;
+    --beauty-quotation-attribution-indent: 1em;
+    --beauty-quotation-attribution-gap: .5em;
+    --beauty-quotation-size: 1.5rem;
+    --beauty-quotation-size-small: 1.375rem;
+    --beauty-quotation-font: var(--beauty-font-weight) var(--beauty-quotation-size)/1.45
+    var(--beauty-font);
     --beauty-code-size: .875em;
     --beauty-code-padding: .12em .3em;
     --beauty-code-radius: var(--beauty-radius);
@@ -371,6 +389,8 @@
     border-inline-start: var(--beauty-quote-border);
     background: var(--beauty-quote-background);
     color: var(--beauty-quote-text);
+    font-family: var(--beauty-quote-family);
+    font-weight: var(--beauty-quote-weight);
     font-style: var(--beauty-quote-style);
     padding-inline-start: var(--beauty-quote-padding);
     padding-inline-end: var(--beauty-quote-padding-end);
@@ -385,7 +405,13 @@
     font-size: .875em;
   }
 
+  :where(.beauty) :where(blockquote footer, figure:has( > blockquote) > figcaption):where(:not(.not-beauty, .not-beauty *)) {
+    text-align: var(--beauty-quote-attribution-align);
+  }
+
   :where(.beauty) :where(blockquote footer):where(:not(.not-beauty, .not-beauty *)) {
+    font-family: var(--beauty-font);
+    font-weight: var(--beauty-font-weight);
     margin-block-start: .6em;
   }
 
@@ -647,16 +673,21 @@
   }
 
   :where(.beauty) :where(.beauty-hanging-open):where(:not(.not-beauty, .not-beauty *)) {
+    scale: var(--beauty-hanging-scale);
     white-space: nowrap;
     grid-template-columns: max-content;
     justify-content: end;
     inline-size: 0;
     display: inline-grid;
+    position: relative;
+    inset-inline-end: var(--beauty-hanging-gap);
   }
 
   @media print {
     :where(.beauty) :where(.beauty-hanging-open):where(:not(.not-beauty, .not-beauty *)) {
       inline-size: auto;
+      inset-inline-end: auto;
+      scale: 1;
     }
   }
 
@@ -794,6 +825,8 @@
     border-inline-start: var(--beauty-callout-border);
     background: var(--beauty-callout-background);
     color: var(--beauty-text);
+    font-family: var(--beauty-quote-family);
+    font-weight: var(--beauty-quote-weight);
     quotes: none;
     margin: 1.2em 0;
     padding: .5rem 1.2rem;
@@ -803,6 +836,76 @@
 
   :where(.beauty) :where(blockquote > :first-child):where(:not(.not-beauty, .not-beauty *)) {
     margin-block-start: 0;
+  }
+
+  :where(.beauty) :where(figure.beauty-quotation):where(:not(.not-beauty, .not-beauty *)) {
+    max-inline-size: var(--beauty-quotation-width);
+    margin-block: var(--beauty-quotation-margin-block);
+  }
+
+  :where(.beauty) :where(.beauty-quotation-rule):where(:not(.not-beauty, .not-beauty *)) {
+    position: relative;
+  }
+
+  :where(.beauty) :where(.beauty-quotation-rule):where(:not(.not-beauty, .not-beauty *)):before {
+    content: "";
+    border-inline-start: var(--beauty-quotation-rule);
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: calc(-1 * var(--beauty-quotation-rule-offset));
+  }
+
+  :where(.beauty) :where(.beauty-quotation > blockquote):where(:not(.not-beauty, .not-beauty *)) {
+    color: var(--beauty-text);
+    font: var(--beauty-quotation-font);
+    font-size: var(--beauty-quotation-size);
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  :where(.beauty) :where(.beauty-quotation > blockquote > p):where(:not(.not-beauty, .not-beauty *)) {
+    margin-block: 0;
+  }
+
+  :where(.beauty) :where(.beauty-quotation > blockquote > p + p):where(:not(.not-beauty, .not-beauty *)) {
+    margin-block-start: var(--beauty-quotation-paragraph-gap);
+  }
+
+  :where(.beauty) :where(.beauty-quotation > figcaption):where(:not(.not-beauty, .not-beauty *)) {
+    font-family: var(--beauty-font);
+    font-weight: var(--beauty-font-weight);
+    margin-block-start: var(--beauty-quotation-caption-gap);
+  }
+
+  :where(.beauty) :where(.beauty-quotation-attribution):where(:not(.not-beauty, .not-beauty *)) {
+    justify-content: var(--beauty-quote-attribution-align);
+    column-gap: var(--beauty-quotation-attribution-gap);
+    grid-template-columns: 1em minmax(0, auto);
+    margin-inline-start: var(--beauty-quotation-attribution-indent);
+    display: grid;
+  }
+
+  :where(.beauty) :where(.beauty-quotation-author):where(:not(.not-beauty, .not-beauty *)) {
+    display: var(--beauty-quotation-author-display);
+    color: var(--beauty-text);
+  }
+
+  @media screen and (width <= 48rem) {
+    :where(.beauty) :where(.beauty-quotation):where(:not(.not-beauty, .not-beauty *)) {
+      --beauty-quotation-size: var(--beauty-quotation-size-small);
+    }
+  }
+
+  @media print {
+    :where(.beauty) :where(.beauty-quotation-attribution):where(:not(.not-beauty, .not-beauty *)) {
+      margin-inline-start: max(0px, var(--beauty-quotation-attribution-indent));
+    }
+
+    :where(.beauty) :where(.beauty-quotation > blockquote):where(:not(.not-beauty, .not-beauty *)) {
+      font-size: inherit;
+    }
   }
 
   :where(.beauty) :where(button, input, select, textarea):where(:not(.not-beauty, .not-beauty *)) {

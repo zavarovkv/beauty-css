@@ -16,7 +16,7 @@ Created by **[Konstantin Zavarov](https://zavarov.com/)**.
 
 - **Made for reading.** A comfortable type scale, useful spacing and clear content hierarchy.
 - **Two ways to use it.** Style a whole page or a single `.beauty` content container.
-- **Small by design.** Under 4.75 KiB gzip per minified entry, with no runtime dependencies.
+- **Small by design.** Under 5 KiB gzip per minified entry, with no runtime dependencies.
 - **Your HTML, your fonts.** Semantic elements, native controls and the font family you choose.
 - **Easy to customize.** Named CSS variables and a low-priority cascade layer.
 - **Light, dark and print.** System-aware colors, an explicit theme choice and practical print styles.
@@ -374,6 +374,61 @@ Block quotation surfaces and spacing can be configured without overriding elemen
 `--beauty-quote-padding-end` to `0`, and `--beauty-quote-margin-block` to
 `var(--beauty-block-start) var(--beauty-space)`. The existing `--beauty-quote-padding` token controls
 start padding. A host can use these tokens to give ordinary quotations and callouts the same frame.
+`--beauty-quote-family` and `--beauty-quote-weight` choose their text face and weight,
+defaulting to `var(--beauty-font)` and `var(--beauty-font-weight)`. Quotation footers
+retain the body face; inline `q` elements keep inheriting their surrounding text.
+
+### Attributed quotations
+
+Use `figure.beauty-quotation` for a selected quotation or testimonial. Its direct
+`blockquote` gets larger, unframed text; `figcaption` remains a smaller, muted
+attribution in the body face. Other quotations are unchanged. Include real opening
+and closing marks in the text, choosing punctuation for the language. The optional
+`--beauty-hanging-scale` (default `1`) can enlarge the opening mark visually without changing line height.
+`--beauty-hanging-gap` (default `0em`) moves it toward the inline-start gutter to add optical clearance without shifting the text. Print restores ordinary size and inline placement.
+
+`beauty-hanging-open` span aligns the opening mark outside the text edge; allow room
+for that glyph in the container gutter. Print restores inline punctuation and the
+surrounding text size. Both CSS entries support this treatment.
+Add `beauty-quotation-rule` to the figure for a quiet line in the inline-start gutter,
+for example an author's own thesis without quotation marks. It preserves the text edge
+and measure. `--beauty-quotation-rule` defaults to `1px solid var(--beauty-muted)`;
+`--beauty-quotation-rule-offset` defaults to `1rem`. Leave that space in the container gutter.
+Use a `beauty-quotation-author` span inside the caption for a name on its own line
+in the body text color; a role or source after the span retains the muted caption color.
+For an indented signature, add `beauty-quotation-attribution` to `figcaption`, with a
+real em dash in its first span and the author/source grouped in its second span.
+The signature is inset by 1em; a 1em dash column and 0.5em gap align the name, role
+and wrapped lines. Set `--beauty-quote-attribution-align: end` and
+`--beauty-quotation-attribution-indent: 0` for an end-aligned signature with its dash
+next to the author. The alignment token defaults to `start` and also applies to
+ordinary `blockquote footer` and captions of figures containing a direct blockquote;
+image captions keep their own alignment. The decorative dash can be hidden from assistive technology.
+
+```html
+<figure class="beauty-quotation">
+  <blockquote>
+    <p><span class="beauty-hanging-open">«</span>Хорошая типографика помогает читать».</p>
+  </blockquote>
+  <figcaption class="beauty-quotation-attribution">
+    <span aria-hidden="true">—</span>
+    <span><span class="beauty-quotation-author">Автор цитаты</span>Пример оформления</span>
+  </figcaption>
+</figure>
+```
+
+| Variable                                | Default                                                                          | Purpose                                                                                                                            |
+| --------------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `--beauty-quotation-width`              | `100%`                                                                           | Maximum inline measure                                                                                                             |
+| `--beauty-quotation-margin-block`       | `2em`                                                                            | Space before and after the figure                                                                                                  |
+| `--beauty-quotation-author-display`     | `block`                                                                          | Author layout; use `inline` to keep the role on the same line                                                                      |
+| `--beauty-quotation-caption-gap`        | `1rem`                                                                           | Space before the attribution                                                                                                       |
+| `--beauty-quotation-attribution-indent` | `1em`                                                                            | Signature inset; a negative value hangs the dash in the gutter (clamped to zero in print)                                          |
+| `--beauty-quotation-attribution-gap`    | `0.5em`                                                                          | Space between the dash and author; set the indent to minus this gap and the 1em dash column to align the author with the quotation |
+| `--beauty-quotation-paragraph-gap`      | `0.75em`                                                                         | Space between quoted paragraphs                                                                                                    |
+| `--beauty-quotation-size`               | `1.5rem`                                                                         | Quotation size                                                                                                                     |
+| `--beauty-quotation-size-small`         | `1.375rem`                                                                       | Size on screens up to 48rem                                                                                                        |
+| `--beauty-quotation-font`               | `var(--beauty-font-weight) var(--beauty-quotation-size)/1.45 var(--beauty-font)` | Family, weight and leading                                                                                                         |
 
 ### Tables
 
@@ -617,7 +672,7 @@ After editing a source file, rebuild it with `npm run build` and `npm run build:
 | `docs/`    | Architecture and release process                                 |
 
 `npm run build` generates readable/minified classless and prose files. Parsed selectors are scoped
-with PostCSS; Lightning CSS validates and minifies the results. Each minified entry stays below 4.75 KiB gzip.
+with PostCSS; Lightning CSS validates and minifies the results. Each minified entry stays below 5 KiB gzip.
 `dist/manifest.json` records version, byte/gzip sizes, SHA-256 and SHA-384 integrity values.
 
 The npm package contains only source CSS, distributables, README, changelog and license. Build,

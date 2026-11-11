@@ -24,9 +24,9 @@ test("each advertised file has a valid checksum, a license and a useful size bud
       `sha384-${createHash("sha384").update(bytes).digest("base64")}`,
       expected.integrity,
     );
-    // Native drop caps add less than 200 gzip bytes to the shared typography.
-    // Keep a 4.75 KiB minified budget and the existing 5 KiB readable budget.
-    const limit = file.endsWith(".min.css") ? 4864 : 5120;
+    // Quotation scale and shared attribution alignment extend the editorial API.
+    // Keep 5.25 KiB minified and 5.5 KiB readable budgets.
+    const limit = file.endsWith(".min.css") ? 5376 : 5632;
     assert.ok(expected.gzip < limit, `${file} must stay below ${limit / 1024} KiB gzip`);
     assert.ok(css.startsWith(`/*! Beauty.css v${pkg.version} | MIT`));
     assert.doesNotMatch(

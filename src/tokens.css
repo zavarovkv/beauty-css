@@ -8,6 +8,8 @@
   --beauty-reading-size: 1rem;
   --beauty-reading-size-small: 1rem;
   --beauty-reading-width: 42.5rem;
+  --beauty-hanging-scale: 1;
+  --beauty-hanging-gap: 0em;
   --beauty-reading-line-height: 1.6;
   --beauty-heading-wrap: balance;
   --beauty-h1-hyphens: manual;
@@ -72,7 +74,23 @@
   --beauty-quote-margin-block: var(--beauty-block-start) var(--beauty-space);
   --beauty-quote-background: transparent;
   --beauty-quote-style: normal;
+  --beauty-quote-family: var(--beauty-font);
+  --beauty-quote-weight: var(--beauty-font-weight);
   --beauty-quote-text: var(--beauty-heading);
+  --beauty-quote-attribution-align: start;
+  --beauty-quotation-rule: 1px solid var(--beauty-muted);
+  --beauty-quotation-rule-offset: 1rem;
+  --beauty-quotation-width: 100%;
+  --beauty-quotation-margin-block: 2em;
+  --beauty-quotation-paragraph-gap: 0.75em;
+  --beauty-quotation-caption-gap: 1rem;
+  --beauty-quotation-author-display: block;
+  --beauty-quotation-attribution-indent: 1em;
+  --beauty-quotation-attribution-gap: 0.5em;
+  --beauty-quotation-size: 1.5rem;
+  --beauty-quotation-size-small: 1.375rem;
+  --beauty-quotation-font: var(--beauty-font-weight) var(--beauty-quotation-size)/1.45
+    var(--beauty-font);
   --beauty-code-size: 0.875em;
   --beauty-code-padding: 0.12em 0.3em;
   --beauty-code-radius: var(--beauty-radius);

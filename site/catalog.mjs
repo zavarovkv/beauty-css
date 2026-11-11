@@ -108,6 +108,15 @@ H<sub>2</sub>O · x<sup>2</sup> · <small>${t("небольшое уточнен
 </blockquote>`,
         },
         {
+          title: t("Цитата с подписью", "Attributed quotation"),
+          html: `<figure class="beauty-quotation beauty-quotation-rule">
+  <blockquote>
+    <p><span class="beauty-hanging-open">${t("«", "“")}</span>${t("Хорошая типографика помогает сосредоточиться на смысле».", "Good typography helps the reader focus on the meaning.”")}</p>
+  </blockquote>
+  <figcaption class="beauty-quotation-attribution"><span aria-hidden="true">—</span><span><span class="beauty-quotation-author">${t("Автор цитаты", "Quotation author")}</span>${t("Пример оформления", "Example quotation")}</span></figcaption>
+</figure>`,
+        },
+        {
           title: t("Три вида списков", "Three kinds of list"),
           html: `<ul>
   <li>${t("Ясная мысль", "A clear idea")}

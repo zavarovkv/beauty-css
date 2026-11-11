@@ -239,6 +239,8 @@
   border-inline-start: var(--beauty-quote-border);
   background: var(--beauty-quote-background);
   color: var(--beauty-quote-text);
+  font-family: var(--beauty-quote-family);
+  font-weight: var(--beauty-quote-weight);
   font-style: var(--beauty-quote-style);
 }
 
@@ -251,7 +253,13 @@
   font-size: 0.875em;
 }
 
+:where(blockquote footer, figure:has(> blockquote) > figcaption) {
+  text-align: var(--beauty-quote-attribution-align);
+}
+
 :where(blockquote footer) {
+  font-family: var(--beauty-font);
+  font-weight: var(--beauty-font-weight);
   margin-block-start: 0.6em;
 }
 
@@ -554,6 +562,9 @@
 /* Wrap only an opening quote at the start of a block. The zero-width box aligns
    its real glyph to the inline-start edge without font-specific measurements. */
 :where(.beauty-hanging-open) {
+  position: relative;
+  inset-inline-end: var(--beauty-hanging-gap);
+  scale: var(--beauty-hanging-scale);
   display: inline-grid;
   inline-size: 0;
   grid-template-columns: max-content;
@@ -563,6 +574,8 @@
 
 @media print {
   :where(.beauty-hanging-open) {
+    scale: 1;
+    inset-inline-end: auto;
     inline-size: auto;
   }
 }
@@ -709,10 +722,85 @@
   border-inline-start: var(--beauty-callout-border);
   background: var(--beauty-callout-background);
   color: var(--beauty-text);
+  font-family: var(--beauty-quote-family);
+  font-weight: var(--beauty-quote-weight);
   font-style: normal;
   quotes: none;
 }
 
 :where(blockquote > :first-child) {
   margin-block-start: 0;
+}
+
+/* Attributed quotations with selectable punctuation. */
+:where(figure.beauty-quotation) {
+  max-inline-size: var(--beauty-quotation-width);
+  margin-block: var(--beauty-quotation-margin-block);
+}
+
+/* An optional gutter rule distinguishes author theses without adding quotes. */
+:where(.beauty-quotation-rule) {
+  position: relative;
+}
+
+:where(.beauty-quotation-rule)::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(-1 * var(--beauty-quotation-rule-offset));
+  border-inline-start: var(--beauty-quotation-rule);
+}
+
+:where(.beauty-quotation > blockquote) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--beauty-text);
+  font: var(--beauty-quotation-font);
+  font-size: var(--beauty-quotation-size);
+}
+
+:where(.beauty-quotation > blockquote > p) {
+  margin-block: 0;
+}
+
+:where(.beauty-quotation > blockquote > p + p) {
+  margin-block-start: var(--beauty-quotation-paragraph-gap);
+}
+
+:where(.beauty-quotation > figcaption) {
+  margin-block-start: var(--beauty-quotation-caption-gap);
+  font-family: var(--beauty-font);
+  font-weight: var(--beauty-font-weight);
+}
+
+/* Align multiline signatures after a real dash. */
+:where(.beauty-quotation-attribution) {
+  display: grid;
+  grid-template-columns: 1em minmax(0, auto);
+  justify-content: var(--beauty-quote-attribution-align);
+  column-gap: var(--beauty-quotation-attribution-gap);
+  margin-inline-start: var(--beauty-quotation-attribution-indent);
+}
+
+:where(.beauty-quotation-author) {
+  display: var(--beauty-quotation-author-display);
+  color: var(--beauty-text);
+}
+
+@media screen and (max-width: 48rem) {
+  :where(.beauty-quotation) {
+    --beauty-quotation-size: var(--beauty-quotation-size-small);
+  }
+}
+
+@media print {
+  :where(.beauty-quotation-attribution) {
+    margin-inline-start: max(0px, var(--beauty-quotation-attribution-indent));
+  }
+
+  :where(.beauty-quotation > blockquote) {
+    font-size: inherit;
+  }
 }
