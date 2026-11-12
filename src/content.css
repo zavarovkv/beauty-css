@@ -91,7 +91,7 @@
   margin-block: var(--beauty-block-start) var(--beauty-space);
 }
 
-:where(p) {
+:where(p, li) {
   text-wrap: var(--beauty-text-wrap);
 }
 

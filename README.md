@@ -335,7 +335,7 @@ Use `class="beauty-reading"` on an article or other reading container inside the
 or a prose root. It keeps the base text size by default and sets a comfortable reading measure
 without changing navigation, controls or a surrounding application's layout. Page titles (`h1`)
 balance their lines; section headings (`h2`–`h6`) wrap naturally instead of moving words early
-to balance line lengths. Paragraphs use the browser's `pretty` wrapping when supported, and
+to balance line lengths. Paragraphs and list items use the browser's `pretty` wrapping when supported, and
 semantic `time` elements keep dates together. Older engines retain their normal wrapping.
 Use `beauty-nowrap` for short values such as a number with its unit. These are native CSS rules;
 no text rewriting or JavaScript is used.
@@ -348,7 +348,7 @@ no text rewriting or JavaScript is used.
 | `--beauty-reading-line-height`  | `1.6`     | Reading leading                             |
 | `--beauty-heading-wrap`         | `balance` | Page title (`h1`) line wrapping             |
 | `--beauty-section-heading-wrap` | `wrap`    | Section headings (`h2`–`h6`) line wrapping  |
-| `--beauty-text-wrap`            | `pretty`  | Paragraph line wrapping                     |
+| `--beauty-text-wrap`            | `pretty`  | Paragraph and list-item line wrapping       |
 | `--beauty-h3-margin`            | `1em`     | Third-level heading block margins           |
 | `--beauty-caption-gap`          | `0.5em`   | Gap between an image and its caption helper |
 

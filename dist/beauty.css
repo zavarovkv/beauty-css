@@ -244,7 +244,7 @@
     margin-block: var(--beauty-block-start) var(--beauty-space);
   }
 
-  :where(p):where(:not(.not-beauty, .not-beauty *)) {
+  :where(p, li):where(:not(.not-beauty, .not-beauty *)) {
     text-wrap: var(--beauty-text-wrap);
   }
 

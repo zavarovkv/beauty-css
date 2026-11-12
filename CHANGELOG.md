@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Apply `--beauty-text-wrap` to list items as well as paragraphs, so native lists avoid isolated last words where browser pretty wrapping supports it. Preserve list indentation, spacing, markers and both CSS entries.
+
 - Add `--beauty-lead-margin-block` for shared spacing around enlarged author statements; retain the existing paragraph spacing by default.
 
 - Add `--beauty-hanging-gap` for optical clearance after hanging opening marks without changing line wraps; reset the offset in print.
