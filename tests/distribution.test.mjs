@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile, readdir } from "node:fs/promises";
+import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join, sep } from "node:path";
+import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import postcss from "postcss";
@@ -90,12 +93,19 @@ test("all custom property references resolve to documented public tokens", async
   for (const name of definitions) assert.ok(readme.includes(name), `${name} is undocumented`);
 });
 
-test("build artifacts are deterministic", async () => {
-  const files = await readdir(directory);
-  const before = await Promise.all(files.map((name) => readFile(new URL(name, directory), "utf8")));
-  await build();
-  const after = await Promise.all(files.map((name) => readFile(new URL(name, directory), "utf8")));
-  assert.deepEqual(after, before);
+test("build artifacts are deterministic", async (t) => {
+  const temporary = await mkdtemp(join(tmpdir(), "beauty-dist-"));
+  t.after(() => rm(temporary, { recursive: true, force: true }));
+  await build(pathToFileURL(temporary + sep));
+  const files = (await readdir(directory)).sort();
+  assert.deepEqual((await readdir(temporary)).sort(), files);
+  for (const name of files) {
+    assert.deepEqual(
+      await readFile(join(temporary, name)),
+      await readFile(new URL(name, directory)),
+      name,
+    );
+  }
 });
 
 function luminance(hex) {

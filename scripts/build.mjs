@@ -7,6 +7,10 @@ import postcss from "postcss";
 import selectorParser from "postcss-selector-parser";
 import { transform } from "lightningcss";
 
+const selectorAST = selectorParser();
+const scopePrefix = selectorAST.astSync(":where(.beauty) ").first;
+const optOut = selectorAST.astSync(":where(:not(.not-beauty, .not-beauty *))").first.first;
+
 // Transform parsed selectors, never text substitutions: commas inside :where(),
 // attribute values and pseudo-elements must keep their original meaning.
 export function scopeSelector(selector, scoped) {
@@ -25,13 +29,11 @@ export function scopeSelector(selector, scoped) {
       });
 
       if (scoped && !isRoot) {
-        const prefix = selectorParser().astSync(":where(.beauty) ").first;
-        item.prepend(...prefix.nodes.map((node) => node.clone()));
+        item.prepend(...scopePrefix.nodes.map((node) => node.clone()));
       }
 
       // This opt-out affects selector matching, not normal CSS inheritance.
-      const exclusion = selectorParser().astSync(":where(:not(.not-beauty, .not-beauty *))").first
-        .first;
+      const exclusion = optOut.clone();
       const pseudoElement = item.nodes.find(
         (node) => node.type === "pseudo" && node.value.startsWith("::"),
       );
@@ -41,7 +43,7 @@ export function scopeSelector(selector, scoped) {
   }).processSync(selector);
 }
 
-export async function build() {
+export async function build(directory = new URL("../dist/", import.meta.url)) {
   const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
   const banner = `/*! Beauty.css v${pkg.version} | MIT | github.com/zavarovkv/beauty-css */`;
   const shared = await Promise.all(
@@ -50,7 +52,7 @@ export async function build() {
     ),
   );
   const page = await readFile(new URL("../src/page.css", import.meta.url), "utf8");
-  await mkdir(new URL("../dist/", import.meta.url), { recursive: true });
+  await mkdir(directory, { recursive: true });
   const manifest = { name: pkg.name, version: pkg.version, files: {} };
 
   for (const scoped of [false, true]) {
@@ -67,7 +69,7 @@ export async function build() {
       // Lightning CSS parses every declaration and emits interoperable plain CSS.
       const result = transform({ filename, code: Buffer.from(css), minify, errorRecovery: false });
       const content = Buffer.from(`${banner}\n${result.code.toString().trim()}\n`);
-      await writeFile(new URL(`../dist/${filename}`, import.meta.url), content);
+      await writeFile(new URL(filename, directory), content);
       manifest.files[filename] = {
         bytes: content.length,
         gzip: gzipSync(content).length,
@@ -76,10 +78,7 @@ export async function build() {
       };
     }
   }
-  await writeFile(
-    new URL("../dist/manifest.json", import.meta.url),
-    `${JSON.stringify(manifest, null, 2)}\n`,
-  );
+  await writeFile(new URL("manifest.json", directory), `${JSON.stringify(manifest, null, 2)}\n`);
   return manifest;
 }
 
