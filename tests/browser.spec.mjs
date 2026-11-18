@@ -712,7 +712,7 @@ test("list markers inherit text weight and item spacing stays configurable", asy
       .evaluate((node) =>
         node.insertAdjacentHTML(
           "beforeend",
-          '<ol id="list-fixture"><li>First item</li><li><strong>Emphasis</strong> within an item<ul><li>Nested item</li></ul></li></ol>',
+          '<ol id="list-fixture"><li>First item</li><li><strong>Emphasis</strong> within an item<ul><li>Nested item</li></ul></li></ol><ol id="loose-list"><li><p>First paragraph</p><p>Second paragraph</p></li><li><p>Next item</p></li></ol>',
         ),
       );
     const item = page.locator("#list-fixture > li").first();
@@ -724,6 +724,24 @@ test("list markers inherit text weight and item spacing stays configurable", asy
     expect(
       Number.parseFloat(await item.evaluate((node) => getComputedStyle(node).marginBlockEnd)),
     ).toBeCloseTo(14, 1);
+    const looseGap = () =>
+      page
+        .locator("#loose-list > li")
+        .evaluateAll(
+          ([first, second]) =>
+            second.getBoundingClientRect().top - first.getBoundingClientRect().bottom,
+        );
+    expect(await looseGap()).toBeCloseTo(14, 1);
+    expect(
+      await page
+        .locator("#loose-list p")
+        .first()
+        .evaluate((p) => parseFloat(getComputedStyle(p).marginBlockEnd)),
+    ).toBeGreaterThan(0);
+    await page
+      .locator("#loose-list")
+      .evaluate((list) => list.style.setProperty("--beauty-list-gap", "4px"));
+    expect(await looseGap()).toBeCloseTo(4, 1);
     await expect(page.locator("#list-fixture strong")).toHaveCSS("font-weight", "600");
     await page
       .locator("#list-fixture")
@@ -822,6 +840,9 @@ test("editorial numerals and hanging quotes stay scoped and preserve the text", 
           <time id="date-number">2026-11-10</time><span class="beauty-lining-nums" id="score">7/10</span>
           <span class="beauty-fraction" id="fraction"><span>1</span>/<span>3</span></span></p>
         <blockquote><p id="quote-number">2021</p></blockquote>
+        <figure class="beauty-quotation"><blockquote><p id="figure-number">2021</p></blockquote>
+          <figcaption id="attribution-number">Interview, 2021</figcaption></figure>
+        <figure class="beauty-quotation" data-typography="off"><blockquote><p id="plain-quote-number">2021</p></blockquote></figure>
         <p class="beauty-caption" id="caption-number">2021</p>
         <p data-typography="off" id="off-number">2021</p>
         <table><tbody><tr><td id="table-number">2021</td></tr></tbody></table>
@@ -832,14 +853,14 @@ test("editorial numerals and hanging quotes stay scoped and preserve the text", 
     // Hanging punctuation needs outer space; the unstyled host in the prose
     // fixture has only the browser's default 8px body margin.
     await page.addStyleTag({ content: "#editorial { margin-inline: 1em; }" });
-    for (const id of ["prose-number", "em-number", "quote-number"])
+    for (const id of ["prose-number", "em-number", "quote-number", "figure-number"])
       await expect(page.locator(`#${id}`)).toHaveCSS(
         "font-variant-numeric",
         "oldstyle-nums proportional-nums",
       );
     for (const id of ["code-number", "note-number", "date-number", "score", "off-number"])
       await expect(page.locator(`#${id}`)).toHaveCSS("font-variant-numeric", "lining-nums");
-    for (const id of ["caption-number", "list-number"])
+    for (const id of ["caption-number", "attribution-number", "list-number", "plain-quote-number"])
       await expect(page.locator(`#${id}`)).toHaveCSS("font-variant-numeric", "normal");
     await expect(page.locator("#table-number")).toHaveCSS(
       "font-variant-numeric",

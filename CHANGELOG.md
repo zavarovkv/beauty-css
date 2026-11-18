@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep the configured list gap when Markdown wraps items in paragraphs. Apply prose numerals to editorial quotation text, including quotes with a separate attribution.
+
 - Apply `--beauty-text-wrap` to list items as well as paragraphs, so native lists avoid isolated last words where browser pretty wrapping supports it. Preserve list indentation, spacing, markers and both CSS entries.
 
 - Add `--beauty-lead-margin-block` for shared spacing around enlarged author statements; retain the existing paragraph spacing by default.

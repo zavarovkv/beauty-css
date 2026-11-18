@@ -174,7 +174,8 @@ contrast of at least 3:1. Recheck contrast after changing colors.
 
 ## Make it yours
 
-`--beauty-heading-weight` controls headings, semantic bold emphasis and table headers.
+`--beauty-heading-weight` sets the weight of H3–H6, bold text, definition terms and table headers.
+Set H1 and H2 weights in the `--beauty-h1-font` and `--beauty-h2-font` shorthands.
 Use a semantic `<p class="beauty-lead">` for a larger paragraph with the ordinary paragraph spacing.
 
 Attribution size can be adjusted with `--beauty-fine-print-size` (default `0.75rem`);
@@ -218,7 +219,7 @@ sizing. H3–H6 retain the browser's native hierarchy.
 | Variable                       | Default                                                    | Purpose                             |
 | ------------------------------ | ---------------------------------------------------------- | ----------------------------------- |
 | `--beauty-heading-font`        | `var(--beauty-font)`                                       | Heading family                      |
-| `--beauty-heading-weight`      | `600`                                                      | H3–H6 and emphasis weight           |
+| `--beauty-heading-weight`      | `600`                                                      | H3–H6, bold text, terms and headers |
 | `--beauty-h1-size`             | `2.75em`                                                   | Desktop title size                  |
 | `--beauty-h1-size-small`       | `2em`                                                      | Title size below 48rem              |
 | `--beauty-h1-font`             | `600 var(--beauty-h1-size)/1.2 var(--beauty-heading-font)` | Title font shorthand                |
@@ -513,7 +514,7 @@ is controlled by `--beauty-lead-margin-block`, defaulting to
   quotation, with enough outer space. Works in LTR and RTL without JavaScript;
   print restores the quote inside the line. The copied text retains the quote.
 - Add `beauty-prose-numerals` to an article for old-style proportional figures in
-  its direct paragraphs and direct blockquote paragraphs. Headings, lists, captions,
+  its direct paragraphs and the paragraphs of a direct blockquote or `figure.beauty-quotation`. Headings, lists, captions,
   tables and metadata keep their own figures. Inline code, dates marked with `time`,
   superscripts, subscripts, SVG and MathML retain lining figures.
 - Use `beauty-lining-nums` on a specific value (or paragraph) to retain lining figures.
