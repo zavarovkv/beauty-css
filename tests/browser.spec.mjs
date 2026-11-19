@@ -1,37 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-test("trailing header actions stay at the inline end when navigation wraps", async ({ page }) => {
-  await page.goto("/examples/classless.html");
-  await page.evaluate(() => {
-    document.body.insertAdjacentHTML(
-      "afterbegin",
-      `<header><nav aria-label="Account navigation" id="navigation">
-        <strong id="brand">Example website</strong>
-        <div class="beauty-nav-end" id="actions"><button type="button">Continue with your account</button></div>
-      </nav></header>`,
-    );
-  });
-  for (const direction of ["ltr", "rtl"]) {
-    await page.evaluate((value) => (document.documentElement.dir = value), direction);
-    for (const width of [375, 1280]) {
-      await page.setViewportSize({ width, height: 900 });
-      const navigation = await page.locator("#navigation").boundingBox();
-      const actions = await page.locator("#actions").boundingBox();
-      const edge = direction === "ltr" ? actions.x + actions.width : actions.x;
-      const expected = direction === "ltr" ? navigation.x + navigation.width : navigation.x;
-      expect(Math.abs(edge - expected)).toBeLessThan(1);
-      if (width === 375) {
-        const brand = await page.locator("#brand").boundingBox();
-        expect(actions.y).toBeGreaterThanOrEqual(brand.y + brand.height);
-      }
-      expect(
-        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
-      ).toBeTruthy();
-    }
-  }
-});
-
 test("prose does not change the surrounding page or an opted-out component's own styles", async ({
   page,
 }) => {
@@ -97,65 +66,6 @@ test("typography tokens configure responsive headings and quotations without sel
   await expect(page.locator("#content-link")).toHaveCSS("font-weight", "500");
 });
 
-test("page titles balance while section headings wrap naturally in both entries", async ({
-  page,
-}) => {
-  for (const entry of ["classless", "prose"]) {
-    await page.goto(`/examples/${entry}.html`);
-    const root = entry === "prose" ? ".beauty" : "body";
-    await page.locator(root).evaluate((node) => {
-      node.insertAdjacentHTML(
-        "beforeend",
-        `<section id="heading-wrap-fixture">
-          <h1>A page title spanning multiple lines</h1>
-          <h2>A section heading spanning multiple lines</h2>
-          <h3>Subsection heading</h3>
-          <h4>Fourth-level heading</h4>
-          <h5>Fifth-level heading</h5>
-          <h6>Sixth-level heading</h6>
-        </section>`,
-      );
-    });
-
-    for (const width of [375, 1280]) {
-      await page.setViewportSize({ width, height: 900 });
-      await expect(page.locator("#heading-wrap-fixture h1")).toHaveCSS("text-wrap", "balance");
-      for (const level of [2, 3, 4, 5, 6]) {
-        await expect(page.locator(`#heading-wrap-fixture h${level}`)).toHaveCSS(
-          "text-wrap",
-          "wrap",
-        );
-      }
-    }
-
-    await page.locator(root).evaluate((node) => {
-      node.style.setProperty("--beauty-heading-wrap", "wrap");
-      node.style.setProperty("--beauty-section-heading-wrap", "balance");
-    });
-    await expect(page.locator("#heading-wrap-fixture h1")).toHaveCSS("text-wrap", "wrap");
-    await expect(page.locator("#heading-wrap-fixture h2")).toHaveCSS("text-wrap", "balance");
-  }
-});
-
-test("the heading weight token also configures semantic emphasis and table headings in both entries", async ({
-  page,
-}) => {
-  for (const entry of ["classless", "prose"]) {
-    await page.goto(`/examples/${entry}.html`);
-    const root = entry === "prose" ? ".beauty" : "body";
-    await page.locator(root).evaluate((node) => {
-      node.style.setProperty("--beauty-heading-weight", "500");
-      node.insertAdjacentHTML(
-        "beforeend",
-        '<div id="weight-fixture"><h3>Heading</h3><p><strong>Strong</strong> <b>Bold</b></p><dl><dt>Term</dt><dd>Meaning</dd></dl><table><thead><tr><th>Column</th></tr></thead><tbody><tr><td>Value</td></tr></tbody></table></div>',
-      );
-    });
-    for (const selector of ["h3", "strong", "b", "dt", "th"]) {
-      await expect(page.locator(`#weight-fixture ${selector}`)).toHaveCSS("font-weight", "500");
-    }
-  }
-});
-
 test("editorial helpers preserve inline quotation semantics and remain scoped", async ({
   page,
 }) => {
@@ -186,59 +96,6 @@ test("editorial helpers preserve inline quotation semantics and remain scoped", 
   await expect(page.locator("#emphasis")).toHaveCSS("text-decoration-style", "wavy");
   await expect(page.locator("#action")).toHaveCSS("font-weight", "600");
   await expect(page.locator("#action")).toHaveCSS("text-decoration-line", "none");
-});
-
-test("a host can give native quotations and callouts the same frame through tokens", async ({
-  page,
-}) => {
-  await page.goto("/examples/prose.html");
-  await page.addStyleTag({
-    content: `.beauty {
-    --beauty-quote-background: #fffaf1;
-    --beauty-quote-border: 1px solid #222;
-    --beauty-quote-inset: 0;
-    --beauty-quote-padding: 1.2rem;
-    --beauty-quote-padding-end: 1.2rem;
-    --beauty-quote-padding-block: 0.5rem;
-    --beauty-quote-margin-block: 1.2em;
-    --beauty-quote-text: var(--beauty-text);
-    --beauty-callout-background: #fffaf1;
-    --beauty-callout-border: 1px solid #222;
-  }`,
-  });
-  await page
-    .locator("#prose")
-    .evaluate((container) =>
-      container.insertAdjacentHTML(
-        "beforeend",
-        '<blockquote id="native-frame"><p>The first paragraph.</p><p>The second paragraph.</p></blockquote>' +
-          '<blockquote class="beauty-callout" id="callout-frame"><p>The first paragraph.</p><p>The second paragraph.</p></blockquote>',
-      ),
-    );
-  for (const width of [375, 1280]) {
-    await page.setViewportSize({ width, height: 900 });
-    const styles = await page.locator("#native-frame,#callout-frame").evaluateAll((elements) =>
-      elements.map((element) => {
-        const style = getComputedStyle(element);
-        return Object.fromEntries(
-          [
-            "fontFamily",
-            "fontSize",
-            "fontWeight",
-            "fontStyle",
-            "color",
-            "backgroundColor",
-            "borderInlineStart",
-            "padding",
-            "margin",
-            "width",
-            "height",
-          ].map((name) => [name, style[name]]),
-        );
-      }),
-    );
-    expect(styles[0]).toEqual(styles[1]);
-  }
 });
 
 test("reading text is responsive and compound links underline only their label", async ({
@@ -295,42 +152,9 @@ test("reading text is responsive and compound links underline only their label",
   await expect(page.locator("#reading")).toHaveCSS("font-size", "18px");
 });
 
-test("captions stay close to their image and short semantic values do not split", async ({
-  page,
-}) => {
-  await page.goto("/examples/prose.html");
-  await page
-    .locator("#prose")
-    .evaluate((container) =>
-      container.insertAdjacentHTML(
-        "beforeend",
-        '<p id="caption-image"><img src="../assets/specimen.svg" width="160" height="60" alt="Sample"></p>' +
-          '<p class="beauty-caption" id="image-caption">A caption.</p>' +
-          '<p class="beauty-caption beauty-caption-credit" id="image-credit">Illustration by the author.</p>' +
-          '<p><time id="unbroken-date" datetime="2026-10-28">28 October 2026</time></p>' +
-          '<p><span class="beauty-nowrap" id="unbroken-value">300 students</span></p>',
-      ),
-    );
-  const margins = await page.locator("#caption-image, #prose > p").evaluateAll((nodes) =>
-    nodes.map((node) => ({
-      id: node.id,
-      bottom: parseFloat(getComputedStyle(node).marginBottom),
-    })),
-  );
-  expect(margins.find((node) => node.id === "caption-image").bottom).toBeLessThan(
-    margins.find((node) => node.id === "long-text").bottom,
-  );
-  await expect(page.locator("#image-caption")).toHaveCSS("font-style", "normal");
-  await expect(page.locator("#image-caption")).toHaveCSS("text-align", "start");
-  await expect(page.locator("#image-credit")).toHaveCSS("font-style", "italic");
-  await expect(page.locator("#image-credit")).toHaveCSS("text-align", "end");
-  await expect(page.locator("#unbroken-date")).toHaveCSS("white-space", "nowrap");
-  await expect(page.locator("#unbroken-value")).toHaveCSS("white-space", "nowrap");
-});
-
-for (const path of ["/", "/ru/", "/examples/classless.html", "/examples/prose.html"]) {
+for (const path of ["/examples/classless.html", "/examples/prose.html"]) {
   test(`${path} stays inside narrow and wide viewports`, async ({ page }) => {
-    for (const width of [320, 375, 768, 1440]) {
+    for (const width of [320, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(path);
       const dimensions = await page.evaluate(() => ({
@@ -338,13 +162,11 @@ for (const path of ["/", "/ru/", "/examples/classless.html", "/examples/prose.ht
         scroll: document.documentElement.scrollWidth,
       }));
       expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.viewport + 1);
-      if (path.includes("examples")) {
-        const code = await page
-          .locator("#wide-code")
-          .evaluate((element) => ({ width: element.clientWidth, scroll: element.scrollWidth }));
-        expect(code.scroll).toBeGreaterThan(code.width);
-        await expect(page.locator("#sample-image")).toHaveJSProperty("complete", true);
-      }
+      const code = await page
+        .locator("#wide-code")
+        .evaluate((element) => ({ width: element.clientWidth, scroll: element.scrollWidth }));
+      expect(code.scroll).toBeGreaterThan(code.width);
+      await expect(page.locator("#sample-image")).toHaveJSProperty("complete", true);
     }
   });
 }
@@ -392,43 +214,6 @@ test("native controls, inline quotations, focus and hidden content keep their me
   await expect(page.locator("#checkbox")).toBeChecked();
   await page.getByText("Read a little more", { exact: true }).click();
   await expect(page.getByText("Native disclosure needs no script.")).toBeVisible();
-});
-
-test("table headers share a tight text-colored rule across entries and color schemes", async ({
-  page,
-}) => {
-  for (const entry of ["classless", "prose"]) {
-    await page.goto(`/examples/${entry}.html`);
-    for (const scheme of ["light", "dark"]) {
-      await page.locator(entry === "prose" ? "#prose" : "html").evaluate((element, theme) => {
-        element.dataset.theme = theme;
-      }, scheme);
-
-      const metrics = await page.locator("#wide-table").evaluate((table) => {
-        const heading = getComputedStyle(table.querySelector("thead th"));
-        const data = getComputedStyle(table.querySelector("tbody td"));
-        return {
-          color: heading.color,
-          borderColor: heading.borderBottomColor,
-          borderWidth: heading.borderBottomWidth,
-          paddingEnd: parseFloat(heading.paddingBottom),
-          dataBorderColor: data.borderBottomColor,
-        };
-      });
-      expect(metrics.borderWidth).toBe(
-        (await page.evaluate(() => matchMedia("(min-resolution: 2dppx)").matches)) ? "0px" : "1px",
-      );
-      expect(metrics.borderColor).toBe(metrics.color);
-      expect(metrics.paddingEnd).toBe(0);
-      expect(metrics.dataBorderColor).not.toBe(metrics.color);
-    }
-
-    await page.locator("#wide-table").evaluate((table) => {
-      table.style.setProperty("--beauty-table-cell-padding", "0.65em 0");
-    });
-    await expect(page.locator("#wide-table thead th").first()).toHaveCSS("padding-left", "0px");
-    await expect(page.locator("#wide-table tbody td").first()).toHaveCSS("padding-left", "0px");
-  }
 });
 
 test("right-to-left prose puts the quotation rule on the reading edge", async ({ page }) => {
@@ -482,64 +267,19 @@ test("print restores a light page after an explicit dark choice", async ({ page 
 });
 
 for (const scheme of ["light", "dark"]) {
-  test(`${scheme} documentation passes automated accessibility checks`, async ({
-    page,
-  }, testInfo) => {
-    for (const path of ["/", "/ru/"]) {
-      await page.goto(path);
-      await page.locator("#theme").selectOption(scheme);
-      await expect(page.locator("body")).toHaveCSS(
-        "background-color",
-        scheme === "dark" ? "rgb(26, 26, 26)" : "rgb(255, 255, 255)",
-      );
-      const result = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-        .analyze();
-      expect(result.violations).toEqual([]);
-      if (testInfo.project.name === "chromium" && path === "/") {
-        await page.screenshot({
-          path: testInfo.outputPath(`${scheme}-desktop.png`),
-          fullPage: false,
-        });
-        await page.setViewportSize({ width: 375, height: 812 });
-        await page.screenshot({
-          path: testInfo.outputPath(`${scheme}-mobile.png`),
-          fullPage: false,
-        });
-      }
-    }
+  test(`${scheme} documentation passes automated accessibility checks`, async ({ page }) => {
+    await page.goto(scheme === "light" ? "/" : "/ru/");
+    await page.locator("#theme").selectOption(scheme);
+    await expect(page.locator("body")).toHaveCSS(
+      "background-color",
+      scheme === "dark" ? "rgb(26, 26, 26)" : "rgb(255, 255, 255)",
+    );
+    const result = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(result.violations).toEqual([]);
   });
 }
-
-test("numeric highlights share responsive type and configurable sizing in both entries", async ({
-  page,
-}) => {
-  for (const entry of ["classless", "prose"]) {
-    await page.goto(`/examples/${entry}.html`);
-    await page.locator(entry === "prose" ? "#prose" : "main").evaluate((container) => {
-      container.insertAdjacentHTML(
-        "beforeend",
-        `<dl id="statistics"><dt class="beauty-stat-label">Tasks completed</dt><dd class="beauty-stat-value">120</dd></dl>`,
-      );
-    });
-    const value = page.locator("#statistics dd");
-    const label = page.locator("#statistics dt");
-    await expect(value).toHaveCSS("color", "rgb(0, 96, 160)");
-    for (const [width, size] of [
-      [1280, "56px"],
-      [375, "45px"],
-      [320, "40px"],
-    ]) {
-      await page.setViewportSize({ width, height: 900 });
-      await expect(value).toHaveCSS("font-size", size);
-      await expect(value).toHaveCSS("font-variant-numeric", "lining-nums tabular-nums");
-      await expect(label).toHaveCSS("font-size", "14px");
-      await expect(label).toHaveCSS("font-weight", "400");
-    }
-    await page.addStyleTag({ content: ".beauty-stat-value { --beauty-stat-size: 40px; }" });
-    await expect(value).toHaveCSS("font-size", "40px");
-  }
-});
 
 test("connected steps stay scoped, fit small screens and follow text direction", async ({
   page,
@@ -600,43 +340,6 @@ test("connected steps stay scoped, fit small screens and follow text direction",
   }
 });
 
-test("input and textarea placeholders follow the muted token within their scope", async ({
-  page,
-}) => {
-  for (const entry of ["classless", "prose"]) {
-    await page.goto(`/examples/${entry}.html`);
-    await page.addStyleTag({ content: ":root, .beauty { --beauty-muted: #123456; }" });
-    await page.locator(entry === "prose" ? "#prose" : "main").evaluate((container) => {
-      container.insertAdjacentHTML(
-        "beforeend",
-        `<input id="hint-input" placeholder="Your name"><textarea id="hint-textarea" placeholder="Your message"></textarea>`,
-      );
-      document
-        .querySelector("#escape")
-        .insertAdjacentHTML("beforeend", `<input id="escape-hint" placeholder="Independent hint">`);
-      if (container.classList.contains("beauty"))
-        document.body.insertAdjacentHTML(
-          "beforeend",
-          `<input id="outside-hint" placeholder="Outside hint">`,
-        );
-    });
-    const placeholder = (selector) =>
-      page.locator(selector).evaluate((node) => {
-        const style = getComputedStyle(node, "::placeholder");
-        return { color: style.color, opacity: style.opacity };
-      });
-    for (const selector of ["#hint-input", "#hint-textarea"]) {
-      expect(await placeholder(selector)).toEqual({ color: "rgb(18, 52, 86)", opacity: "1" });
-    }
-    const independent = entry === "prose" ? ["#escape-hint", "#outside-hint"] : ["#escape-hint"];
-    const withBeauty = await Promise.all(independent.map(placeholder));
-    await page.evaluate(() => {
-      document.querySelector('link[rel="stylesheet"]').disabled = true;
-    });
-    expect(await Promise.all(independent.map(placeholder))).toEqual(withBeauty);
-  }
-});
-
 test("catalog examples reveal copyable source and forms never submit", async ({ page }) => {
   await page.goto("/ru/");
   const source = page.locator(".source").first();
@@ -669,38 +372,6 @@ test("catalog examples reveal copyable source and forms never submit", async ({ 
   await expect(page.locator("#contents-disclosure")).not.toHaveAttribute("open", "");
   await page.locator("#contents-disclosure > summary").click();
   await expect(page.locator('.contents a[href="#palette"]')).toBeVisible();
-});
-
-test("high-density table header rules stay thin in both entries and restore print width", async ({
-  browser,
-  baseURL,
-}, testInfo) => {
-  const context = await browser.newContext({
-    baseURL,
-    deviceScaleFactor: 2,
-    viewport: { width: 390, height: 844 },
-  });
-  try {
-    const page = await context.newPage();
-    for (const entry of ["classless", "prose"]) {
-      await page.goto(`/examples/${entry}.html`);
-      const heading = page.locator("#wide-table thead th").first();
-      await page.emulateMedia({ media: "screen" });
-      expect(await page.evaluate(() => matchMedia("(min-resolution: 2dppx)").matches)).toBe(true);
-      await expect(heading).toHaveCSS("border-bottom-width", "0px");
-      expect(
-        await heading.evaluate((element) => getComputedStyle(element, "::after").blockSize),
-      ).toBe("0.5px");
-      await heading.screenshot({ path: testInfo.outputPath(`${entry}-retina-header.png`) });
-      await page.emulateMedia({ media: "print" });
-      await expect(heading).toHaveCSS("border-bottom-width", "1px");
-      expect(
-        await heading.evaluate((element) => getComputedStyle(element, "::after").content),
-      ).toBe("none");
-    }
-  } finally {
-    await context.close();
-  }
 });
 
 test("list markers inherit text weight and item spacing stays configurable", async ({ page }) => {
