@@ -370,7 +370,7 @@
     position: relative;
   }
 
-  :where(.beauty-footnotes > ol > li):where(:not(.not-beauty, .not-beauty *)):before {
+  :where(.beauty-footnotes > ol > li:not(:has(.beauty-footnote-number))):where(:not(.not-beauty, .not-beauty *)):before {
     content: counter(list-item);
     font-size: var(--beauty-footnote-ref-size);
     font-style: italic;
@@ -378,6 +378,19 @@
     position: absolute;
     inset-block-start: .2em;
     inset-inline-end: calc(100% + .35em);
+  }
+
+  :where(a.beauty-footnote-number):where(:not(.not-beauty, .not-beauty *)) {
+    color: inherit;
+    font-weight: var(--beauty-heading-weight);
+    font-variant-numeric: lining-nums tabular-nums;
+    border-block-end: 0;
+    margin-inline-end: .25em;
+    text-decoration: none;
+  }
+
+  :where(a.beauty-footnote-number:hover, a.beauty-footnote-number:focus-visible):where(:not(.not-beauty, .not-beauty *)) {
+    color: var(--beauty-hover);
   }
 
   :where(dd):where(:not(.not-beauty, .not-beauty *)) {

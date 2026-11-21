@@ -173,10 +173,15 @@ for (const path of ["/examples/classless.html", "/examples/prose.html"]) {
 
 test("system dark scheme works without JavaScript; an explicit light choice wins", async ({
   browser,
+  baseURL,
 }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, colorScheme: "dark" });
+  const context = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+    colorScheme: "dark",
+  });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:4173/examples/classless.html");
+  await page.goto("/examples/classless.html");
   await expect(page.locator("body")).toHaveCSS("background-color", "rgb(26, 26, 26)");
   await page.locator("html").evaluate((element) => element.setAttribute("data-theme", "light"));
   await expect(page.locator("body")).toHaveCSS("background-color", "rgb(255, 255, 255)");
@@ -482,6 +487,21 @@ test("footnotes keep their numbers for every first block, focus, print and prose
         ).toBe(true);
       }
     }
+    const firstNote = page.locator("#notes-1");
+    await firstNote.locator("p").evaluate((paragraph) => {
+      const link = paragraph.querySelector("a");
+      link.className = "beauty-footnote-number";
+      link.textContent = "1";
+      paragraph.prepend(link);
+    });
+    expect(await firstNote.evaluate((note) => getComputedStyle(note, "::before").content)).toMatch(
+      /^(none|normal)$/,
+    );
+    const number = firstNote.locator(".beauty-footnote-number");
+    await number.hover();
+    await expect(number).toHaveCSS("text-decoration-line", "none");
+    await number.click();
+    await expect(page).toHaveURL(/#notes-ref$/);
     await page.emulateMedia({ media: "print" });
     await expect(page.locator("#notes-fixture")).toBeVisible();
     await page.emulateMedia({ media: "screen" });

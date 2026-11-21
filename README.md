@@ -278,7 +278,7 @@ between items (0.875rem, or 14 px at the default root size). `--beauty-list-inde
 `min(2.5rem, 8%)`: a 40 px inset in a wide reading column that contracts to 8% in a narrow column.
 Nested lists retain a compact inner gap. A deliberate `<strong>` inside a list item stays bold.
 
-Use the optional footnote helpers with native links and unique IDs:
+Use the optional footnote helpers with native links and unique IDs. To put a clickable number on the first line, begin the note with an anchor such as `<a class="beauty-footnote-number" href="#ref-1" aria-label="Back to reference 1">1</a>` in place of the return arrow. The inline number replaces the hanging counter.
 
 ```html
 <p>

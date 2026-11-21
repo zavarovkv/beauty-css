@@ -219,7 +219,7 @@
   position: relative;
 }
 
-:where(.beauty-footnotes > ol > li)::before {
+:where(.beauty-footnotes > ol > li:not(:has(.beauty-footnote-number)))::before {
   content: counter(list-item);
   font-size: var(--beauty-footnote-ref-size);
   font-style: italic;
@@ -227,6 +227,20 @@
   inset-inline-end: calc(100% + 0.35em);
   inset-block-start: 0.2em;
   line-height: 1;
+}
+
+/* An explicit return link can supply the number on the first baseline. */
+:where(a.beauty-footnote-number) {
+  color: inherit;
+  font-weight: var(--beauty-heading-weight);
+  font-variant-numeric: lining-nums tabular-nums;
+  margin-inline-end: 0.25em;
+  border-block-end: 0;
+  text-decoration: none;
+}
+
+:where(a.beauty-footnote-number:hover, a.beauty-footnote-number:focus-visible) {
+  color: var(--beauty-hover);
 }
 
 :where(dd) {

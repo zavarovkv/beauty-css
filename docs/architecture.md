@@ -30,7 +30,7 @@ font loading, syntax highlighting and application-specific component styles rema
 Numeric highlights (`beauty-stat-*`) and connected ordered steps (`beauty-steps`) are shared
 editorial helpers. The library owns their type, marker geometry and internal rhythm; consumers
 own section grids, page spacing, data formatting and behavior. Footnotes use the shared
-`beauty-footnotes`, `beauty-footnote-ref` and `beauty-footnote-backref` helpers. Beauty owns their
+`beauty-footnotes`, `beauty-footnote-ref`, `beauty-footnote-number` and `beauty-footnote-backref` helpers. Beauty owns their
 type, counters and internal rhythm, with independently configurable note leading; generated IDs, anchor behavior and renderer-specific class
 aliases belong to consumers. Ordinary lists use native marker weight and a configurable gap.
 

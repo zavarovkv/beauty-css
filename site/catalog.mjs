@@ -142,9 +142,9 @@ H<sub>2</sub>O · x<sup>2</sup> · <small>${t("небольшое уточнен
       examples: [
         {
           title: t("Источник и возврат к тексту", "A source and a return link"),
-          html: `<p>${t("Утверждение с источником", "A sourced statement")}<sup id="note-example-ref"><a class="beauty-footnote-ref" href="#note-example" role="doc-noteref">1</a></sup>.</p>
+          html: `<p>${t("Утверждение с источником", "A sourced statement")}<sup id="note-example-ref"><a class="beauty-footnote-ref" href="#note-example" role="doc-noteref">1</a></sup>. ${t("Повторная ссылка", "Another citation")}<sup id="note-example-repeat"><a class="beauty-footnote-ref" href="#note-example" role="doc-noteref">1</a></sup>.</p>
 <div class="beauty-footnotes" role="doc-endnotes"><ol role="list">
-  <li id="note-example"><p>${t("Краткое пояснение к утверждению.", "A short explanation of the statement.")} <a class="beauty-footnote-backref" href="#note-example-ref" role="doc-backlink" aria-label="${t("Вернуться к ссылке 1", "Back to reference 1")}">↩</a></p></li>
+  <li id="note-example"><p><a class="beauty-footnote-number" href="#note-example-ref" role="doc-backlink" aria-label="${t("Вернуться к первой ссылке", "Back to the first citation")}">1</a>&nbsp;${t("Краткое пояснение к утверждению.", "A short explanation of the statement.")} <a class="beauty-footnote-backref" href="#note-example-repeat" role="doc-backlink" aria-label="${t("Вернуться ко второй ссылке", "Back to the second citation")}">↩</a></p></li>
 </ol></div>`,
         },
       ],
